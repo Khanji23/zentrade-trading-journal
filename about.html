@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About Us - ZenTrade Trading Journal</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px",
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glow {
+            box-shadow: 0 0 5px theme("colors.primary"),
+                0 0 10px theme("colors.primary"), 0 0 15px theme("colors.primary"),
+                0 0 20px theme("colors.primary");
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00F5D4 0%, #00D4FF 50%, #7B2CBF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
+    <div class="flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header -->
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+            <div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:0.8" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Animated inner ring -->
+                        <circle cx="50" cy="50" r="40" 
+                                stroke="url(#pulseGradient)" 
+                                stroke-width="3" 
+                                fill="none" 
+                                opacity="0.7">
+                            <animateTransform attributeName="transform" 
+                                            type="rotate" 
+                                            values="360 50 50;0 50 50" 
+                                            dur="6s" 
+                                            repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Central hexagon -->
+                        <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                 stroke="url(#logoGradient)" 
+                                 stroke-width="4" 
+                                 fill="none" 
+                                 filter="url(#glow)">
+                            <animate attributeName="opacity" 
+                                     values="0.7;1;0.7" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"/>
+                        </polygon>
+                        
+                        <!-- Animated data points -->
+                        <circle cx="25" cy="45" r="4" fill="#00F5D4" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                        </circle>
+                        <circle cx="75" cy="45" r="4" fill="#7B2CBF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </circle>
+                        
+                        <!-- Animated connection lines -->
+                        <path d="M25,45 L50,30 L75,45" 
+                              stroke="url(#logoGradient)" 
+                              stroke-width="2.5" 
+                              fill="none" 
+                              opacity="0.7">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+                <span class="text-2xl font-bold gradient-text">ZenTrade</span>
+            </div>
+            <nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="landing.html">Home</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="pricing.html">Pricing</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="features.html">Features</a>
+                <a class="text-sm font-medium text-primary font-semibold" href="about.html">About Us</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="contact.html">Contact Us</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-black shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-glow-primary-lg">
+                    Get Started
+                </a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        About
+                        <span class="gradient-text">ZenTrade</span>
+                    </h1>
+                    <p class="text-xl lg:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed">
+                        We're passionate about helping traders achieve consistent profitability through better journaling and analysis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="py-20 lg:py-32 bg-card-dark/30">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-4xl font-bold mb-6">Our Mission</h2>
+                            <p class="text-lg text-text-secondary mb-6">
+                                At ZenTrade, we believe that every trader deserves access to professional-grade tools without the premium price tag. 
+                                Our mission is to democratize trading success by providing an affordable, feature-rich journaling platform.
+                            </p>
+                            <p class="text-lg text-text-secondary mb-8">
+                                We understand the challenges traders face - from managing emotions to tracking performance. 
+                                That's why we built ZenTrade with simplicity, power, and affordability in mind.
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Affordable Excellence</h4>
+                                        <p class="text-text-secondary">Professional tools at a fraction of the cost</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Continuous Innovation</h4>
+                                        <p class="text-text-secondary">Regular updates and new features</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Community First</h4>
+                                        <p class="text-text-secondary">Built by traders, for traders</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <h3 class="text-2xl font-bold mb-6 text-center">Why Choose Us?</h3>
+                            <div class="space-y-6">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">10K+</div>
+                                    <div class="text-text-secondary">Happy Traders</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">1M+</div>
+                                    <div class="text-text-secondary">Trades Analyzed</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">95%</div>
+                                    <div class="text-text-secondary">User Satisfaction</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">24/7</div>
+                                    <div class="text-text-secondary">Support Available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Story Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                            Our
+                            <span class="gradient-text">Story</span>
+                        </h2>
+                        <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                            How we became the most affordable and feature-rich trading journal in the market.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-12">
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <div class="flex items-start gap-6">
+                                <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <span class="text-2xl">💡</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold mb-4">The Problem We Saw</h3>
+                                    <p class="text-lg text-text-secondary">
+                                        As active traders ourselves, we noticed that existing trading journals were either too expensive or lacked the features we needed. 
+                                        Most solutions cost $50+ per month, making them inaccessible to many traders. We knew there had to be a better way.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <div class="flex items-start gap-6">
+                                <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <span class="text-2xl">🚀</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold mb-4">Our Solution</h3>
+                                    <p class="text-lg text-text-secondary">
+                                        We built ZenTrade from the ground up with one goal: provide professional-grade trading journal features at an affordable price. 
+                                        Starting at just $9.99/month with a lifetime option at $249, we've made professional trading tools accessible to everyone.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <div class="flex items-start gap-6">
+                                <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <span class="text-2xl">🎯</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold mb-4">Our Impact</h3>
+                                    <p class="text-lg text-text-secondary">
+                                        Today, over 10,000 traders trust ZenTrade to track their performance and improve their trading. 
+                                        We've analyzed over 1 million trades and helped countless traders achieve consistent profitability. 
+                                        Our 95% satisfaction rate speaks to our commitment to excellence.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="py-20 lg:py-32 bg-card-dark/30">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                            Our
+                            <span class="gradient-text">Values</span>
+                        </h2>
+                        <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                            The principles that guide everything we do at ZenTrade.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 text-center">
+                            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Affordability</h3>
+                            <p class="text-text-secondary">
+                                We believe professional trading tools should be accessible to all traders, not just those with deep pockets.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 text-center">
+                            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Innovation</h3>
+                            <p class="text-text-secondary">
+                                We continuously improve our platform with new features and updates based on trader feedback.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 text-center">
+                            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Community</h3>
+                            <p class="text-text-secondary">
+                                We're built by traders, for traders. Our community drives our development and success.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 text-center">
+                            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Transparency</h3>
+                            <p class="text-text-secondary">
+                                No hidden fees, no surprise charges. What you see is what you get, always.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 text-center">
+                            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Simplicity</h3>
+                            <p class="text-text-secondary">
+                                Complex tools made simple. We believe powerful features should be easy to use.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 text-center">
+                            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Support</h3>
+                            <p class="text-text-secondary">
+                                We're here when you need us. 24/7 support to help you succeed in your trading journey.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        Ready to Join Our
+                        <span class="gradient-text">Community?</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
+                        Start your trading journey with ZenTrade today and experience the difference affordable excellence makes.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="index.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-bold text-black shadow-glow-primary-lg transition-all duration-300 ease-in-out hover:scale-105">
+                            <svg class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 7L20 12L13 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Start Free Trial
+                        </a>
+                        <a href="pricing.html" class="inline-flex items-center justify-center rounded-full border-2 border-primary/30 px-8 py-4 text-lg font-bold text-text-primary hover:border-primary hover:bg-primary/10 transition-all duration-300">
+                            View Pricing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-primary/20 py-12">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="size-12 relative">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                            <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                             stroke="url(#footerLogoGradient)" 
+                                             stroke-width="4" 
+                                             fill="none"/>
+                                </svg>
+                            </div>
+                            <span class="text-2xl font-bold gradient-text">ZenTrade</span>
+                        </div>
+                        <p class="text-text-secondary mb-6 max-w-md">
+                            The most affordable professional trading journal that helps you track performance, analyze patterns, and build winning strategies.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="index.html" class="text-text-secondary hover:text-primary transition-colors">Dashboard</a></li>
+                            <li><a href="journal.html" class="text-text-secondary hover:text-primary transition-colors">Trade Journal</a></li>
+                            <li><a href="strategies.html" class="text-text-secondary hover:text-primary transition-colors">Strategies</a></li>
+                            <li><a href="pricing.html" class="text-text-secondary hover:text-primary transition-colors">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Company</h3>
+                        <ul class="space-y-2">
+                            <li><a href="about.html" class="text-text-secondary hover:text-primary transition-colors">About Us</a></li>
+                            <li><a href="features.html" class="text-text-secondary hover:text-primary transition-colors">Features</a></li>
+                            <li><a href="contact.html" class="text-text-secondary hover:text-primary transition-colors">Contact Us</a></li>
+                            <li><a href="#" class="text-text-secondary hover:text-primary transition-colors">Help Center</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-primary/20 mt-8 pt-8 text-center">
+                    <p class="text-text-secondary">© 2024 ZenTrade. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Set dark mode as default
+        document.documentElement.classList.add('dark');
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

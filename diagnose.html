@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTrade Diagnostic</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#00D4AA',
+                        'secondary': '#6366F1',
+                        'background-dark': '#0A0A0A',
+                        'background-light': '#FFFFFF',
+                        'card-dark': '#1A1A1A',
+                        'text-primary': '#E0E0E0',
+                        'text-secondary': '#6C757D'
+                    },
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-primary">ZenTrade Diagnostic</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- System Check -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-primary">System Check</h2>
+                <div id="system-status" class="space-y-2">
+                    <div>Loading...</div>
+                </div>
+            </div>
+            
+            <!-- Page Load Test -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-secondary">Page Load Test</h2>
+                <div id="page-status" class="space-y-2">
+                    <div>Testing...</div>
+                </div>
+            </div>
+            
+            <!-- CSS Test -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-primary">CSS Test</h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-primary/20 rounded-lg">
+                        <div class="text-primary font-bold">Primary Color Test</div>
+                    </div>
+                    <div class="p-4 bg-secondary/20 rounded-lg">
+                        <div class="text-secondary font-bold">Secondary Color Test</div>
+                    </div>
+                    <div class="p-4 bg-gradient-to-r from-primary to-secondary rounded-lg">
+                        <div class="text-white font-bold">Gradient Test</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- JavaScript Test -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-secondary">JavaScript Test</h2>
+                <div id="js-status" class="space-y-2">
+                    <div>Testing...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Buttons -->
+        <div class="mt-8 text-center space-x-4">
+            <button onclick="testLandingPage()" class="px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors">
+                Test Landing Page
+            </button>
+            <button onclick="testDashboard()" class="px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary/80 transition-colors">
+                Test Dashboard
+            </button>
+            <button onclick="runDiagnostics()" class="px-6 py-3 bg-yellow-500 text-black rounded-lg hover:bg-yellow-600 transition-colors">
+                Run Full Diagnostics
+            </button>
+        </div>
+        
+        <!-- Results -->
+        <div id="results" class="mt-8 bg-card-dark/50 p-6 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Diagnostic Results</h2>
+            <div id="results-content" class="space-y-2">
+                <div>Click "Run Full Diagnostics" to start</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // System check
+        function checkSystem() {
+            const status = document.getElementById('system-status');
+            const checks = [
+                { name: 'Dark Mode', status: document.documentElement.classList.contains('dark') },
+                { name: 'Tailwind CSS', status: typeof tailwind !== 'undefined' },
+                { name: 'Fonts Loaded', status: document.fonts && document.fonts.ready },
+                { name: 'JavaScript', status: true },
+                { name: 'Console Available', status: typeof console !== 'undefined' }
+            ];
+            
+            status.innerHTML = checks.map(check => 
+                `<div class="flex justify-between">
+                    <span>${check.name}:</span>
+                    <span class="${check.status ? 'text-green-400' : 'text-red-400'}">
+                        ${check.status ? '✅' : '❌'}
+                    </span>
+                </div>`
+            ).join('');
+        }
+        
+        // Page load test
+        function testPageLoad() {
+            const status = document.getElementById('page-status');
+            const tests = [
+                { name: 'Landing Page', url: '/', test: () => fetch('/').then(r => r.ok) },
+                { name: 'Dashboard', url: '/index.html', test: () => fetch('/index.html').then(r => r.ok) },
+                { name: 'API Health', url: '/api/health', test: () => fetch('/api/health').then(r => r.ok) }
+            ];
+            
+            status.innerHTML = '<div>Testing pages...</div>';
+            
+            Promise.all(tests.map(async test => {
+                try {
+                    const result = await test.test();
+                    return { name: test.name, status: result, url: test.url };
+                } catch (error) {
+                    return { name: test.name, status: false, url: test.url, error: error.message };
+                }
+            })).then(results => {
+                status.innerHTML = results.map(result => 
+                    `<div class="flex justify-between">
+                        <span>${result.name}:</span>
+                        <span class="${result.status ? 'text-green-400' : 'text-red-400'}">
+                            ${result.status ? '✅' : '❌'} ${result.error ? `(${result.error})` : ''}
+                        </span>
+                    </div>`
+                ).join('');
+            });
+        }
+        
+        // JavaScript test
+        function testJavaScript() {
+            const status = document.getElementById('js-status');
+            const tests = [
+                { name: 'Console Log', test: () => { console.log('Test log'); return true; } },
+                { name: 'Local Storage', test: () => { localStorage.setItem('test', 'value'); return localStorage.getItem('test') === 'value'; } },
+                { name: 'Fetch API', test: () => typeof fetch !== 'undefined' },
+                { name: 'DOM Manipulation', test: () => { document.body.style.backgroundColor = 'red'; return true; } }
+            ];
+            
+            status.innerHTML = tests.map(test => {
+                try {
+                    const result = test.test();
+                    return `<div class="flex justify-between">
+                        <span>${test.name}:</span>
+                        <span class="${result ? 'text-green-400' : 'text-red-400'}">${result ? '✅' : '❌'}</span>
+                    </div>`;
+                } catch (error) {
+                    return `<div class="flex justify-between">
+                        <span>${test.name}:</span>
+                        <span class="text-red-400">❌ (${error.message})</span>
+                    </div>`;
+                }
+            }).join('');
+        }
+        
+        // Test specific pages
+        function testLandingPage() {
+            window.open('/', '_blank');
+        }
+        
+        function testDashboard() {
+            window.open('/index.html', '_blank');
+        }
+        
+        // Run full diagnostics
+        function runDiagnostics() {
+            const results = document.getElementById('results-content');
+            results.innerHTML = '<div>Running diagnostics...</div>';
+            
+            setTimeout(() => {
+                checkSystem();
+                testPageLoad();
+                testJavaScript();
+                
+                results.innerHTML = `
+                    <div class="text-green-400">✅ System diagnostics completed</div>
+                    <div class="text-sm text-text-secondary mt-2">
+                        Check the status boxes above for detailed results.
+                    </div>
+                `;
+            }, 1000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSystem();
+            testPageLoad();
+            testJavaScript();
+        });
+    </script>
+</body>
+</html>

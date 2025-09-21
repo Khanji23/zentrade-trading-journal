@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTrade - Landing Page Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk", "sans-serif"],
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #00F5D4 0%, #00D4FF 50%, #7B2CBF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-text-primary font-display min-h-screen">
+    <!-- Header -->
+    <header class="bg-card-dark/50 border-b border-primary/20 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl font-bold text-background-dark">Z</span>
+                </div>
+                <span class="text-2xl font-bold gradient-text">ZenTrade</span>
+            </div>
+            <nav class="flex items-center gap-6">
+                <a href="#" class="text-sm font-medium text-primary">Home</a>
+                <a href="#" class="text-sm font-medium text-text-secondary hover:text-text-primary">Pricing</a>
+                <a href="#" class="text-sm font-medium text-text-secondary hover:text-text-primary">Features</a>
+                <button class="bg-primary text-background-dark px-6 py-2 rounded-lg font-semibold hover:bg-primary/80 transition-colors">
+                    Get Started
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-background-dark via-background-dark to-card-dark/50 py-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+                            <span class="text-sm font-semibold text-primary">✨ New: Advanced Analytics</span>
+                        </div>
+                        <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                            The Future of
+                            <span class="gradient-text">Trading</span>
+                            <br>Journaling
+                        </h1>
+                        <p class="text-xl lg:text-2xl text-text-secondary leading-relaxed">
+                            Experience the most advanced trading journal with 3D visualizations, 
+                            real-time analytics, and AI-powered insights.
+                        </p>
+                    </div>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-gradient-to-r from-primary to-primary/80 text-background-dark px-8 py-4 rounded-xl font-bold text-lg hover:from-primary/80 hover:to-primary transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            Start Free Trial
+                        </button>
+                        <button class="border-2 border-primary/30 text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/10 transition-all duration-200">
+                            Watch Demo
+                        </button>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-8 pt-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text">10K+</div>
+                            <div class="text-sm text-text-secondary">Active Traders</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text">1M+</div>
+                            <div class="text-sm text-text-secondary">Trades Logged</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text">95%</div>
+                            <div class="text-sm text-text-secondary">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Content - 3D Mockup -->
+                <div class="relative">
+                    <div class="bg-card-dark/50 p-8 rounded-2xl border border-primary/20 shadow-2xl">
+                        <h3 class="text-2xl font-bold text-center mb-6 gradient-text">ZenTrade Dashboard</h3>
+                        <div class="space-y-4">
+                            <div class="bg-primary/10 p-4 rounded-lg">
+                                <div class="text-sm text-text-secondary mb-2">Total P&L</div>
+                                <div class="text-2xl font-bold text-primary">+$12,345.67</div>
+                            </div>
+                            <div class="bg-green-500/10 p-4 rounded-lg">
+                                <div class="text-sm text-text-secondary mb-2">Win Rate</div>
+                                <div class="text-2xl font-bold text-green-400">68.5%</div>
+                            </div>
+                            <div class="bg-yellow-500/10 p-4 rounded-lg">
+                                <div class="text-sm text-text-secondary mb-2">Profit Factor</div>
+                                <div class="text-2xl font-bold text-yellow-400">2.34</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section -->
+    <section class="py-16 bg-card-dark/30">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-8">
+                Test Section - 
+                <span class="gradient-text">Styling Check</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-primary/10 p-6 rounded-xl border border-primary/20">
+                    <h3 class="text-xl font-bold text-primary mb-2">Primary Color</h3>
+                    <p class="text-text-secondary">This should be teal/cyan</p>
+                </div>
+                <div class="bg-green-500/10 p-6 rounded-xl border border-green-500/20">
+                    <h3 class="text-xl font-bold text-green-400 mb-2">Success Color</h3>
+                    <p class="text-text-secondary">This should be green</p>
+                </div>
+                <div class="bg-yellow-500/10 p-6 rounded-xl border border-yellow-500/20">
+                    <h3 class="text-xl font-bold text-yellow-400 mb-2">Warning Color</h3>
+                    <p class="text-text-secondary">This should be yellow</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

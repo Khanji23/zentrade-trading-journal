@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZenTrade - Trade Log</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00F5D4",
+                        "secondary": "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #19a1e6;
+            border-radius: 20px;
+            border: 3px solid transparent;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-primary">
+<div class="min-h-screen p-4 sm:p-6 lg:p-8">
+<div class="max-w-7xl mx-auto">
+<header class="flex items-center justify-between mb-8">
+<a class="flex items-center gap-2 text-primary hover:text-white transition-colors duration-300" href="journal.html">
+<span class="material-symbols-outlined">
+                        arrow_back_ios
+                    </span>
+<span class="text-lg">Back to Journal</span>
+</a>
+                <h1 class="text-3xl font-bold text-white text-center">Trade Log Details</h1>
+<div class="flex items-center gap-4">
+<button id="edit-trade-btn" class="bg-primary text-background-dark font-bold py-2 px-4 rounded-lg shadow-lg transition-all hover:opacity-90 flex items-center gap-2">
+<span class="material-symbols-outlined">edit</span>
+Edit Trade
+</button>
+<button id="save-trade-btn" class="hidden bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all hover:opacity-90 flex items-center gap-2">
+<span class="material-symbols-outlined">save</span>
+Save Changes
+</button>
+<button id="cancel-edit-btn" class="hidden bg-gray-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all hover:opacity-90 flex items-center gap-2">
+<span class="material-symbols-outlined">cancel</span>
+Cancel
+</button>
+</div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column - Screenshots -->
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-card-dark/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-primary/20">
+<h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">photo_library</span>
+Trade Screenshots
+</h2>
+
+<!-- View Mode -->
+<div id="screenshot-view-mode">
+<!-- Main Screenshot Display -->
+<div class="relative group mb-6">
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<img id="trade-screenshot" alt="Trade Chart Screenshot" class="rounded-lg w-full h-auto max-h-[400px] object-contain cursor-pointer transition-all duration-300 hover:scale-[1.01] shadow-lg" src="" onclick="openScreenshotModal(0); console.log('Screenshot clicked via onclick');" onerror="console.error('Failed to load screenshot:', this.src); this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIFNjcmVlbnNob3QgQXZhaWxhYmxlPC90ZXh0Pjwvc3ZnPg==';"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-lg">
+<div class="text-center">
+<span class="material-symbols-outlined text-white text-5xl mb-2 block">
+zoom_in
+</span>
+<p class="text-white text-sm font-medium">Click to view full size</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Screenshot Thumbnails -->
+<div id="screenshot-thumbnails" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+<!-- Thumbnails will be loaded here -->
+</div>
+
+<!-- No Screenshots Message -->
+<div id="no-screenshots-message" class="hidden text-center py-8">
+<div class="bg-white/5 rounded-xl p-6 border border-white/10">
+<span class="material-symbols-outlined text-4xl text-text-secondary mb-3 block">image_not_supported</span>
+<p class="text-text-secondary">No screenshots available for this trade</p>
+</div>
+</div>
+</div>
+
+<!-- Edit Mode -->
+<div id="screenshot-edit-mode" class="hidden">
+<div class="space-y-6">
+<!-- Upload Area -->
+<div class="bg-white/5 border-2 border-dashed border-primary/30 rounded-xl p-8 text-center min-h-[200px] flex flex-col items-center justify-center hover:border-primary/50 transition-all duration-300">
+<div class="mb-4">
+<span class="material-symbols-outlined text-5xl text-primary/70">
+cloud_upload
+</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">Add More Screenshots</h3>
+<p class="text-white/60 mb-6 max-w-md">Drag & drop or click to upload additional screenshots. Supported formats: JPG, PNG, GIF</p>
+<button type="button" class="bg-primary text-background-dark font-bold py-3 px-6 rounded-lg shadow-lg transition-all hover:opacity-90 flex items-center gap-2" onclick="document.getElementById('screenshot-upload').click()">
+<span class="material-symbols-outlined">add_photo_alternate</span>
+Upload Screenshots
+</button>
+<input class="hidden" id="screenshot-upload" type="file" multiple accept="image/*"/>
+</div>
+
+<!-- Current Screenshots Preview -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<h4 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">collections</span>
+Current Screenshots
+</h4>
+<div id="screenshot-edit-preview" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+<!-- Edit preview will be loaded here -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Right Column - Trade Details -->
+<div class="space-y-6">
+<div class="bg-card-dark/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-primary/20">
+<h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+Trade Information
+</h2>
+
+<!-- View Mode -->
+<div id="trade-info-view-mode">
+<div class="space-y-6">
+<!-- Key Metrics Section -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center">
+<div class="text-sm text-text-secondary mb-1">P&L</div>
+<div id="trade-pnl" class="text-xl font-bold text-primary">-</div>
+</div>
+<div class="text-center">
+<div class="text-sm text-text-secondary mb-1">Direction</div>
+<div id="trade-direction" class="text-lg font-semibold text-green-400">-</div>
+</div>
+</div>
+</div>
+
+<!-- Trade Details Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<span class="text-sm font-medium text-text-secondary">Date</span>
+<span id="trade-date" class="text-sm text-white">-</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<span class="text-sm font-medium text-text-secondary">Pair</span>
+<span id="trade-instrument" class="text-sm text-white">-</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<span class="text-sm font-medium text-text-secondary">Strategy</span>
+<span id="trade-strategy" class="text-sm text-white">-</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<span class="text-sm font-medium text-text-secondary">Entry Price</span>
+<span id="trade-entry-price" class="text-sm text-white">-</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<span class="text-sm font-medium text-text-secondary">Exit Price</span>
+<span id="trade-exit-price" class="text-sm text-white">-</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<span class="text-sm font-medium text-text-secondary">Position Size</span>
+<span id="trade-position-size" class="text-sm text-white">-</span>
+</div>
+</div>
+</div>
+
+<!-- Risk Management Section -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">security</span>
+Risk Management
+</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center">
+<div class="text-sm text-text-secondary mb-1">Stop Loss</div>
+<div id="trade-stop-loss" class="text-sm text-white">-</div>
+</div>
+<div class="text-center">
+<div class="text-sm text-text-secondary mb-1">Take Profit</div>
+<div id="trade-take-profit" class="text-sm text-white">-</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Edit Mode -->
+<div id="trade-info-edit-mode" class="hidden">
+<div class="space-y-6">
+<!-- Basic Information Section -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">info</span>
+Basic Information
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Trade Date</label>
+<div @click.away="calendarOpen = false" x-data="{ 
+    calendarOpen: false, 
+    selectedDate: '',
+    currentMonth: new Date().getMonth(),
+    currentYear: new Date().getFullYear(),
+    today: new Date().toISOString().split('T')[0],
+    
+    init() {
+        this.selectedDate = this.today;
+    },
+    
+    getMonthName(month) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[month];
+    },
+    
+    getDaysInMonth(month, year) {
+        return new Date(year, month + 1, 0).getDate();
+    },
+    
+    getFirstDayOfMonth(month, year) {
+        return new Date(year, month, 1).getDay();
+    },
+    
+    formatDate(date) {
+        if (!date) return 'Select date';
+        const d = new Date(date);
+        return d.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            month: 'short', 
+            day: 'numeric',
+            year: 'numeric'
+        });
+    },
+    
+    selectDate(day) {
+        // Create date string directly to avoid timezone issues
+        const year = this.currentYear;
+        const month = String(this.currentMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        this.selectedDate = `${year}-${month}-${dayStr}`;
+        this.calendarOpen = false;
+    },
+    
+    previousMonth() {
+        if (this.currentMonth === 0) {
+            this.currentMonth = 11;
+            this.currentYear--;
+        } else {
+            this.currentMonth--;
+        }
+    },
+    
+    nextMonth() {
+        if (this.currentMonth === 11) {
+            this.currentMonth = 0;
+            this.currentYear++;
+        } else {
+            this.currentMonth++;
+        }
+    },
+    
+    isToday(day) {
+        const today = new Date();
+        return today.getDate() === day && 
+               today.getMonth() === this.currentMonth && 
+               today.getFullYear() === this.currentYear;
+    },
+    
+    isSelected(day) {
+        // Create date string directly to avoid timezone issues
+        const year = this.currentYear;
+        const month = String(this.currentMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        const dateStr = `${year}-${month}-${dayStr}`;
+        return this.selectedDate === dateStr;
+    },
+    
+    isPastDate(day) {
+        // Create date string directly to avoid timezone issues
+        const year = this.currentYear;
+        const month = String(this.currentMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        const dateStr = `${year}-${month}-${dayStr}`;
+        const today = new Date().toISOString().split('T')[0];
+        return dateStr < today;
+    }
+}" x-init="this.init()">
+<div class="relative">
+<button @click.stop="calendarOpen = !calendarOpen" class="flex items-center justify-between w-full px-4 py-3 text-left bg-background-dark/50 dark:bg-background-dark text-white dark:text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 ease-in-out">
+<span class="truncate" x-text="formatDate(selectedDate)"></span>
+<span :class="{ 'rotate-180': calendarOpen }" class="material-symbols-outlined transition-transform duration-300">
+unfold_more
+</span>
+</button>
+<div class="absolute z-20 w-full mt-2 bg-background-dark/80 dark:bg-background-dark backdrop-blur-sm border border-primary/20 rounded-lg shadow-xl" x-show="calendarOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-end="transform opacity-100 scale-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:leave="transition ease-in duration-75" x-transition:leave-end="transform opacity-0 scale-95" x-transition:leave-start="transform opacity-100 scale-100">
+<!-- Calendar Header -->
+<div class="flex items-center justify-between p-4 border-b border-primary/20">
+<button @click.stop="previousMonth()" class="p-1 rounded-full hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<h3 class="text-sm font-semibold text-white" x-text="getMonthName(currentMonth) + ' ' + currentYear"></h3>
+<button @click.stop="nextMonth()" class="p-1 rounded-full hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+
+<!-- Calendar Days -->
+<div class="p-4">
+<!-- Day headers -->
+<div class="grid grid-cols-7 gap-1 mb-2">
+<div class="text-center text-xs font-medium text-gray-400 py-1">S</div>
+<div class="text-center text-xs font-medium text-gray-400 py-1">M</div>
+<div class="text-center text-xs font-medium text-gray-400 py-1">T</div>
+<div class="text-center text-xs font-medium text-gray-400 py-1">W</div>
+<div class="text-center text-xs font-medium text-gray-400 py-1">T</div>
+<div class="text-center text-xs font-medium text-gray-400 py-1">F</div>
+<div class="text-center text-xs font-medium text-gray-400 py-1">S</div>
+</div>
+
+<!-- Calendar grid -->
+<div class="grid grid-cols-7 gap-1">
+<template x-for="day in Array(getFirstDayOfMonth(currentMonth, currentYear)).fill(0)" :key="'empty-' + day">
+<div class="h-8"></div>
+</template>
+<template x-for="day in Array(getDaysInMonth(currentMonth, currentYear)).fill(0).map((_, i) => i + 1)" :key="day">
+<button @click.stop="selectDate(day)" 
+        :class="{
+            'bg-primary text-white': isSelected(day),
+            'bg-primary/20 text-primary': isToday(day) && !isSelected(day),
+            'text-gray-300 hover:bg-primary/20 hover:text-white': !isSelected(day) && !isToday(day),
+            'text-gray-500': isPastDate(day) && !isSelected(day) && !isToday(day)
+        }"
+        class="h-8 w-8 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center">
+<span x-text="day"></span>
+</button>
+</template>
+</div>
+</div>
+</div>
+</div>
+</div>
+<input type="hidden" id="edit-trade-date" name="edit-trade-date" x-model="selectedDate" required>
+<p class="text-xs text-text-secondary mt-1">Select the date when this trade was executed</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Instrument</label>
+<input type="text" id="edit-trade-instrument" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="e.g., EUR/USD">
+</div>
+</div>
+</div>
+
+<!-- Trading Details Section -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">trending_up</span>
+Trading Details
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Direction</label>
+<div @click.away="directionOpen = false" x-data="{ 
+    directionOpen: false, 
+    directionSelected: 'Buy', 
+    directionOptions: [
+        'Buy',
+        'Sell'
+    ]
+}">
+<div class="relative">
+<button @click.stop="directionOpen = !directionOpen" class="flex items-center justify-between w-full px-4 py-3 text-left bg-background-dark/50 dark:bg-background-dark text-white dark:text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 ease-in-out">
+<span class="truncate" x-text="directionSelected === 'Buy' ? 'Long (Buy)' : 'Short (Sell)'"></span>
+<span :class="{ 'rotate-180': directionOpen }" class="material-symbols-outlined transition-transform duration-300">
+unfold_more
+</span>
+</button>
+<div class="absolute z-10 w-full mt-2 bg-background-dark/80 dark:bg-background-dark backdrop-blur-sm border border-primary/20 rounded-lg shadow-xl overflow-y-auto custom-scrollbar max-h-60" x-show="directionOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-end="transform opacity-100 scale-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:leave="transition ease-in duration-75" x-transition:leave-end="transform opacity-0 scale-95" x-transition:leave-start="transform opacity-100 scale-100">
+<ul class="py-1">
+<template :key="index" x-for="(option, index) in directionOptions">
+<li :class="{'bg-primary/30 text-white': directionSelected === option}" @click.stop="directionSelected = option; directionOpen = false;" class="px-4 py-2 text-sm text-gray-300 dark:text-gray-300 cursor-pointer hover:bg-primary/20 dark:hover:bg-primary/20 hover:text-white dark:hover:text-white transition-colors duration-200">
+<span x-text="option === 'Buy' ? 'Long (Buy)' : 'Short (Sell)'"></span>
+</li>
+</template>
+</ul>
+</div>
+</div>
+</div>
+<input type="hidden" id="edit-trade-direction" name="edit-trade-direction" x-model="directionSelected" required>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">P&L</label>
+<input type="number" id="edit-trade-pnl" step="0.01" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="0.00">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Strategy</label>
+<input type="text" id="edit-trade-strategy" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="Trading strategy used">
+</div>
+</div>
+
+<!-- Price Information Section -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">price_change</span>
+Price Information
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Entry Price</label>
+<input type="number" id="edit-trade-entry-price" step="0.00001" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="0.00000">
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Exit Price</label>
+<input type="number" id="edit-trade-exit-price" step="0.00001" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="0.00000">
+</div>
+</div>
+
+<!-- Risk Management Section -->
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">security</span>
+Risk Management
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Stop Loss</label>
+<input type="number" id="edit-trade-stop-loss" step="0.00001" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="0.00000">
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Take Profit</label>
+<input type="number" id="edit-trade-take-profit" step="0.00001" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="0.00000">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary mb-2">Position Size</label>
+<input type="number" id="edit-trade-position-size" step="0.01" class="w-full bg-white/5 text-text-primary p-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="1.0">
+</div>
+</div>
+</div>
+</div>
+<div class="bg-card-dark/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-primary/20">
+<h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">psychology</span>
+Emotions
+</h2>
+
+<!-- View Mode -->
+<div id="emotions-view-mode">
+<div id="emotions-container" class="flex flex-wrap gap-2">
+<!-- Emotions will be loaded here -->
+</div>
+</div>
+
+<!-- Edit Mode -->
+<div id="emotions-edit-mode" class="hidden">
+<div class="space-y-4">
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<label class="block text-sm font-medium text-text-secondary mb-3">Select Emotions</label>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+<button class="emotion-edit-btn p-3 rounded-lg border border-white/10 bg-white/5 text-text-secondary hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200" data-emotion="Confident">
+<span class="block text-sm font-medium">Confident</span>
+</button>
+<button class="emotion-edit-btn p-3 rounded-lg border border-white/10 bg-white/5 text-text-secondary hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200" data-emotion="Excited">
+<span class="block text-sm font-medium">Excited</span>
+</button>
+<button class="emotion-edit-btn p-3 rounded-lg border border-white/10 bg-white/5 text-text-secondary hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200" data-emotion="Calm">
+<span class="block text-sm font-medium">Calm</span>
+</button>
+<button class="emotion-edit-btn p-3 rounded-lg border border-white/10 bg-white/5 text-text-secondary hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200" data-emotion="Anxious">
+<span class="block text-sm font-medium">Anxious</span>
+</button>
+<button class="emotion-edit-btn p-3 rounded-lg border border-white/10 bg-white/5 text-text-secondary hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200" data-emotion="Frustrated">
+<span class="block text-sm font-medium">Frustrated</span>
+</button>
+<button class="emotion-edit-btn p-3 rounded-lg border border-white/10 bg-white/5 text-text-secondary hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200" data-emotion="Neutral">
+<span class="block text-sm font-medium">Neutral</span>
+</button>
+</div>
+<div class="mt-4 p-3 bg-white/5 rounded-lg border border-white/10">
+<p class="text-sm text-text-secondary">Selected emotions: <span id="selected-emotions-display" class="text-white font-medium">None</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-3">
+<div class="bg-card-dark/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-primary/20">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">checklist</span>
+Strategy Checklist
+</h2>
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<ul id="strategy-checklist" class="space-y-3 text-text-secondary">
+<!-- Strategy checklist will be loaded here -->
+</ul>
+</div>
+</div>
+<div>
+<h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">note_alt</span>
+Notes & AI Coach Feedback
+</h2>
+<div class="space-y-4">
+<!-- View Mode Notes -->
+<div id="notes-view-mode">
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<p id="trade-notes" class="text-text-secondary">No notes available for this trade.</p>
+</div>
+</div>
+
+<!-- Edit Mode Notes -->
+<div id="notes-edit-mode" class="hidden">
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<label class="block text-sm font-medium text-text-secondary mb-2">Your Notes</label>
+<textarea id="notes-textarea" class="w-full bg-white/5 text-text-secondary p-4 rounded-lg border border-white/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all resize-none" rows="4" placeholder="Add your notes about this trade..."></textarea>
+</div>
+</div>
+
+<div class="bg-primary/10 p-6 rounded-xl border border-primary/30 shadow-glow-primary-md">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary text-xl">psychology</span>
+<h3 class="font-semibold text-primary text-lg">ZenTrade Coach</h3>
+</div>
+<div class="bg-white/5 rounded-lg p-4 border border-white/10">
+<p class="text-text-primary leading-relaxed">Keep track of your emotions and trading patterns to improve your performance over time.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Screenshot Modal -->
+<div id="screenshot-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden backdrop-blur-sm" style="display: none;">
+<div class="max-w-6xl max-h-[95vh] w-full mx-4 relative">
+<div class="relative bg-white/5 rounded-2xl p-4 border border-white/10">
+<img id="modal-screenshot" alt="Screenshot" class="w-full h-auto max-h-[85vh] object-contain rounded-lg shadow-2xl"/>
+<div class="absolute top-2 right-2 flex gap-2">
+<button id="close-modal" class="bg-red-500/80 text-white p-2 rounded-full hover:bg-red-500 transition-colors shadow-lg">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<div class="absolute left-2 top-1/2 transform -translate-y-1/2">
+<button id="prev-screenshot" class="bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors shadow-lg">
+<span class="material-symbols-outlined text-2xl">chevron_left</span>
+</button>
+</div>
+<div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+<button id="next-screenshot" class="bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors shadow-lg">
+<span class="material-symbols-outlined text-2xl">chevron_right</span>
+</button>
+</div>
+<div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm">
+<span id="screenshot-counter">1 / 1</span>
+</div>
+</div>
+</div>
+</div>
+
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script>
+        // Load trade details from URL parameters
+        function loadTradeDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tradeId = urlParams.get('id');
+            
+            if (!tradeId) {
+                console.error('No trade ID provided');
+                return;
+            }
+            
+            // Get trade from localStorage
+            const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+            const trade = trades.find(t => t.id === tradeId);
+            
+            if (!trade) {
+                console.error('Trade not found');
+                return;
+            }
+            
+            console.log('Loading trade details:', trade);
+            
+            // Store current trade globally
+            currentTrade = trade;
+            
+            // Populate trade info
+            const date = new Date(trade.timestamp || trade.date).toLocaleDateString();
+            document.getElementById('trade-date').textContent = date;
+            document.getElementById('trade-instrument').textContent = trade.instrument || 'N/A';
+            document.getElementById('trade-direction').textContent = trade.side || 'N/A';
+            document.getElementById('trade-strategy').textContent = trade.strategyName || trade.strategy || 'N/A';
+            
+            // P&L with color coding
+            const pnl = trade.netPnl || trade.pnl || 0;
+            const pnlElement = document.getElementById('trade-pnl');
+            const pnlSign = pnl >= 0 ? '+' : '';
+            pnlElement.textContent = `${pnlSign}$${Math.abs(pnl).toFixed(2)}`;
+            pnlElement.className = pnl >= 0 ? 'text-green-400 font-bold text-lg' : 'text-red-400 font-bold text-lg';
+            
+            // Additional trade fields
+            document.getElementById('trade-entry-price').textContent = trade.entryPrice ? trade.entryPrice.toFixed(5) : 'N/A';
+            document.getElementById('trade-exit-price').textContent = trade.exitPrice ? trade.exitPrice.toFixed(5) : 'N/A';
+            document.getElementById('trade-stop-loss').textContent = trade.stopLoss ? trade.stopLoss.toFixed(5) : 'N/A';
+            document.getElementById('trade-take-profit').textContent = trade.takeProfit ? trade.takeProfit.toFixed(5) : 'N/A';
+            document.getElementById('trade-position-size').textContent = trade.positionSize ? trade.positionSize.toFixed(2) : 'N/A';
+            
+            // Load screenshot if available
+            console.log('Trade screenshots:', trade.screenshots);
+            if (trade.screenshots && trade.screenshots.length > 0) {
+                // Handle both object format (with .data property) and direct string format
+                const firstScreenshot = trade.screenshots[0];
+                console.log('First screenshot:', firstScreenshot);
+                const screenshotSrc = firstScreenshot.data || firstScreenshot;
+                console.log('Screenshot source:', screenshotSrc);
+                document.getElementById('trade-screenshot').src = screenshotSrc;
+            } else {
+                console.log('No screenshots available, using placeholder');
+                document.getElementById('trade-screenshot').src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIFNjcmVlbnNob3QgQXZhaWxhYmxlPC90ZXh0Pjwvc3ZnPg==';
+            }
+            
+            // Load emotions
+            const emotionsContainer = document.getElementById('emotions-container');
+            const emotions = trade.emotions || (trade.emotion ? [trade.emotion] : [trade.feeling || 'Neutral']);
+            
+            emotionsContainer.innerHTML = emotions.map(emotion => {
+                let emotionColor = 'bg-white/20 text-white/60';
+                if (emotion.toLowerCase().includes('confident') || emotion.toLowerCase().includes('excited')) {
+                    emotionColor = 'bg-primary/20 text-primary';
+                } else if (emotion.toLowerCase().includes('anxious') || emotion.toLowerCase().includes('worried')) {
+                    emotionColor = 'bg-yellow-400/20 text-yellow-400';
+                } else if (emotion.toLowerCase().includes('frustrated') || emotion.toLowerCase().includes('angry')) {
+                    emotionColor = 'bg-red-400/20 text-red-400';
+                }
+                
+                return `<span class="${emotionColor} px-3 py-1 rounded-full text-sm">${emotion}</span>`;
+            }).join('');
+            
+            // Load strategy checklist if available
+            const strategyChecklist = document.getElementById('strategy-checklist');
+            if (trade.strategyId) {
+                // Try to get strategy details
+                const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+                const strategy = strategies.find(s => s.id === trade.strategyId);
+                
+                if (strategy && strategy.entryCriteria) {
+                    strategyChecklist.innerHTML = strategy.entryCriteria.map(criterion => {
+                        const criterionText = criterion.text || criterion;
+                        return `<li class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary">check_circle</span>
+                            <span>${criterionText}</span>
+                        </li>`;
+                    }).join('');
+                } else {
+                    strategyChecklist.innerHTML = '<li class="text-gray-500">No strategy details available</li>';
+                }
+            } else {
+                strategyChecklist.innerHTML = '<li class="text-gray-500">No strategy associated with this trade</li>';
+            }
+            
+            // Load notes
+            if (trade.notes) {
+                document.getElementById('trade-notes').textContent = trade.notes;
+            }
+            
+            // Load screenshot thumbnails
+            loadScreenshotThumbnails();
+        }
+        
+        // Global variables
+        let currentTrade = null;
+        let currentScreenshotIndex = 0;
+        let isEditMode = false;
+        let newScreenshots = [];
+
+        // Load trade details when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Trade details page loaded');
+            loadTradeDetails();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Edit mode buttons
+            document.getElementById('edit-trade-btn').addEventListener('click', enterEditMode);
+            document.getElementById('save-trade-btn').addEventListener('click', saveTradeChanges);
+            document.getElementById('cancel-edit-btn').addEventListener('click', exitEditMode);
+
+            // Screenshot modal - use a more robust approach
+            setTimeout(() => {
+                const tradeScreenshot = document.getElementById('trade-screenshot');
+                if (tradeScreenshot) {
+                    console.log('Attaching click listener to screenshot');
+                    tradeScreenshot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Screenshot clicked!');
+                        openScreenshotModal(0);
+                    });
+                } else {
+                    console.error('trade-screenshot element not found after timeout');
+                }
+            }, 100);
+            document.getElementById('close-modal').addEventListener('click', closeScreenshotModal);
+            document.getElementById('prev-screenshot').addEventListener('click', prevScreenshot);
+            document.getElementById('next-screenshot').addEventListener('click', nextScreenshot);
+
+            // Screenshot upload
+            document.getElementById('screenshot-upload').addEventListener('change', handleScreenshotUpload);
+
+            // Close modal on background click
+            document.getElementById('screenshot-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeScreenshotModal();
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (document.getElementById('screenshot-modal').classList.contains('hidden')) return;
+                
+                switch(e.key) {
+                    case 'Escape':
+                        closeScreenshotModal();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        prevScreenshot();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        nextScreenshot();
+                        break;
+                }
+            });
+        }
+
+        function enterEditMode() {
+            isEditMode = true;
+            document.getElementById('edit-trade-btn').classList.add('hidden');
+            document.getElementById('save-trade-btn').classList.remove('hidden');
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            
+            // Switch to edit mode for trade info
+            document.getElementById('trade-info-view-mode').classList.add('hidden');
+            document.getElementById('trade-info-edit-mode').classList.remove('hidden');
+            
+            // Switch to edit mode for emotions
+            document.getElementById('emotions-view-mode').classList.add('hidden');
+            document.getElementById('emotions-edit-mode').classList.remove('hidden');
+            
+            // Switch to edit mode for screenshots
+            document.getElementById('screenshot-view-mode').classList.add('hidden');
+            document.getElementById('screenshot-edit-mode').classList.remove('hidden');
+            
+            // Switch to edit mode for notes
+            document.getElementById('notes-view-mode').classList.add('hidden');
+            document.getElementById('notes-edit-mode').classList.remove('hidden');
+            
+            // Load current trade data into edit forms
+            loadTradeDataForEdit();
+            
+            // Load current notes into textarea
+            document.getElementById('notes-textarea').value = currentTrade.notes || '';
+            
+            // Load current screenshots for editing
+            loadScreenshotsForEdit();
+            
+            // Setup emotion edit buttons
+            setupEmotionEditButtons();
+        }
+
+        function exitEditMode() {
+            isEditMode = false;
+            document.getElementById('edit-trade-btn').classList.remove('hidden');
+            document.getElementById('save-trade-btn').classList.add('hidden');
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            
+            // Switch back to view mode
+            document.getElementById('trade-info-view-mode').classList.remove('hidden');
+            document.getElementById('trade-info-edit-mode').classList.add('hidden');
+            document.getElementById('emotions-view-mode').classList.remove('hidden');
+            document.getElementById('emotions-edit-mode').classList.add('hidden');
+            document.getElementById('screenshot-view-mode').classList.remove('hidden');
+            document.getElementById('screenshot-edit-mode').classList.add('hidden');
+            document.getElementById('notes-view-mode').classList.remove('hidden');
+            document.getElementById('notes-edit-mode').classList.add('hidden');
+            
+            // Reset new screenshots
+            newScreenshots = [];
+        }
+
+        function saveTradeChanges() {
+            // Update trade info - get date from calendar dropdown
+            const calendarDropdown = document.querySelector('[x-data*="calendarOpen"]');
+            let tradeDate = '';
+            if (calendarDropdown && calendarDropdown._x_dataStack && calendarDropdown._x_dataStack[0]) {
+                tradeDate = calendarDropdown._x_dataStack[0].selectedDate || '';
+            }
+            
+            if (tradeDate) {
+                // Convert date to timestamp for consistency
+                const dateObj = new Date(tradeDate + 'T23:59:59.999Z');
+                currentTrade.timestamp = dateObj.toISOString();
+                currentTrade.tradeDate = tradeDate;
+            }
+            
+            currentTrade.instrument = document.getElementById('edit-trade-instrument').value || currentTrade.instrument;
+            
+            // Get direction from Alpine.js dropdown
+            const directionDropdown = document.querySelector('[x-data*="directionOpen"]');
+            if (directionDropdown && directionDropdown._x_dataStack && directionDropdown._x_dataStack[0]) {
+                currentTrade.side = directionDropdown._x_dataStack[0].directionSelected || currentTrade.side;
+            }
+            
+            const pnl = parseFloat(document.getElementById('edit-trade-pnl').value);
+            if (!isNaN(pnl)) {
+                currentTrade.netPnl = pnl;
+                currentTrade.pnl = pnl;
+            }
+            
+            currentTrade.strategy = document.getElementById('edit-trade-strategy').value || currentTrade.strategy;
+            
+            const entryPrice = parseFloat(document.getElementById('edit-trade-entry-price').value);
+            if (!isNaN(entryPrice)) {
+                currentTrade.entryPrice = entryPrice;
+            }
+            
+            const exitPrice = parseFloat(document.getElementById('edit-trade-exit-price').value);
+            if (!isNaN(exitPrice)) {
+                currentTrade.exitPrice = exitPrice;
+            }
+            
+            const stopLoss = parseFloat(document.getElementById('edit-trade-stop-loss').value);
+            if (!isNaN(stopLoss)) {
+                currentTrade.stopLoss = stopLoss;
+            }
+            
+            const takeProfit = parseFloat(document.getElementById('edit-trade-take-profit').value);
+            if (!isNaN(takeProfit)) {
+                currentTrade.takeProfit = takeProfit;
+            }
+            
+            const positionSize = parseFloat(document.getElementById('edit-trade-position-size').value);
+            if (!isNaN(positionSize)) {
+                currentTrade.positionSize = positionSize;
+            }
+            
+            // Update emotions
+            const selectedEmotions = getSelectedEmotions();
+            if (selectedEmotions.length > 0) {
+                currentTrade.emotions = selectedEmotions;
+                currentTrade.emotion = selectedEmotions[0]; // Keep first emotion for backward compatibility
+                currentTrade.feeling = selectedEmotions[0];
+            }
+            
+            // Update notes
+            currentTrade.notes = document.getElementById('notes-textarea').value;
+            
+            // Add new screenshots to existing ones
+            if (newScreenshots.length > 0) {
+                if (!currentTrade.screenshots) {
+                    currentTrade.screenshots = [];
+                }
+                currentTrade.screenshots = currentTrade.screenshots.concat(newScreenshots);
+            }
+            
+            // Save to localStorage
+            const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+            const tradeIndex = trades.findIndex(t => t.id === currentTrade.id);
+            if (tradeIndex !== -1) {
+                trades[tradeIndex] = currentTrade;
+                localStorage.setItem('trades', JSON.stringify(trades));
+            }
+            
+            // Reload the page to show updated data
+            loadTradeDetails();
+            exitEditMode();
+            
+            alert('Trade updated successfully!');
+        }
+
+        function loadScreenshotsForEdit() {
+            const previewContainer = document.getElementById('screenshot-edit-preview');
+            previewContainer.innerHTML = '';
+            
+            if (currentTrade.screenshots && currentTrade.screenshots.length > 0) {
+                currentTrade.screenshots.forEach((screenshot, index) => {
+                    const screenshotSrc = screenshot.data || screenshot;
+                    const div = document.createElement('div');
+                    div.className = 'relative group bg-white/5 rounded-lg p-2 border border-white/10';
+                    div.innerHTML = `
+                        <img src="${screenshotSrc}" alt="Screenshot ${index + 1}" class="w-full h-24 sm:h-28 object-cover rounded-lg"/>
+                        <button onclick="removeScreenshot(${index})" class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors shadow-lg">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </button>
+                        <div class="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                            ${index + 1}
+                        </div>
+                    `;
+                    previewContainer.appendChild(div);
+                });
+            } else {
+                previewContainer.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-text-secondary">
+                        <span class="material-symbols-outlined text-4xl mb-2 block">image_not_supported</span>
+                        <p>No screenshots yet</p>
+                    </div>
+                `;
+            }
+        }
+
+        function handleScreenshotUpload(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const screenshotData = {
+                            name: file.name,
+                            data: e.target.result,
+                            size: file.size
+                        };
+                        newScreenshots.push(screenshotData);
+                        updateEditPreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function updateEditPreview() {
+            const previewContainer = document.getElementById('screenshot-edit-preview');
+            const existingScreenshots = currentTrade.screenshots || [];
+            const allScreenshots = [...existingScreenshots, ...newScreenshots];
+            
+            previewContainer.innerHTML = '';
+            
+            if (allScreenshots.length > 0) {
+                allScreenshots.forEach((screenshot, index) => {
+                    const screenshotSrc = screenshot.data || screenshot;
+                    const isNewScreenshot = index >= existingScreenshots.length;
+                    const div = document.createElement('div');
+                    div.className = 'relative group bg-white/5 rounded-lg p-2 border border-white/10';
+                    div.innerHTML = `
+                        <img src="${screenshotSrc}" alt="Screenshot ${index + 1}" class="w-full h-24 sm:h-28 object-cover rounded-lg"/>
+                        <button onclick="removeScreenshot(${index})" class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors shadow-lg">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </button>
+                        <div class="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                            ${index + 1}
+                        </div>
+                        ${isNewScreenshot ? '<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">New</div>' : ''}
+                    `;
+                    previewContainer.appendChild(div);
+                });
+            } else {
+                previewContainer.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-text-secondary">
+                        <span class="material-symbols-outlined text-4xl mb-2 block">image_not_supported</span>
+                        <p>No screenshots yet</p>
+                    </div>
+                `;
+            }
+        }
+
+        function removeScreenshot(index) {
+            const existingScreenshots = currentTrade.screenshots || [];
+            if (index < existingScreenshots.length) {
+                currentTrade.screenshots.splice(index, 1);
+            } else {
+                const newIndex = index - existingScreenshots.length;
+                newScreenshots.splice(newIndex, 1);
+            }
+            updateEditPreview();
+        }
+
+        function loadTradeDataForEdit() {
+            if (!currentTrade) return;
+            
+            // Load trade date into calendar dropdown
+            const calendarDropdown = document.querySelector('[x-data*="calendarOpen"]');
+            if (calendarDropdown && calendarDropdown._x_dataStack && calendarDropdown._x_dataStack[0]) {
+                let tradeDate = '';
+                if (currentTrade.tradeDate) {
+                    tradeDate = currentTrade.tradeDate;
+                } else if (currentTrade.timestamp) {
+                    const date = new Date(currentTrade.timestamp);
+                    tradeDate = date.toISOString().split('T')[0];
+                } else {
+                    tradeDate = new Date().toISOString().split('T')[0];
+                }
+                
+                calendarDropdown._x_dataStack[0].selectedDate = tradeDate;
+                
+                // Set the calendar to show the correct month/year
+                if (tradeDate) {
+                    const date = new Date(tradeDate);
+                    calendarDropdown._x_dataStack[0].currentMonth = date.getMonth();
+                    calendarDropdown._x_dataStack[0].currentYear = date.getFullYear();
+                }
+            }
+            
+            // Load other trade fields
+            document.getElementById('edit-trade-instrument').value = currentTrade.instrument || '';
+            
+            // Set direction dropdown value
+            const directionDropdown = document.querySelector('[x-data*="directionOpen"]');
+            if (directionDropdown && directionDropdown._x_dataStack && directionDropdown._x_dataStack[0]) {
+                directionDropdown._x_dataStack[0].directionSelected = currentTrade.side || 'Buy';
+            }
+            
+            document.getElementById('edit-trade-pnl').value = currentTrade.netPnl || currentTrade.pnl || '';
+            document.getElementById('edit-trade-strategy').value = currentTrade.strategy || '';
+            document.getElementById('edit-trade-entry-price').value = currentTrade.entryPrice || '';
+            document.getElementById('edit-trade-exit-price').value = currentTrade.exitPrice || '';
+            document.getElementById('edit-trade-stop-loss').value = currentTrade.stopLoss || '';
+            document.getElementById('edit-trade-take-profit').value = currentTrade.takeProfit || '';
+            document.getElementById('edit-trade-position-size').value = currentTrade.positionSize || '';
+        }
+
+        function setupEmotionEditButtons() {
+            const emotionButtons = document.querySelectorAll('.emotion-edit-btn');
+            const currentEmotions = currentTrade.emotions || (currentTrade.emotion ? [currentTrade.emotion] : [currentTrade.feeling || 'Neutral']);
+            
+            // Clear previous selections
+            emotionButtons.forEach(btn => {
+                btn.classList.remove('border-primary', 'bg-primary/20', 'text-primary');
+                btn.classList.add('border-white/10', 'bg-white/5', 'text-text-secondary');
+            });
+            
+            // Mark current emotions as selected
+            emotionButtons.forEach(btn => {
+                const emotion = btn.dataset.emotion;
+                if (currentEmotions.includes(emotion)) {
+                    btn.classList.remove('border-white/10', 'bg-white/5', 'text-text-secondary');
+                    btn.classList.add('border-primary', 'bg-primary/20', 'text-primary');
+                }
+            });
+            
+            // Add click listeners
+            emotionButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('border-primary');
+                    this.classList.toggle('bg-primary/20');
+                    this.classList.toggle('text-primary');
+                    this.classList.toggle('border-white/10');
+                    this.classList.toggle('bg-white/5');
+                    this.classList.toggle('text-text-secondary');
+                    updateSelectedEmotionsDisplay();
+                });
+            });
+            
+            updateSelectedEmotionsDisplay();
+        }
+
+        function getSelectedEmotions() {
+            const selectedButtons = document.querySelectorAll('.emotion-edit-btn.border-primary');
+            return Array.from(selectedButtons).map(btn => btn.dataset.emotion);
+        }
+
+        function updateSelectedEmotionsDisplay() {
+            const selectedEmotions = getSelectedEmotions();
+            const display = document.getElementById('selected-emotions-display');
+            if (selectedEmotions.length > 0) {
+                display.textContent = selectedEmotions.join(', ');
+            } else {
+                display.textContent = 'None';
+            }
+        }
+
+
+        function closeScreenshotModal() {
+            const modal = document.getElementById('screenshot-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        function showScreenshotInModal() {
+            const screenshots = currentTrade.screenshots || [];
+            if (screenshots.length === 0) return;
+            
+            const screenshot = screenshots[currentScreenshotIndex];
+            const screenshotSrc = screenshot.data || screenshot;
+            console.log('Showing screenshot in modal:', screenshotSrc);
+            
+            document.getElementById('modal-screenshot').src = screenshotSrc;
+            
+            // Update counter
+            document.getElementById('screenshot-counter').textContent = `${currentScreenshotIndex + 1} / ${screenshots.length}`;
+            
+            // Show/hide navigation buttons
+            document.getElementById('prev-screenshot').style.display = screenshots.length > 1 ? 'block' : 'none';
+            document.getElementById('next-screenshot').style.display = screenshots.length > 1 ? 'block' : 'none';
+        }
+
+        function prevScreenshot() {
+            const screenshots = currentTrade.screenshots || [];
+            currentScreenshotIndex = (currentScreenshotIndex - 1 + screenshots.length) % screenshots.length;
+            showScreenshotInModal();
+        }
+
+        function nextScreenshot() {
+            const screenshots = currentTrade.screenshots || [];
+            currentScreenshotIndex = (currentScreenshotIndex + 1) % screenshots.length;
+            showScreenshotInModal();
+        }
+
+        function loadScreenshotThumbnails() {
+            const thumbnailsContainer = document.getElementById('screenshot-thumbnails');
+            const noScreenshotsMessage = document.getElementById('no-screenshots-message');
+            thumbnailsContainer.innerHTML = '';
+            
+            if (currentTrade.screenshots && currentTrade.screenshots.length > 0) {
+                noScreenshotsMessage.classList.add('hidden');
+                currentTrade.screenshots.forEach((screenshot, index) => {
+                    const screenshotSrc = screenshot.data || screenshot;
+                    const div = document.createElement('div');
+                    div.className = 'relative group cursor-pointer bg-white/5 rounded-lg p-2 border border-white/10 hover:border-primary/50 transition-all duration-300';
+                    div.innerHTML = `
+                        <img src="${screenshotSrc}" alt="Screenshot ${index + 1}" class="w-full h-20 sm:h-24 object-cover rounded-lg" onclick="openScreenshotModal(${index})"/>
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-xl">zoom_in</span>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full font-medium">
+                            ${index + 1}
+                        </div>
+                    `;
+                    thumbnailsContainer.appendChild(div);
+                });
+            } else {
+                noScreenshotsMessage.classList.remove('hidden');
+            }
+        }
+
+        window.openScreenshotModal = function(index = 0) {
+            console.log('Opening screenshot modal, index:', index);
+            console.log('Current trade screenshots:', currentTrade.screenshots);
+            
+            const modal = document.getElementById('screenshot-modal');
+            if (!modal) {
+                console.error('Screenshot modal element not found');
+                return;
+            }
+            
+            // Test: Show modal even without screenshots for debugging
+            if (!currentTrade.screenshots || currentTrade.screenshots.length === 0) {
+                console.log('No screenshots available, but showing modal for testing');
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                return;
+            }
+            
+            currentScreenshotIndex = index;
+            showScreenshotInModal();
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            console.log('Modal should now be visible');
+        }
+
+    </script>
+
+</body></html>

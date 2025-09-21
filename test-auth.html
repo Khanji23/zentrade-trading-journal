@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTrade - Test Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">ZenTrade Authentication Test</h1>
+        
+        <div class="space-y-4">
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Test Registration</h2>
+                <button onclick="testRegister()" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
+                    Test Register
+                </button>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Test Login</h2>
+                <button onclick="testLogin()" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
+                    Test Login
+                </button>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Test Dashboard API</h2>
+                <button onclick="testDashboard()" class="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded">
+                    Test Dashboard
+                </button>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Test Logout</h2>
+                <button onclick="testLogout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">
+                    Test Logout
+                </button>
+            </div>
+        </div>
+        
+        <div id="result" class="mt-8 p-4 bg-gray-800 rounded">
+            <h3 class="font-semibold mb-2">Results:</h3>
+            <pre id="output" class="text-sm"></pre>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        function log(message) {
+            const output = document.getElementById('output');
+            output.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+        }
+
+        async function testRegister() {
+            try {
+                log('Testing registration...');
+                const result = await window.authManager.register({
+                    firstName: 'Test',
+                    lastName: 'User',
+                    email: 'test' + Date.now() + '@example.com',
+                    password: 'password123'
+                });
+                log('Registration successful: ' + JSON.stringify(result, null, 2));
+            } catch (error) {
+                log('Registration failed: ' + error.message);
+            }
+        }
+
+        async function testLogin() {
+            try {
+                log('Testing login...');
+                const result = await window.authManager.login('test@example.com', 'password123');
+                log('Login successful: ' + JSON.stringify(result, null, 2));
+            } catch (error) {
+                log('Login failed: ' + error.message);
+            }
+        }
+
+        async function testDashboard() {
+            try {
+                log('Testing dashboard API...');
+                const result = await window.authManager.getDashboardOverview();
+                log('Dashboard API successful: ' + JSON.stringify(result, null, 2));
+            } catch (error) {
+                log('Dashboard API failed: ' + error.message);
+            }
+        }
+
+        async function testLogout() {
+            try {
+                log('Testing logout...');
+                await window.authManager.logout();
+                log('Logout successful');
+            } catch (error) {
+                log('Logout failed: ' + error.message);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Page loaded. Auth manager initialized.');
+            log('Is authenticated: ' + window.authManager.isAuthenticated());
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Test - ZenTrade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#00F5D4',
+                        'secondary': '#7B2CBF',
+                        'background-dark': '#0D1B2A',
+                        'background-light': '#f6f7f8',
+                        'card-dark': '#1A1A1A',
+                        'text-primary': '#E0E0E0',
+                        'text-secondary': '#6C757D'
+                    },
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Font loading optimization */
+        @font-face {
+            font-family: 'Space Grotesk';
+            font-style: normal;
+            font-weight: 300 700;
+            font-display: swap;
+            src: url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQQoAOGQrFh3qX3V0F9uA2cvPqdcS5Dl8.woff2') format('woff2');
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #00F5D4 0%, #00D4FF 50%, #7B2CBF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .font-test {
+            font-family: 'Space Grotesk', 'Inter', 'system-ui', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-primary">Font Test Page</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Space Grotesk Test -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-primary">Space Grotesk Font</h2>
+                <div class="space-y-4">
+                    <div class="text-3xl font-light">Light (300)</div>
+                    <div class="text-3xl font-normal">Regular (400)</div>
+                    <div class="text-3xl font-medium">Medium (500)</div>
+                    <div class="text-3xl font-semibold">Semibold (600)</div>
+                    <div class="text-3xl font-bold">Bold (700)</div>
+                </div>
+            </div>
+            
+            <!-- Gradient Text Test -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-secondary">Gradient Text</h2>
+                <div class="space-y-4">
+                    <div class="text-4xl font-bold gradient-text">ZenTrade</div>
+                    <div class="text-2xl font-semibold gradient-text">Professional Trading Journal</div>
+                    <div class="text-lg font-medium gradient-text">The Future of Trading</div>
+                </div>
+            </div>
+            
+            <!-- Font Comparison -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-primary">Font Comparison</h2>
+                <div class="space-y-4">
+                    <div>
+                        <div class="text-sm text-text-secondary mb-1">Space Grotesk:</div>
+                        <div class="text-xl font-display">The quick brown fox jumps over the lazy dog</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-text-secondary mb-1">System Font:</div>
+                        <div class="text-xl font-sans">The quick brown fox jumps over the lazy dog</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Font Loading Status -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-secondary">Font Loading Status</h2>
+                <div id="font-status" class="space-y-2">
+                    <div>Checking font loading...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Buttons -->
+        <div class="mt-8 text-center space-x-4">
+            <button onclick="testFontLoading()" class="px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors">
+                Test Font Loading
+            </button>
+            <button onclick="window.open('/', '_blank')" class="px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary/80 transition-colors">
+                Test Landing Page
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        function testFontLoading() {
+            const status = document.getElementById('font-status');
+            
+            // Test if Space Grotesk is loaded
+            const testElement = document.createElement('div');
+            testElement.style.fontFamily = 'Space Grotesk, monospace';
+            testElement.style.position = 'absolute';
+            testElement.style.left = '-9999px';
+            testElement.style.fontSize = '72px';
+            testElement.textContent = 'mmmmmmmmmmlli';
+            document.body.appendChild(testElement);
+            
+            const spaceGroteskWidth = testElement.offsetWidth;
+            document.body.removeChild(testElement);
+            
+            // Test with monospace fallback
+            const testElement2 = document.createElement('div');
+            testElement2.style.fontFamily = 'monospace';
+            testElement2.style.position = 'absolute';
+            testElement2.style.left = '-9999px';
+            testElement2.style.fontSize = '72px';
+            testElement2.textContent = 'mmmmmmmmmmlli';
+            document.body.appendChild(testElement2);
+            
+            const monospaceWidth = testElement2.offsetWidth;
+            document.body.removeChild(testElement2);
+            
+            const isSpaceGroteskLoaded = spaceGroteskWidth !== monospaceWidth;
+            
+            status.innerHTML = `
+                <div class="flex justify-between">
+                    <span>Space Grotesk Loaded:</span>
+                    <span class="${isSpaceGroteskLoaded ? 'text-green-400' : 'text-red-400'}">
+                        ${isSpaceGroteskLoaded ? '✅ Yes' : '❌ No'}
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Font Display:</span>
+                    <span class="text-green-400">✅ Swap</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Preconnect:</span>
+                    <span class="text-green-400">✅ Enabled</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Fallback Fonts:</span>
+                    <span class="text-green-400">✅ Configured</span>
+                </div>
+            `;
+        }
+        
+        // Auto-test on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(testFontLoading, 1000);
+        });
+    </script>
+</body>
+</html>

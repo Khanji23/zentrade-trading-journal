@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ZenTrade - Create Strategy</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px",
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glow-border {
+            box-shadow: 0 0 5px theme("colors.primary"), 0 0 10px theme("colors.primary"), 0 0 15px theme("colors.primary"),
+                0 0 20px theme("colors.primary");
+        }
+        .custom-checkbox:checked {
+            background-color: theme('colors.primary');
+            border-color: theme('colors.primary');
+        }
+        .custom-checkbox:checked + span {
+            text-decoration: line-through;
+            color: theme('colors.white/50');
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
+    <div class="flex min-h-screen w-full flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+            <div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:0.8" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Animated inner ring -->
+                        <circle cx="50" cy="50" r="40" 
+                                stroke="url(#pulseGradient)" 
+                                stroke-width="3" 
+                                fill="none" 
+                                opacity="0.7">
+                            <animateTransform attributeName="transform" 
+                                            type="rotate" 
+                                            values="360 50 50;0 50 50" 
+                                            dur="6s" 
+                                            repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Central hexagon -->
+                        <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                 stroke="url(#logoGradient)" 
+                                 stroke-width="4" 
+                                 fill="none" 
+                                 filter="url(#glow)">
+                            <animate attributeName="opacity" 
+                                     values="0.7;1;0.7" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"/>
+                        </polygon>
+                        
+                        <!-- Animated data points -->
+                        <circle cx="25" cy="45" r="4" fill="#00F5D4" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                        </circle>
+                        <circle cx="75" cy="45" r="4" fill="#7B2CBF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </circle>
+                        
+                        <!-- Animated connection lines -->
+                        <path d="M25,45 L50,30 L75,45" 
+                              stroke="url(#logoGradient)" 
+                              stroke-width="2.5" 
+                              fill="none" 
+                              opacity="0.7">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="index.html">Dashboard</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="journal.html">Journal</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="strategies.html">Strategies</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA04dYqvbHQtcFSdKdjrOkMmaFOjqTuONrBBClFiiOIetDHyzgdot941jIrSCLJ7SHrr4O5RIh1Lo92_r94MUe8RVifDvTzFTtjPjDP1m7JIwIrZtmTOi82ed5KSCPJ4VPGqVaUH2XyOqhmw9OFo-0skugKtl2uKx5zTP_a95AGG53R6UYF8qnS8j-c4SLNb6D4AYE-IUTf-NlPfQecBdp43D3TEAOUpHqDdpHEYsCoo-n9R_oKq8ANkZNhCU_6JnVBKCdtjtUff1o");'></div>
+            </div>
+        </header>
+        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+            <div class="mx-auto max-w-2xl">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold mb-6">Create Strategy</h1>
+                    <p class="text-base text-black/60 dark:text-white/60">Define the parameters of your new trading strategy.</p>
+                </div>
+                <form id="strategy-form" class="space-y-6" onsubmit="return false;">
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white" for="strategy-name">Strategy Name</label>
+                        <input class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-3 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ring-1 ring-inset ring-transparent transition focus:border-primary focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/80" id="strategy-name" placeholder="e.g., 'Golden Cross Momentum'" type="text" required/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white" for="description">Description</label>
+                        <textarea class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-3 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ring-1 ring-inset ring-transparent transition focus:border-primary focus:bg-input-light dark:focus:bg-input-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/80" id="description" placeholder="A brief overview of the strategy's logic and purpose." rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white">Entry Criteria</label>
+                        <div id="entry-criteria" class="mt-2 space-y-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-background-dark/50 p-4">
+                            <div class="relative flex items-start">
+                                <div class="flex h-6 items-center">
+                                    <input class="custom-checkbox h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-primary transition focus:ring-primary/80" id="entry-1" name="entry-1" type="checkbox"/>
+                                </div>
+                                <div class="ml-3 text-sm leading-6 flex-1">
+                                    <input class="w-full border-none bg-transparent text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0" placeholder="Add entry criterion..." type="text"/>
+                                </div>
+                                <button type="button" onclick="removeEntryCriterion(this)" class="ml-2 p-1 text-black/60 dark:text-white/60 hover:text-red-500 transition-colors">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </button>
+                            </div>
+                            <button class="mt-2 text-xs text-primary/80 hover:text-primary" type="button" onclick="addEntryCriterion()">+ Add criterion</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white">Exit Criteria</label>
+                        <div id="exit-criteria" class="mt-2 space-y-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-background-dark/50 p-4">
+                            <div class="relative flex items-start">
+                                <div class="flex h-6 items-center">
+                                    <input class="custom-checkbox h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-primary transition focus:ring-primary/80" id="exit-1" name="exit-1" type="checkbox"/>
+                                </div>
+                                <div class="ml-3 text-sm leading-6 flex-1">
+                                    <input class="w-full border-none bg-transparent text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0" placeholder="Add exit criterion..." type="text"/>
+                                </div>
+                                <button type="button" onclick="removeExitCriterion(this)" class="ml-2 p-1 text-black/60 dark:text-white/60 hover:text-red-500 transition-colors">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </button>
+                            </div>
+                            <button class="mt-2 text-xs text-primary/80 hover:text-primary" type="button" onclick="addExitCriterion()">+ Add criterion</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white" for="tags">Tags</label>
+                        <input class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-3 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ring-1 ring-inset ring-transparent transition focus:border-primary focus:bg-input-light dark:focus:bg-input-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/80" id="tags" placeholder="e.g., 'Scalping, Crypto, High-Frequency'" type="text"/>
+                        <p class="mt-2 text-xs text-black/60 dark:text-white/60">Separate tags with commas.</p>
+                    </div>
+                    <div class="flex justify-end pt-4">
+                        <button class="relative inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105" type="submit">
+                            <span class="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary to-blue-400 opacity-20 blur-lg transition-opacity duration-300 group-hover:opacity-40"></span>
+                            <span class="relative">Create Strategy</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let entryCriterionCount = 1;
+        let exitCriterionCount = 1;
+
+        function addEntryCriterion(text = '', checked = false) {
+            entryCriterionCount++;
+            console.log('Adding entry criterion:', { text, checked, count: entryCriterionCount });
+            const container = document.getElementById('entry-criteria');
+            let addButton = container.querySelector('button[onclick="addEntryCriterion()"]');
+            
+            // If add button doesn't exist, create it
+            if (!addButton) {
+                addButton = document.createElement('button');
+                addButton.className = 'mt-2 text-xs text-primary/80 hover:text-primary';
+                addButton.type = 'button';
+                addButton.onclick = addEntryCriterion;
+                addButton.textContent = '+ Add criterion';
+                container.appendChild(addButton);
+            }
+            
+            const newCriterion = document.createElement('div');
+            newCriterion.className = 'relative flex items-start';
+            newCriterion.innerHTML = `
+                <div class="flex h-6 items-center">
+                    <input class="custom-checkbox h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-primary transition focus:ring-primary/80" id="entry-${entryCriterionCount}" name="entry-${entryCriterionCount}" type="checkbox" ${checked ? 'checked' : ''}/>
+                </div>
+                <div class="ml-3 text-sm leading-6 flex-1">
+                    <input class="w-full border-none bg-transparent text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0" placeholder="Add entry criterion..." type="text" value="${String(text || '')}"/>
+                </div>
+                <button type="button" onclick="removeEntryCriterion(this)" class="ml-2 p-1 text-black/60 dark:text-white/60 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+            `;
+            container.insertBefore(newCriterion, addButton);
+            console.log('Entry criterion added successfully');
+        }
+
+        function addExitCriterion(text = '', checked = false) {
+            exitCriterionCount++;
+            console.log('Adding exit criterion:', { text, checked, count: exitCriterionCount });
+            const container = document.getElementById('exit-criteria');
+            let addButton = container.querySelector('button[onclick="addExitCriterion()"]');
+            
+            // If add button doesn't exist, create it
+            if (!addButton) {
+                addButton = document.createElement('button');
+                addButton.className = 'mt-2 text-xs text-primary/80 hover:text-primary';
+                addButton.type = 'button';
+                addButton.onclick = addExitCriterion;
+                addButton.textContent = '+ Add criterion';
+                container.appendChild(addButton);
+            }
+            
+            const newCriterion = document.createElement('div');
+            newCriterion.className = 'relative flex items-start';
+            newCriterion.innerHTML = `
+                <div class="flex h-6 items-center">
+                    <input class="custom-checkbox h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-primary transition focus:ring-primary/80" id="exit-${exitCriterionCount}" name="exit-${exitCriterionCount}" type="checkbox" ${checked ? 'checked' : ''}/>
+                </div>
+                <div class="ml-3 text-sm leading-6 flex-1">
+                    <input class="w-full border-none bg-transparent text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0" placeholder="Add exit criterion..." type="text" value="${String(text || '')}"/>
+                </div>
+                <button type="button" onclick="removeExitCriterion(this)" class="ml-2 p-1 text-black/60 dark:text-white/60 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+            `;
+            container.insertBefore(newCriterion, addButton);
+            console.log('Exit criterion added successfully');
+        }
+
+        function removeEntryCriterion(button) {
+            console.log('Removing entry criterion');
+            const container = document.getElementById('entry-criteria');
+            const criteria = container.querySelectorAll('.relative.flex.items-start');
+            console.log('Current entry criteria count:', criteria.length);
+            if (criteria.length > 1) { // Keep at least one criterion
+                button.closest('.relative.flex.items-start').remove();
+                console.log('Entry criterion removed successfully');
+            } else {
+                console.log('Cannot remove - only one criterion left');
+            }
+        }
+
+        function removeExitCriterion(button) {
+            console.log('Removing exit criterion');
+            const container = document.getElementById('exit-criteria');
+            const criteria = container.querySelectorAll('.relative.flex.items-start');
+            console.log('Current exit criteria count:', criteria.length);
+            if (criteria.length > 1) { // Keep at least one criterion
+                button.closest('.relative.flex.items-start').remove();
+                console.log('Exit criterion removed successfully');
+            } else {
+                console.log('Cannot remove - only one criterion left');
+            }
+        }
+
+        // Form submission
+        document.getElementById('strategy-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleFormSubmission();
+        });
+
+        // Also handle submit button click
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitButton = document.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    handleFormSubmission();
+                });
+            }
+        });
+
+        function handleFormSubmission() {
+            console.log('Form submission started');
+            
+            // Validate required fields
+            const strategyName = document.getElementById('strategy-name').value.trim();
+            if (!strategyName) {
+                alert('Please enter a strategy name');
+                return;
+            }
+
+            // Collect entry criteria
+            const entryCriteria = [];
+            const entryContainer = document.getElementById('entry-criteria');
+            const entryCriterionDivs = entryContainer.querySelectorAll('.relative.flex.items-start');
+            console.log('Found entry criterion divs:', entryCriterionDivs.length);
+            entryCriterionDivs.forEach((div, index) => {
+                const checkbox = div.querySelector('input[type="checkbox"]');
+                const textInput = div.querySelector('input[type="text"]');
+                console.log(`Entry criterion ${index}:`, textInput ? textInput.value : 'no text input');
+                if (textInput && textInput.value.trim()) {
+                    entryCriteria.push({
+                        text: textInput.value.trim(),
+                        checked: checkbox.checked
+                    });
+                }
+            });
+
+            // Collect exit criteria
+            const exitCriteria = [];
+            const exitContainer = document.getElementById('exit-criteria');
+            const exitCriterionDivs = exitContainer.querySelectorAll('.relative.flex.items-start');
+            console.log('Found exit criterion divs:', exitCriterionDivs.length);
+            exitCriterionDivs.forEach((div, index) => {
+                const checkbox = div.querySelector('input[type="checkbox"]');
+                const textInput = div.querySelector('input[type="text"]');
+                console.log(`Exit criterion ${index}:`, textInput ? textInput.value : 'no text input');
+                if (textInput && textInput.value.trim()) {
+                    exitCriteria.push({
+                        text: textInput.value.trim(),
+                        checked: checkbox.checked
+                    });
+                }
+            });
+
+            console.log('Entry criteria collected:', entryCriteria);
+            console.log('Exit criteria collected:', exitCriteria);
+
+            const strategy = {
+                id: Date.now().toString(),
+                name: document.getElementById('strategy-name').value,
+                description: document.getElementById('description').value,
+                entryCriteria: entryCriteria,
+                exitCriteria: exitCriteria,
+                tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()).filter(tag => tag),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                isActive: true
+            };
+
+            // Save to localStorage
+            const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+            strategies.push(strategy);
+            localStorage.setItem('strategies', JSON.stringify(strategies));
+            console.log('Strategy created:', strategy);
+            console.log('All strategies:', strategies);
+
+            // Show success message
+            alert('Strategy created successfully!');
+
+            // Redirect to strategies page
+            window.location.href = 'strategies.html';
+        }
+
+        // Set dark mode as default
+        document.documentElement.classList.add('dark');
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ZenTrade - Strategies</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px",
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glow-border {
+            box-shadow: 0 0 5px theme("colors.primary"), 0 0 10px theme("colors.primary"), 0 0 15px theme("colors.primary"),
+                0 0 20px theme("colors.primary");
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
+    <div class="flex min-h-screen w-full flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+            <div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:0.8" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Animated inner ring -->
+                        <circle cx="50" cy="50" r="40" 
+                                stroke="url(#pulseGradient)" 
+                                stroke-width="3" 
+                                fill="none" 
+                                opacity="0.7">
+                            <animateTransform attributeName="transform" 
+                                            type="rotate" 
+                                            values="360 50 50;0 50 50" 
+                                            dur="6s" 
+                                            repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Central hexagon -->
+                        <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                 stroke="url(#logoGradient)" 
+                                 stroke-width="4" 
+                                 fill="none" 
+                                 filter="url(#glow)">
+                            <animate attributeName="opacity" 
+                                     values="0.7;1;0.7" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"/>
+                        </polygon>
+                        
+                        <!-- Animated data points -->
+                        <circle cx="25" cy="45" r="4" fill="#00F5D4" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                        </circle>
+                        <circle cx="75" cy="45" r="4" fill="#7B2CBF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </circle>
+                        
+                        <!-- Animated connection lines -->
+                        <path d="M25,45 L50,30 L75,45" 
+                              stroke="url(#logoGradient)" 
+                              stroke-width="2.5" 
+                              fill="none" 
+                              opacity="0.7">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="index.html">Dashboard</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="journal.html">Journal</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="strategies.html">Strategies</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA04dYqvbHQtcFSdKdjrOkMmaFOjqTuONrBBClFiiOIetDHyzgdot941jIrSCLJ7SHrr4O5RIh1Lo92_r94MUe8RVifDvTzFTtjPjDP1m7JIwIrZtmTOi82ed5KSCPJ4VPGqVaUH2XyOqhmw9OFo-0skugKtl2uKx5zTP_a95AGG53R6UYF8qnS8j-c4SLNb6D4AYE-IUTf-NlPfQecBdp43D3TEAOUpHqDdpHEYsCoo-n9R_oKq8ANkZNhCU_6JnVBKCdtjtUff1o");'></div>
+            </div>
+        </header>
+        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-8 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                            <h1 class="text-3xl font-bold">Trading Strategies</h1>
+                        </div>
+                        <p class="text-base text-black/60 dark:text-white/60">Manage and track your trading strategies</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="loadStrategies()" class="inline-flex items-center justify-center rounded-lg bg-gray-500 px-4 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105" title="Refresh strategies">
+                            <span class="material-symbols-outlined mr-2">refresh</span>
+                            Refresh
+                        </button>
+                        <a href="new-strategy.html" class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
+                            <span class="material-symbols-outlined mr-2">add</span>
+                            New Strategy
+                        </a>
+                    </div>
+                </div>
+                
+                <div id="strategies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Strategies will be loaded here -->
+                </div>
+                
+                <div id="empty-state" class="hidden text-center py-12">
+                    <div class="mx-auto w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-4xl text-primary">strategy</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-black dark:text-white mb-2">No strategies yet</h3>
+                    <p class="text-black/60 dark:text-white/60 mb-6">Create your first trading strategy to get started</p>
+                    <a href="new-strategy.html" class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
+                        <span class="material-symbols-outlined mr-2">add</span>
+                        Create Strategy
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function loadStrategies() {
+            console.log('Loading strategies...');
+            const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+            console.log('Found strategies:', strategies);
+            const container = document.getElementById('strategies-container');
+            const emptyState = document.getElementById('empty-state');
+
+            if (strategies.length === 0) {
+                console.log('No strategies found, showing empty state');
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            console.log('Displaying', strategies.length, 'strategies');
+            container.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            container.innerHTML = strategies.map(strategy => {
+                const createdDate = new Date(strategy.createdAt).toLocaleDateString();
+                const tags = strategy.tags.map(tag => `<span class="inline-block px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">${tag}</span>`).join(' ');
+                
+                return `
+                    <div class="bg-white/50 dark:bg-background-dark/50 rounded-lg border border-gray-300 dark:border-gray-600 p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-black dark:text-white mb-1">${strategy.name}</h3>
+                                <p class="text-sm text-black/60 dark:text-white/60">Created ${createdDate}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${strategy.isActive ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'}">
+                                    ${strategy.isActive ? 'Active' : 'Inactive'}
+                                </span>
+                                <button onclick="toggleStrategy('${strategy.id}')" class="p-1 text-black/60 dark:text-white/60 hover:text-foreground-light dark:hover:text-foreground-dark">
+                                    <span class="material-symbols-outlined text-sm">more_vert</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <p class="text-sm text-black/60 dark:text-white/60 mb-4">${strategy.description || 'No description provided'}</p>
+                        
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-black dark:text-white mb-2">Entry Criteria</h4>
+                            <ul class="space-y-1">
+                                ${(strategy.entryCriteria || []).slice(0, 2).map(criterion => {
+                                    const text = criterion.text || criterion;
+                                    const checked = criterion.checked || false;
+                                    return `
+                                        <li class="text-sm text-black/60 dark:text-white/60 flex items-center">
+                                            <span class="material-symbols-outlined text-xs mr-2 ${checked ? 'text-green-500' : 'text-black/60 dark:text-white/60'}">${checked ? 'check_circle' : 'radio_button_unchecked'}</span>
+                                            ${text}
+                                        </li>
+                                    `;
+                                }).join('')}
+                                ${(strategy.entryCriteria || []).length > 2 ? `<li class="text-xs text-black/60 dark:text-white/60">+${(strategy.entryCriteria || []).length - 2} more criteria</li>` : ''}
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-black dark:text-white mb-2">Exit Criteria</h4>
+                            <ul class="space-y-1">
+                                ${(strategy.exitCriteria || []).slice(0, 2).map(criterion => {
+                                    const text = criterion.text || criterion;
+                                    const checked = criterion.checked || false;
+                                    return `
+                                        <li class="text-sm text-black/60 dark:text-white/60 flex items-center">
+                                            <span class="material-symbols-outlined text-xs mr-2 ${checked ? 'text-green-500' : 'text-black/60 dark:text-white/60'}">${checked ? 'check_circle' : 'radio_button_unchecked'}</span>
+                                            ${text}
+                                        </li>
+                                    `;
+                                }).join('')}
+                                ${(strategy.exitCriteria || []).length > 2 ? `<li class="text-xs text-black/60 dark:text-white/60">+${(strategy.exitCriteria || []).length - 2} more criteria</li>` : ''}
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex flex-wrap gap-1">
+                                ${tags}
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button onclick="useStrategy('${strategy.id}')" class="flex-1 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+                                Use in Trade
+                            </button>
+                            <button onclick="deleteStrategy('${strategy.id}')" class="px-4 py-2 border border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleStrategy(strategyId) {
+            const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+            const strategy = strategies.find(s => s.id === strategyId);
+            if (strategy) {
+                strategy.isActive = !strategy.isActive;
+                localStorage.setItem('strategies', JSON.stringify(strategies));
+                loadStrategies();
+            }
+        }
+
+        function useStrategy(strategyId) {
+            // Store the selected strategy for use in new trade form
+            localStorage.setItem('selectedStrategy', strategyId);
+            // Redirect to new trade form
+            window.location.href = 'new-trade.html';
+        }
+
+
+        function deleteStrategy(strategyId) {
+            if (confirm('Are you sure you want to delete this strategy?')) {
+                const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+                const filteredStrategies = strategies.filter(s => s.id !== strategyId);
+                localStorage.setItem('strategies', JSON.stringify(filteredStrategies));
+                loadStrategies();
+            }
+        }
+
+        // Set dark mode as default
+        document.documentElement.classList.add('dark');
+
+        // Load strategies on page load
+        loadStrategies();
+
+        // Listen for storage changes to refresh strategies
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'strategies') {
+                console.log('Storage change detected, reloading strategies');
+                loadStrategies();
+            }
+        });
+
+        // Listen for focus events to catch changes when returning to this page
+        window.addEventListener('focus', function() {
+            console.log('Page focused, reloading strategies');
+            loadStrategies();
+        });
+
+        // Also listen for visibility change
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                console.log('Page became visible, reloading strategies');
+                loadStrategies();
+            }
+        });
+    </script>
+</body>
+</html>

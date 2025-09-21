@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTrade - Debug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .debug-log {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">ZenTrade Debug Console</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Authentication Status</h2>
+                <div id="auth-status" class="p-4 bg-gray-800 rounded">
+                    <p>Loading...</p>
+                </div>
+                
+                <div class="mt-4 space-y-2">
+                    <button onclick="testConnection()" class="w-full bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
+                        Test Server Connection
+                    </button>
+                    <button onclick="testAuth()" class="w-full bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
+                        Test Authentication
+                    </button>
+                    <button onclick="clearLog()" class="w-full bg-gray-500 hover:bg-gray-600 px-4 py-2 rounded">
+                        Clear Log
+                    </button>
+                </div>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Debug Log</h2>
+                <div id="debug-log" class="debug-log">
+                    <p>Debug console ready...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="/" class="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded text-center">
+                    Landing Page
+                </a>
+                <a href="/auth-modal.html" class="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded text-center">
+                    Login Page
+                </a>
+                <a href="/index.html" class="bg-teal-500 hover:bg-teal-600 px-4 py-2 rounded text-center">
+                    Dashboard
+                </a>
+                <a href="/test-auth.html" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded text-center">
+                    Test Auth
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        function log(message, type = 'info') {
+            const debugLog = document.getElementById('debug-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff4444' : type === 'success' ? '#44ff44' : '#00ff00';
+            debugLog.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('debug-log').innerHTML = '<p>Debug console cleared...</p>';
+        }
+
+        async function testConnection() {
+            log('Testing server connection...');
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                log(`Server response: ${JSON.stringify(data)}`, 'success');
+            } catch (error) {
+                log(`Connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAuth() {
+            log('Testing authentication...');
+            try {
+                if (window.authManager.isAuthenticated()) {
+                    log(`User authenticated: ${window.authManager.user.firstName} ${window.authManager.user.lastName}`, 'success');
+                    
+                    // Test dashboard API
+                    log('Testing dashboard API...');
+                    const dashboardData = await window.authManager.getDashboardOverview();
+                    log(`Dashboard data: ${JSON.stringify(dashboardData, null, 2)}`, 'success');
+                } else {
+                    log('User not authenticated', 'error');
+                }
+            } catch (error) {
+                log(`Authentication test failed: ${error.message}`, 'error');
+            }
+        }
+
+        function updateAuthStatus() {
+            const authStatus = document.getElementById('auth-status');
+            if (window.authManager.isAuthenticated()) {
+                authStatus.innerHTML = `
+                    <div class="text-green-400">
+                        <p class="font-semibold">✅ Authenticated</p>
+                        <p>User: ${window.authManager.user.firstName} ${window.authManager.user.lastName}</p>
+                        <p>Email: ${window.authManager.user.email}</p>
+                        <p>Plan: ${window.authManager.user.subscription.plan}</p>
+                    </div>
+                `;
+            } else {
+                authStatus.innerHTML = `
+                    <div class="text-red-400">
+                        <p class="font-semibold">❌ Not Authenticated</p>
+                        <p>Please login to access the dashboard</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Debug console initialized');
+            updateAuthStatus();
+            
+            // Check server health
+            setTimeout(() => {
+                if (window.authManager.isServerReady) {
+                    log('Server is ready', 'success');
+                } else {
+                    log('Server not ready yet...', 'error');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

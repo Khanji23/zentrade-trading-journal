@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZenTrade Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk", "Inter", "system-ui", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px",
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        .glow {
+            box-shadow: 0 0 5px theme("colors.primary"),
+                0 0 10px theme("colors.primary"), 0 0 15px theme("colors.primary"),
+                0 0 20px theme("colors.primary");
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
+<div class="flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+<div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:0.8" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Animated inner ring -->
+                        <circle cx="50" cy="50" r="40" 
+                                stroke="url(#pulseGradient)" 
+                                stroke-width="3" 
+                                fill="none" 
+                                opacity="0.7">
+                            <animateTransform attributeName="transform" 
+                                            type="rotate" 
+                                            values="360 50 50;0 50 50" 
+                                            dur="6s" 
+                                            repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Central hexagon -->
+                        <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                 stroke="url(#logoGradient)" 
+                                 stroke-width="4" 
+                                 fill="none" 
+                                 filter="url(#glow)">
+                            <animate attributeName="opacity" 
+                                     values="0.7;1;0.7" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"/>
+                        </polygon>
+                        
+                        <!-- Animated data points -->
+                        <circle cx="25" cy="45" r="4" fill="#00F5D4" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                        </circle>
+                        <circle cx="75" cy="45" r="4" fill="#7B2CBF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </circle>
+                        
+                        <!-- Animated connection lines -->
+                        <path d="M25,45 L50,30 L75,45" 
+                              stroke="url(#logoGradient)" 
+                              stroke-width="2.5" 
+                              fill="none" 
+                              opacity="0.7">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+</div>
+<nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="index.html">Dashboard</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="journal.html">Journal</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="strategies.html">Strategies</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9gJiexlC3E0uAS8yUYqqcwsp0ox36780qpD0w-0R31-tNQIis6Aafy1V3fiZZIajoxPD62S_zggE96zChiMUUuK0G8huvbVmVxZWJVP52373GqQOuxGiXkc3GYT2tfgatUx-16PRxzpQWQwDreUlsY8dJ1Z39b0fZujGLKY7lS34YKspdRAVTz8ntWTXLmkIuwUUyK3iAzhB1tKtO3IHW_rPMgQINcIdGJVSRHfcY7yic2qiN6g_nmoDMqH2ErGBdO6BNbwwGzAA");'></div>
+</div>
+</header>
+    <main class="flex-1 p-4 sm:p-6 lg:p-8">
+    <div class="mb-8">
+        <div class="flex items-center gap-4 mb-2">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold">Dashboard</h1>
+        </div>
+        <p class="text-base text-text-secondary">Welcome back! Here's your trading performance overview.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+        <!-- Main Chart Section -->
+        <div class="xl:col-span-3">
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold" id="equity-curve-title">Daily Net Cumulative P&L: $0.00</h2>
+                    <div class="flex items-center gap-4">
+                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('7d')">7D</button>
+                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('30d')">30D</button>
+                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('90d')">90D</button>
+                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('all')">All</button>
+                    </div>
+                </div>
+                <div class="h-80">
+                    <canvas id="pnlChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Calendar Section -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md">
+                <div class="flex items-center justify-between mb-4">
+                    <button class="p-2 rounded-full hover:bg-primary/20 transition-colors" onclick="previousMonth()">
+                        <svg fill="currentColor" height="18px" viewBox="0 0 256 256" width="18px" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                        </svg>
+                    </button>
+                    <h2 class="font-bold text-xl" id="current-month">October 2024</h2>
+                    <button class="p-2 rounded-full hover:bg-primary/20 transition-colors" onclick="nextMonth()">
+                        <svg fill="currentColor" height="18px" viewBox="0 0 256 256" width="18px" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- PnL Summary -->
+                <div class="mb-4 space-y-3">
+                    <!-- Weekly PnL Summary -->
+                    <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-semibold text-white">This Week's P&L</h3>
+                            <span id="weekly-pnl-amount" class="text-base font-bold text-primary">$0.00</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-text-secondary">
+                            <span id="weekly-trades-count">0 trades</span>
+                            <span id="weekly-win-rate">0% win rate</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly PnL Summary -->
+                    <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-semibold text-white">This Month's P&L</h3>
+                            <span id="monthly-pnl-amount" class="text-base font-bold text-primary">$0.00</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-text-secondary">
+                            <span id="monthly-trades-count">0 trades</span>
+                            <span id="monthly-win-rate">0% win rate</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-7 gap-2">
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">SUN</p>
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">MON</p>
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">TUE</p>
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">WED</p>
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">THU</p>
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">FRI</p>
+                    <p class="font-bold text-text-secondary text-center py-2 text-sm">SAT</p>
+                    <div id="calendar-days" class="col-span-7 grid grid-cols-7 gap-2">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Metrics Sidebar -->
+        <div class="xl:col-span-1 space-y-6">
+            <!-- Key Metrics - Matching 3D Mockup -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md">
+                <h2 class="text-lg font-bold mb-6">Key Metrics</h2>
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Total P&L - Enhanced -->
+                    <div class="bg-gradient-to-br from-primary/30 to-primary/20 p-6 rounded-xl border-2 border-primary/30 shadow-glow-primary-md">
+                        <div class="text-3xl font-bold text-primary mb-2" id="total-pnl-display">$0.00</div>
+                        <div class="text-sm font-semibold text-primary/80">Total P&L</div>
+                        <div class="mt-2 text-xs text-text-secondary">Your overall performance</div>
+                    </div>
+                    
+                    <!-- Win Rate -->
+                    <div class="bg-gradient-to-br from-secondary/20 to-secondary/10 p-4 rounded-xl">
+                        <div class="text-xl font-bold text-secondary" id="win-rate-display">0%</div>
+                        <div class="text-xs text-text-secondary">Win Rate</div>
+                    </div>
+                    
+                    <!-- Profit Factor -->
+                    <div class="bg-gradient-to-br from-primary/20 to-primary/10 p-4 rounded-xl">
+                        <div class="text-xl font-bold text-primary" id="profit-factor-display">0.0</div>
+                        <div class="text-xs text-text-secondary">Profit Factor</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Trades - Real Data -->
+            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md">
+                <h2 class="text-lg font-bold mb-4">Recent Trades</h2>
+                <div class="space-y-2" id="recent-trades">
+                    <!-- Recent trades will be populated by JavaScript -->
+                </div>
+                <div class="mt-4">
+                    <a href="journal.html" class="flex w-full items-center justify-center rounded-lg h-10 px-4 bg-primary/20 text-text-primary text-sm font-bold transition-colors hover:bg-secondary/30"> View More </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+</div>
+
+</body>
+
+<script>
+let currentDate = new Date();
+let trades = [];
+
+// Load trades and update dashboard
+function loadDashboardData() {
+    trades = JSON.parse(localStorage.getItem('trades') || '[]');
+    console.log('Loaded trades:', trades);
+    
+    const closedTrades = trades.filter(t => t.status === 'closed' && t.pnl !== undefined);
+    const openTrades = trades.filter(t => t.status === 'open');
+    
+    console.log('Closed trades:', closedTrades);
+    console.log('Open trades:', openTrades);
+    
+    // Calculate statistics
+    const totalTrades = trades.length;
+    const winningTrades = trades.filter(t => t.tradeResult === 'win');
+    const winRate = totalTrades > 0 ? Math.round((winningTrades.length / totalTrades) * 100) : 0;
+    const totalPnl = trades.reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
+    const avgRR = calculateAverageRR(closedTrades);
+    
+    // Calculate profit factor
+    const grossProfit = trades.filter(t => (t.netPnl || t.pnl || 0) > 0).reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
+    const grossLoss = Math.abs(trades.filter(t => (t.netPnl || t.pnl || 0) < 0).reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0));
+    const profitFactor = grossLoss > 0 ? grossProfit / grossLoss : 0;
+    
+    console.log('Statistics:', { totalTrades, winRate, totalPnl, avgRR, profitFactor });
+    console.log('Individual trade P&L values:', trades.map(t => ({ id: t.id, netPnl: t.netPnl, pnl: t.pnl, tradeResult: t.tradeResult })));
+    
+    // Update new display elements
+    const totalPnlDisplay = document.getElementById('total-pnl-display');
+    if (totalPnlDisplay) {
+        const pnlSign = totalPnl >= 0 ? '+' : '';
+        totalPnlDisplay.textContent = `${pnlSign}$${Math.abs(totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        totalPnlDisplay.className = `text-3xl font-bold mb-2 ${totalPnl >= 0 ? 'text-primary' : 'text-loss-red'}`;
+    }
+    
+    // Update win rate display
+    const winRateDisplay = document.getElementById('win-rate-display');
+    if (winRateDisplay) {
+        winRateDisplay.textContent = `${winRate}%`;
+    }
+    
+    // Update profit factor display
+    const profitFactorDisplay = document.getElementById('profit-factor-display');
+    if (profitFactorDisplay) {
+        profitFactorDisplay.textContent = profitFactor.toFixed(2);
+    }
+    
+    // Update equity curve title
+    const equityCurveTitle = document.getElementById('equity-curve-title');
+    if (equityCurveTitle) {
+        const pnlSign = totalPnl >= 0 ? '+' : '';
+        equityCurveTitle.textContent = `Daily Net Cumulative P&L: ${pnlSign}$${Math.abs(totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    }
+    
+    // Update legacy elements for backward compatibility
+    const winRateCircle = document.getElementById('win-rate-circle');
+    const winRateText = document.getElementById('win-rate-text');
+    if (winRateCircle && winRateText) {
+        const offset = 201 - (winRate * 2.01); // 201 is the circumference for r=32
+        winRateCircle.style.strokeDashoffset = offset;
+        winRateText.textContent = `${winRate}%`;
+    }
+    
+    // Update average R:R
+    const avgRrText = document.getElementById('avg-rr-text');
+    if (avgRrText) {
+        avgRrText.textContent = avgRR.toFixed(1);
+    }
+    
+    // Update total P&L
+    const totalPnlText = document.getElementById('total-pnl-text');
+    if (totalPnlText) {
+        const pnlColor = totalPnl >= 0 ? 'text-profit-green' : 'text-loss-red';
+        const pnlSign = totalPnl >= 0 ? '+' : '';
+        totalPnlText.textContent = `${pnlSign}$${Math.abs(totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        totalPnlText.className = `text-3xl font-bold ${pnlColor}`;
+    }
+    
+    // Update total trades
+    const totalTradesText = document.getElementById('total-trades-text');
+    if (totalTradesText) {
+        totalTradesText.textContent = totalTrades;
+    }
+    
+    // Update P&L chart
+    updatePnLChart();
+    
+    // Update calendar
+    generateCalendar();
+    
+    // Update recent trades
+    updateRecentTrades();
+}
+
+function calculateAverageRR(trades) {
+    if (trades.length === 0) return 0;
+    
+    let totalRR = 0;
+    let validTrades = 0;
+    
+    trades.forEach(trade => {
+        if (trade.stopLoss && trade.takeProfit && trade.entryPrice) {
+            const risk = Math.abs(trade.entryPrice - trade.stopLoss);
+            const reward = Math.abs(trade.takeProfit - trade.entryPrice);
+            if (risk > 0) {
+                totalRR += reward / risk;
+                validTrades++;
+            }
+        }
+    });
+    
+    return validTrades > 0 ? totalRR / validTrades : 0;
+}
+
+// P&L Chart functionality
+let pnlChart = null;
+let currentChartPeriod = '30d';
+
+function updateChartPeriod(period) {
+    currentChartPeriod = period;
+    updatePnLChart();
+    
+    // Update button states
+    document.querySelectorAll('[onclick^="updateChartPeriod"]').forEach(btn => {
+        btn.className = 'px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors';
+    });
+    event.target.className = 'px-3 py-1 text-sm bg-primary text-white rounded-lg transition-colors';
+}
+
+function updatePnLChart() {
+    const ctx = document.getElementById('pnlChart');
+    if (!ctx) return;
+    
+    // Destroy existing chart
+    if (pnlChart) {
+        pnlChart.destroy();
+    }
+    
+    // Calculate date range based on period
+    const endDate = new Date();
+    const startDate = new Date();
+    
+    switch (currentChartPeriod) {
+        case '7d':
+            startDate.setDate(endDate.getDate() - 7);
+            break;
+        case '30d':
+            startDate.setDate(endDate.getDate() - 30);
+            break;
+        case '90d':
+            startDate.setDate(endDate.getDate() - 90);
+            break;
+        case 'all':
+            startDate.setTime(0); // Start from epoch
+            break;
+    }
+    
+    // Get daily P&L data
+    const dailyData = getDailyPnLData(startDate, endDate);
+    
+    // Create chart
+    pnlChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dailyData.labels,
+            datasets: [{
+                label: 'Cumulative P&L',
+                data: dailyData.cumulativePnl,
+                borderColor: '#00F5D4',
+                backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+                    if (!chartArea) return null;
+                    
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, 'rgba(0, 245, 212, 0.1)');
+                    gradient.addColorStop(1, 'rgba(0, 245, 212, 0.3)');
+                    return gradient;
+                },
+                borderWidth: 3,
+                tension: 0.4,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#00F5D4',
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: '#1B1B1B',
+                    titleColor: '#E0E0E0',
+                    bodyColor: '#E0E0E0',
+                    borderColor: 'rgba(0, 245, 212, 0.5)',
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y;
+                            const sign = value >= 0 ? '+' : '';
+                            return `P&L: ${sign}$${value.toFixed(2)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        color: 'rgba(224, 224, 224, 0.7)',
+                        font: {
+                            family: "'Space Grotesk', sans-serif"
+                        },
+                        callback: function(value) {
+                            const sign = value >= 0 ? '+' : '';
+                            return `${sign}$${value.toFixed(0)}`;
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'rgba(224, 224, 224, 0.7)',
+                        font: {
+                            family: "'Space Grotesk', sans-serif"
+                        }
+                    }
+                }
+            },
+            elements: {
+                line: {
+                    shadowColor: 'rgba(0, 245, 212, 0.5)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 5
+                }
+            }
+        }
+    });
+}
+
+function getDailyPnLData(startDate, endDate) {
+    const dailyPnl = {};
+    const labels = [];
+    const cumulativePnl = [];
+    
+    // Initialize all days in range with 0 P&L
+    const currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        dailyPnl[dateStr] = 0;
+        labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    // Add actual trade P&L
+    trades.forEach(trade => {
+        const tradeDate = new Date(trade.timestamp);
+        const dateStr = tradeDate.toISOString().split('T')[0];
+        if (dailyPnl.hasOwnProperty(dateStr)) {
+            dailyPnl[dateStr] += (trade.netPnl || trade.pnl || 0);
+        }
+    });
+    
+    // Calculate cumulative P&L
+    let cumulative = 0;
+    Object.keys(dailyPnl).forEach(dateStr => {
+        cumulative += dailyPnl[dateStr];
+        cumulativePnl.push(cumulative);
+    });
+    
+    return { labels, cumulativePnl };
+}
+
+function generateCalendar() {
+    const calendarDays = document.getElementById('calendar-days');
+    const currentMonth = document.getElementById('current-month');
+    
+    // Update month display
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    currentMonth.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+    
+    // Update PnL summary (weekly and monthly)
+    updatePnLSummary();
+    
+    // Clear calendar
+    calendarDays.innerHTML = '';
+    
+    // Get first day of month and number of days
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+    
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'h-24 w-full';
+        calendarDays.appendChild(emptyDay);
+    }
+    
+    // Add days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('button');
+        dayElement.className = 'h-24 w-full flex flex-col items-center justify-start rounded-lg hover:bg-primary/10 transition-colors p-2 text-left';
+        
+        const dayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+        const dayTrades = getTradesForDate(dayDate);
+        const dayPnl = dayTrades.reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
+        
+        // Style based on P&L with enhanced color scheme
+        if (dayPnl > 20) {
+            // Winning days - green gradient with primary accent
+            dayElement.className += ' bg-gradient-to-br from-profit-green/20 to-primary/10 hover:from-profit-green/30 hover:to-primary/20 border border-profit-green/30';
+            if (dayPnl > 200) {
+                dayElement.className += ' shadow-glow-primary-md ring-2 ring-primary/50';
+            }
+        } else if (dayPnl < -20) {
+            // Losing days - red gradient with loss-red accent
+            dayElement.className += ' bg-gradient-to-br from-loss-red/20 to-red-500/10 hover:from-loss-red/30 hover:to-red-500/20 border border-loss-red/30';
+        } else if (dayPnl >= -20 && dayPnl <= 20 && dayTrades.length > 0) {
+            // Breakeven days - simple neutral with subtle accent
+            dayElement.className += ' bg-gradient-to-br from-warning-amber/10 to-warning-amber/5 hover:from-warning-amber/15 hover:to-warning-amber/10 border border-warning-amber/20';
+        } else if (dayTrades.length === 0) {
+            // No trades - neutral with subtle styling
+            dayElement.className += ' bg-white/5 hover:bg-white/10 text-text-secondary/60 border border-white/10';
+        }
+        
+        // Determine the label and styling
+        let label = '';
+        let labelClass = '';
+        
+        if (dayTrades.length > 0) {
+            if (dayPnl > 20) {
+                label = 'Win';
+                labelClass = 'text-profit-green';
+            } else if (dayPnl < -20) {
+                label = 'Loss';
+                labelClass = 'text-loss-red';
+            } else if (dayPnl >= -20 && dayPnl <= 20) {
+                label = 'BE';
+                labelClass = 'text-warning-amber';
+            }
+        }
+        
+        dayElement.innerHTML = `
+            <div class="flex justify-between items-start w-full">
+                <span class="font-medium">${day}</span>
+                ${label ? `<span class="text-xs font-medium ${labelClass}">${label}</span>` : ''}
+            </div>
+            <div class="mt-auto">
+                ${dayPnl !== 0 ? `<span class="text-sm font-semibold ${dayPnl > 20 ? 'text-profit-green' : dayPnl < -20 ? 'text-loss-red' : 'text-warning-amber'}">${dayPnl > 0 ? '+' : '-'}$${Math.abs(dayPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>` : ''}
+            </div>
+        `;
+        
+        calendarDays.appendChild(dayElement);
+    }
+}
+
+function updatePnLSummary() {
+    // Weekly PnL elements
+    const weeklyPnlAmount = document.getElementById('weekly-pnl-amount');
+    const weeklyTradesCount = document.getElementById('weekly-trades-count');
+    const weeklyWinRate = document.getElementById('weekly-win-rate');
+    
+    // Monthly PnL elements
+    const monthlyPnlAmount = document.getElementById('monthly-pnl-amount');
+    const monthlyTradesCount = document.getElementById('monthly-trades-count');
+    const monthlyWinRate = document.getElementById('monthly-win-rate');
+    
+    const now = new Date();
+    
+    // Calculate weekly PnL (Monday to Sunday)
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Monday
+    startOfWeek.setHours(0, 0, 0, 0);
+    
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
+    endOfWeek.setHours(23, 59, 59, 999);
+    
+    const weeklyTrades = trades.filter(trade => {
+        const tradeDate = new Date(trade.timestamp);
+        return tradeDate >= startOfWeek && tradeDate <= endOfWeek;
+    });
+    
+    const weeklyPnl = weeklyTrades.reduce((sum, trade) => sum + (trade.netPnl || trade.pnl || 0), 0);
+    const weeklyWinningTrades = weeklyTrades.filter(trade => (trade.netPnl || trade.pnl || 0) > 0);
+    const weeklyWinRateValue = weeklyTrades.length > 0 ? (weeklyWinningTrades.length / weeklyTrades.length) * 100 : 0;
+    
+    // Calculate monthly PnL (first day to last day of current month)
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    endOfMonth.setHours(23, 59, 59, 999);
+    
+    const monthlyTrades = trades.filter(trade => {
+        const tradeDate = new Date(trade.timestamp);
+        return tradeDate >= startOfMonth && tradeDate <= endOfMonth;
+    });
+    
+    const monthlyPnl = monthlyTrades.reduce((sum, trade) => sum + (trade.netPnl || trade.pnl || 0), 0);
+    const monthlyWinningTrades = monthlyTrades.filter(trade => (trade.netPnl || trade.pnl || 0) > 0);
+    const monthlyWinRateValue = monthlyTrades.length > 0 ? (monthlyWinningTrades.length / monthlyTrades.length) * 100 : 0;
+    
+    // Update weekly UI
+    weeklyPnlAmount.textContent = `${weeklyPnl >= 0 ? '+' : ''}$${Math.abs(weeklyPnl).toFixed(2)}`;
+    weeklyPnlAmount.className = `text-lg font-bold ${weeklyPnl >= 0 ? 'text-profit-green' : 'text-loss-red'}`;
+    weeklyTradesCount.textContent = `${weeklyTrades.length} trade${weeklyTrades.length !== 1 ? 's' : ''}`;
+    weeklyWinRate.textContent = `${weeklyWinRateValue.toFixed(0)}% win rate`;
+    
+    // Update monthly UI
+    monthlyPnlAmount.textContent = `${monthlyPnl >= 0 ? '+' : ''}$${Math.abs(monthlyPnl).toFixed(2)}`;
+    monthlyPnlAmount.className = `text-lg font-bold ${monthlyPnl >= 0 ? 'text-profit-green' : 'text-loss-red'}`;
+    monthlyTradesCount.textContent = `${monthlyTrades.length} trade${monthlyTrades.length !== 1 ? 's' : ''}`;
+    monthlyWinRate.textContent = `${monthlyWinRateValue.toFixed(0)}% win rate`;
+}
+
+function getTradesForDate(date) {
+    const dateString = date.toDateString();
+    return trades.filter(trade => {
+        const tradeDate = new Date(trade.timestamp).toDateString();
+        return tradeDate === dateString;
+    });
+}
+
+function updateRecentTrades() {
+    const recentTradesContainer = document.getElementById('recent-trades');
+    
+    // Get last 4 trades
+    const recentTrades = trades
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .slice(0, 4);
+    
+    if (recentTrades.length === 0) {
+        recentTradesContainer.innerHTML = `
+            <div class="text-center py-8">
+                <p class="text-text-secondary mb-2">No trades yet</p>
+                <a href="new-trade.html" class="text-primary hover:text-primary/80 text-sm font-medium">Start trading →</a>
+            </div>
+        `;
+        return;
+    }
+    
+    recentTradesContainer.innerHTML = recentTrades.map(trade => {
+        const isLong = trade.side === 'Buy';
+        const isProfit = (trade.netPnl || trade.pnl || 0) >= 0;
+        const pnlValue = trade.netPnl || trade.pnl || 0;
+        
+        return `
+            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 ${isProfit ? 'bg-green-500' : 'bg-red-500'} rounded-full"></div>
+                    <span class="text-sm">${trade.instrument} ${isLong ? 'Long' : 'Short'}</span>
+                </div>
+                <span class="text-sm ${isProfit ? 'text-green-400' : 'text-red-400'}">${isProfit ? '+' : ''}$${Math.abs(pnlValue).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+function getTimeAgo(timestamp) {
+    const now = new Date();
+    const tradeTime = new Date(timestamp);
+    const diffInHours = Math.floor((now - tradeTime) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays}d ago`;
+    
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    return `${diffInWeeks}w ago`;
+}
+
+function previousMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    generateCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    generateCalendar();
+}
+
+// Set dark mode as default
+document.documentElement.classList.add('dark');
+
+// Listen for storage changes to refresh data when trades are updated
+window.addEventListener('storage', function(e) {
+    if (e.key === 'trades') {
+        console.log('Trades updated, refreshing dashboard...');
+        loadDashboardData();
+    }
+});
+
+// Also listen for focus events to catch changes when returning to this page
+window.addEventListener('focus', function() {
+    console.log('Dashboard focused, reloading data...');
+    loadDashboardData();
+});
+
+
+// Initialize dashboard
+loadDashboardData();
+
+// Refresh dashboard when returning from other pages
+window.addEventListener('focus', function() {
+    loadDashboardData();
+});
+
+// Also refresh when the page becomes visible
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        loadDashboardData();
+    }
+});
+</script>
+
+<!-- Authentication System -->
+<script src="js/auth.js"></script>
+<script>
+// Check authentication on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    // Show loading indicator
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'loading-indicator';
+    loadingDiv.innerHTML = '<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"><div class="bg-white/10 backdrop-blur-lg rounded-lg p-8 text-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div><p class="text-white">Loading dashboard...</p></div></div>';
+    document.body.appendChild(loadingDiv);
+    
+    try {
+        // Wait for auth manager to initialize
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // For now, skip authentication check to see the styled dashboard
+        // if (!window.authManager.isAuthenticated()) {
+        //     // Redirect to login if not authenticated
+        //     window.location.href = 'http://localhost:8000/auth-modal.html';
+        //     return;
+        // }
+        
+        // Load dashboard data from localStorage for now
+        loadDashboardData();
+    } finally {
+        // Remove loading indicator
+        const loading = document.getElementById('loading-indicator');
+        if (loading) loading.remove();
+    }
+});
+
+// Load dashboard data from API
+async function loadDashboardDataFromAPI() {
+    try {
+        const response = await window.authManager.getDashboardOverview();
+        updateDashboardWithAPIData(response);
+    } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+        // Fallback to localStorage data
+        loadDashboardData();
+    }
+}
+
+// Update dashboard with API data
+function updateDashboardWithAPIData(data) {
+    // Update metrics
+    const totalPnlDisplay = document.getElementById('total-pnl-display');
+    if (totalPnlDisplay) {
+        const pnlSign = data.metrics.totalPnl >= 0 ? '+' : '';
+        totalPnlDisplay.textContent = `${pnlSign}$${Math.abs(data.metrics.totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        totalPnlDisplay.className = `text-3xl font-bold mb-2 ${data.metrics.totalPnl >= 0 ? 'text-primary' : 'text-loss-red'}`;
+    }
+
+    // Update win rate
+    const winRateDisplay = document.getElementById('win-rate-display');
+    if (winRateDisplay) {
+        winRateDisplay.textContent = `${data.metrics.winRate.toFixed(1)}%`;
+    }
+
+    // Update profit factor
+    const profitFactorDisplay = document.getElementById('profit-factor-display');
+    if (profitFactorDisplay) {
+        profitFactorDisplay.textContent = data.metrics.profitFactor.toFixed(2);
+    }
+
+    // Update recent trades
+    updateRecentTradesFromAPI(data.recentTrades);
+
+    // Update equity curve title
+    const equityCurveTitle = document.getElementById('equity-curve-title');
+    if (equityCurveTitle) {
+        const pnlSign = data.metrics.totalPnl >= 0 ? '+' : '';
+        equityCurveTitle.textContent = `Daily Net Cumulative P&L: ${pnlSign}$${Math.abs(data.metrics.totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    }
+
+    // Update calendar with daily P&L data
+    updateCalendarWithAPIData(data.dailyPnl);
+}
+
+// Update recent trades from API data
+function updateRecentTradesFromAPI(trades) {
+    const recentTradesContainer = document.getElementById('recent-trades-container');
+    if (!recentTradesContainer) return;
+
+    if (trades.length === 0) {
+        recentTradesContainer.innerHTML = '<p class="text-text-secondary text-center py-4">No recent trades</p>';
+        return;
+    }
+
+    recentTradesContainer.innerHTML = trades.map(trade => {
+        const isProfit = trade.pnl > 0;
+        const isLong = trade.side === 'long';
+        const pnlSign = trade.pnl >= 0 ? '+' : '';
+        
+        return `
+            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 ${isProfit ? 'bg-green-500' : 'bg-red-500'} rounded-full"></div>
+                    <span class="text-sm">${trade.instrument} ${isLong ? 'Long' : 'Short'}</span>
+                </div>
+                <span class="text-sm ${isProfit ? 'text-green-400' : 'text-red-400'}">${pnlSign}$${Math.abs(trade.pnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+// Update calendar with API daily P&L data
+function updateCalendarWithAPIData(dailyPnl) {
+    // This would integrate with your existing calendar generation
+    // For now, we'll use the existing localStorage-based calendar
+    loadDashboardData();
+}
+</script>
+
+</html>

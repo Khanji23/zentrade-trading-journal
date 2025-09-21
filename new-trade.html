@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZenTrade - Log Trade</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px",
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        .dark .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #19a1e6;
+            border-radius: 20px;
+            border: 3px solid transparent;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
+<div class="flex h-screen flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+<div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:0.8" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Animated inner ring -->
+                        <circle cx="50" cy="50" r="40" 
+                                stroke="url(#pulseGradient)" 
+                                stroke-width="3" 
+                                fill="none" 
+                                opacity="0.7">
+                            <animateTransform attributeName="transform" 
+                                            type="rotate" 
+                                            values="360 50 50;0 50 50" 
+                                            dur="6s" 
+                                            repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Central hexagon -->
+                        <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                 stroke="url(#logoGradient)" 
+                                 stroke-width="4" 
+                                 fill="none" 
+                                 filter="url(#glow)">
+                            <animate attributeName="opacity" 
+                                     values="0.7;1;0.7" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"/>
+                        </polygon>
+                        
+                        <!-- Animated data points -->
+                        <circle cx="25" cy="45" r="4" fill="#00F5D4" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                        </circle>
+                        <circle cx="75" cy="45" r="4" fill="#7B2CBF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </circle>
+                        
+                        <!-- Animated connection lines -->
+                        <path d="M25,45 L50,30 L75,45" 
+                              stroke="url(#logoGradient)" 
+                              stroke-width="2.5" 
+                              fill="none" 
+                              opacity="0.7">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+</div>
+<nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="index.html">Dashboard</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="journal.html">Journal</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="strategies.html">Strategies</a>
+</nav>
+<div class="flex items-center gap-4">
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuByDGBDjXVVj2HjugZqjgJNhmR68YBhh9hbnu0_h1YZDdQG2FjPW4I3_qlMcZA3GYey_1XNWpFEk-CfFgRav0tNVh4LJx0et4OQL3p4M8L5Y2SN2qatMO683Z-VLJIlGHAU9bRdixKwFPeN4MkWFYamo52MqNR6VLN9s_NfHfKk9WmZc0ySpikarqUoJo0AOhhmM5VsSelLypCFJJj0D8M4sSe86P5dfpyQjqmpiLGDEe--Qt65BIi9_XQnz7cryT0c5hGdpTxF0g8");'></div>
+</div>
+</header>
+<main class="flex-1 p-4 sm:p-6 lg:p-8">
+<div class="mx-auto max-w-4xl">
+<div class="space-y-10">
+<div class="mb-8">
+    <h1 class="text-3xl font-bold mb-6">Log Trade</h1>
+    <p class="text-base text-black/60 dark:text-white/60">Add a new trade to your journal. Your AI coach will provide feedback.</p>
+</div>
+
+<!-- Subheading Section -->
+<div class="mb-6">
+    <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Trade Details</h2>
+    <p class="text-sm text-black/60 dark:text-white/60">Fill in the details of your trade below</p>
+</div>
+
+<form id="trade-form" class="bg-white/50 dark:bg-background-dark/50 p-6 rounded-xl shadow-sm space-y-6" onsubmit="return false;" novalidate>
+
+<!-- Net P&L Section -->
+<div class="mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="sm:col-span-1">
+            <label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="net-pnl">Net P&L</label>
+            <input class="form-input w-full h-12 text-lg rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="net-pnl" name="net-pnl" placeholder="$ 0.00" type="number" step="0.01"/>
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60">Result</label>
+            <div class="flex h-12 w-full items-center justify-center rounded-lg bg-background-light dark:bg-background-dark p-1">
+                <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-green-500 has-[:checked]:text-white has-[:checked]:shadow-md text-muted-light dark:text-muted-dark text-sm font-medium">
+                    <span>Win</span>
+                    <input class="invisible w-0" name="trade-result" type="radio" value="win"/>
+                </label>
+                <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-red-500 has-[:checked]:text-white has-[:checked]:shadow-md text-muted-light dark:text-muted-dark text-sm font-medium">
+                    <span>Loss</span>
+                    <input class="invisible w-0" name="trade-result" type="radio" value="loss"/>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Trade Date Section -->
+<div class="mb-4">
+    <label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="trade-date">Trade Date</label>
+    <div @click.away="calendarOpen = false" x-data="{ 
+        calendarOpen: false, 
+        selectedDate: '',
+        currentMonth: new Date().getMonth(),
+        currentYear: new Date().getFullYear(),
+        today: new Date().toISOString().split('T')[0],
+        
+        init() {
+            this.selectedDate = this.today;
+        },
+        
+        getMonthName(month) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+            return months[month];
+        },
+        
+        getDaysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        },
+        
+        getFirstDayOfMonth(month, year) {
+            return new Date(year, month, 1).getDay();
+        },
+        
+        formatDate(date) {
+            if (!date) return 'Select date';
+            const d = new Date(date);
+            return d.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+        },
+        
+        selectDate(day) {
+            // Create date string directly to avoid timezone issues
+            const year = this.currentYear;
+            const month = String(this.currentMonth + 1).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            this.selectedDate = `${year}-${month}-${dayStr}`;
+            this.calendarOpen = false;
+        },
+        
+        previousMonth() {
+            if (this.currentMonth === 0) {
+                this.currentMonth = 11;
+                this.currentYear--;
+            } else {
+                this.currentMonth--;
+            }
+        },
+        
+        nextMonth() {
+            if (this.currentMonth === 11) {
+                this.currentMonth = 0;
+                this.currentYear++;
+            } else {
+                this.currentMonth++;
+            }
+        },
+        
+        isToday(day) {
+            const today = new Date();
+            return today.getDate() === day && 
+                   today.getMonth() === this.currentMonth && 
+                   today.getFullYear() === this.currentYear;
+        },
+        
+        isSelected(day) {
+            // Create date string directly to avoid timezone issues
+            const year = this.currentYear;
+            const month = String(this.currentMonth + 1).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            const dateStr = `${year}-${month}-${dayStr}`;
+            return this.selectedDate === dateStr;
+        },
+        
+        isPastDate(day) {
+            // Create date string directly to avoid timezone issues
+            const year = this.currentYear;
+            const month = String(this.currentMonth + 1).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            const dateStr = `${year}-${month}-${dayStr}`;
+            const today = new Date().toISOString().split('T')[0];
+            return dateStr < today;
+        }
+    }" x-init="this.init()">
+        <div class="relative">
+            <button @click.stop="calendarOpen = !calendarOpen" class="flex items-center justify-between w-full px-4 py-3 text-left bg-background-dark/50 dark:bg-background-dark text-white dark:text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 ease-in-out">
+                <span class="truncate" x-text="formatDate(selectedDate)"></span>
+                <span :class="{ 'rotate-180': calendarOpen }" class="material-symbols-outlined transition-transform duration-300">
+                    unfold_more
+                </span>
+            </button>
+            <div class="absolute z-20 w-full mt-2 bg-background-dark/80 dark:bg-background-dark backdrop-blur-sm border border-primary/20 rounded-lg shadow-xl" x-show="calendarOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-end="transform opacity-100 scale-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:leave="transition ease-in duration-75" x-transition:leave-end="transform opacity-0 scale-95" x-transition:leave-start="transform opacity-100 scale-100">
+                <!-- Calendar Header -->
+                <div class="flex items-center justify-between p-4 border-b border-primary/20">
+                    <button @click.stop="previousMonth()" class="p-1 rounded-full hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-sm">chevron_left</span>
+                    </button>
+                    <h3 class="text-sm font-semibold text-white" x-text="getMonthName(currentMonth) + ' ' + currentYear"></h3>
+                    <button @click.stop="nextMonth()" class="p-1 rounded-full hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    </button>
+                </div>
+                
+                <!-- Calendar Days -->
+                <div class="p-4">
+                    <!-- Day headers -->
+                    <div class="grid grid-cols-7 gap-1 mb-2">
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">S</div>
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">M</div>
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">T</div>
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">W</div>
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">T</div>
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">F</div>
+                        <div class="text-center text-xs font-medium text-gray-400 py-1">S</div>
+                    </div>
+                    
+                    <!-- Calendar grid -->
+                    <div class="grid grid-cols-7 gap-1">
+                        <template x-for="day in Array(getFirstDayOfMonth(currentMonth, currentYear)).fill(0)" :key="'empty-' + day">
+                            <div class="h-8"></div>
+                        </template>
+                        <template x-for="day in Array(getDaysInMonth(currentMonth, currentYear)).fill(0).map((_, i) => i + 1)" :key="day">
+                            <button @click.stop="selectDate(day)" 
+                                    :class="{
+                                        'bg-primary text-white': isSelected(day),
+                                        'bg-primary/20 text-primary': isToday(day) && !isSelected(day),
+                                        'text-gray-300 hover:bg-primary/20 hover:text-white': !isSelected(day) && !isToday(day),
+                                        'text-gray-500': isPastDate(day) && !isSelected(day) && !isToday(day)
+                                    }"
+                                    class="h-8 w-8 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center">
+                                <span x-text="day"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="trade-date" name="trade-date" x-model="selectedDate" required>
+    <p class="text-xs text-black/50 dark:text-white/50 mt-1">Select the date when this trade was executed (defaults to today)</p>
+</div>
+
+<!-- Screenshot Section -->
+<div class="mb-4">
+    <label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="screenshots">Trade Screenshots</label>
+    <div class="bg-white/5 dark:bg-background-dark/20 border-2 border-dashed border-primary/30 dark:border-primary/30 rounded-xl p-6 text-center flex flex-col items-center justify-center transition-all hover:border-primary/50 dark:hover:border-primary/50 hover:bg-white/10 dark:hover:bg-background-dark/30 min-h-[160px]" id="screenshot-dropzone">
+        <div class="mb-4">
+            <span class="material-symbols-outlined text-5xl text-primary/70">
+                cloud_upload
+            </span>
+        </div>
+        <h3 class="text-lg font-bold text-black dark:text-white mb-2">Drag & drop your trade screenshots here</h3>
+        <p class="text-black/60 dark:text-white/60 mb-4">Or click the button below to upload from your device.</p>
+        <button type="button" class="bg-primary text-background-dark font-bold py-3 px-6 rounded-lg shadow-lg transition-all hover:opacity-90 flex items-center gap-2" onclick="document.getElementById('screenshots').click()">
+            <span class="material-symbols-outlined">
+                add_photo_alternate
+            </span>
+            Upload Screenshot
+        </button>
+        <input class="hidden" id="screenshots" name="screenshots" type="file" multiple accept="image/*"/>
+    </div>
+    <div id="screenshot-preview" class="mt-4 grid grid-cols-1 gap-4"></div>
+</div>
+
+<div class="space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="strategy">Trading Strategy</label>
+<div @click.away="strategyOpen = false" x-data="{ 
+    strategyOpen: false, 
+    strategySelected: '', 
+    strategyOptions: ['Select strategy'],
+    
+    loadStrategies() {
+        const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+        this.strategyOptions = ['Select strategy'];
+        strategies.forEach(strategy => {
+            if (strategy.isActive) {
+                this.strategyOptions.push(strategy.name);
+            }
+        });
+    }
+}" x-init="
+    this.loadStrategies();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'strategies') {
+            this.loadStrategies();
+        }
+    });
+    
+    // Listen for focus events
+    window.addEventListener('focus', () => this.loadStrategies());
+    
+    // Periodic refresh every 3 seconds
+    setInterval(() => this.loadStrategies(), 3000);
+">
+<div class="relative">
+<button @click.stop="
+    this.loadStrategies();
+    strategyOpen = !strategyOpen;
+" class="flex items-center justify-between w-full px-4 py-3 text-left bg-background-dark/50 dark:bg-background-dark text-white dark:text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 ease-in-out">
+<span class="truncate" x-text="strategySelected || strategyOptions[0]"></span>
+<span :class="{ 'rotate-180': strategyOpen }" class="material-symbols-outlined transition-transform duration-300">
+unfold_more
+</span>
+</button>
+<div class="absolute z-10 w-full mt-2 bg-background-dark/80 dark:bg-background-dark backdrop-blur-sm border border-primary/20 rounded-lg shadow-xl overflow-y-auto custom-scrollbar max-h-60" x-show="strategyOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-end="transform opacity-100 scale-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:leave="transition ease-in duration-75" x-transition:leave-end="transform opacity-0 scale-95" x-transition:leave-start="transform opacity-100 scale-100">
+<ul class="py-1">
+<template :key="index" x-for="(option, index) in strategyOptions">
+<li :class="{'bg-primary/30 text-white': strategySelected === option}" @click.stop="strategySelected = option; strategyOpen = false; if (option !== 'Select strategy') { showStrategyChecklist(option); } else { hideStrategyChecklist(); }" class="px-4 py-2 text-sm text-gray-300 dark:text-gray-300 cursor-pointer hover:bg-primary/20 dark:hover:bg-primary/20 hover:text-white dark:hover:text-white transition-colors duration-200">
+<span x-text="option"></span>
+</li>
+</template>
+</ul>
+</div>
+</div>
+</div>
+<input type="hidden" id="strategy" name="strategy" x-model="strategySelected">
+</div>
+
+<!-- Strategy Checklist Section -->
+<div id="strategy-checklist" class="hidden mt-3">
+    <div class="bg-background-dark/30 dark:bg-background-dark/50 rounded-xl p-4 border border-primary/20 shadow-lg">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-sm">checklist</span>
+            </div>
+            <div>
+                <h3 class="text-base font-semibold text-primary">Strategy Checklist</h3>
+                <p class="text-xs text-white/60">Check off the criteria you followed for this trade</p>
+            </div>
+        </div>
+        
+        <div class="space-y-4">
+            <!-- Entry Criteria -->
+            <div id="entry-criteria-section" class="hidden">
+                <h4 class="text-xs font-medium text-white/80 mb-2 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                    Entry Criteria
+                </h4>
+                <ul id="entry-criteria-list" class="space-y-1"></ul>
+            </div>
+            
+            <!-- Exit Criteria -->
+            <div id="exit-criteria-section" class="hidden">
+                <h4 class="text-xs font-medium text-white/80 mb-2 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                    Exit Criteria
+                </h4>
+                <ul id="exit-criteria-list" class="space-y-1"></ul>
+            </div>
+            
+            <!-- Risk Management -->
+            <div id="risk-management-section" class="hidden">
+                <h4 class="text-xs font-medium text-white/80 mb-2 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                    Risk Management
+                </h4>
+                <ul id="risk-management-list" class="space-y-1"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="instrument">Instrument</label>
+<div @click.away="instrumentOpen = false" x-data="{ 
+    instrumentOpen: false, 
+    instrumentSelected: '', 
+    instrumentOptions: [
+        'Select instrument',
+        'EUR/USD', 'GBP/USD', 'USD/JPY', 'AUD/USD', 'USD/CAD', 'NZD/USD', 'USD/CHF', 'EUR/GBP', 'EUR/JPY', 'GBP/JPY',
+        'S&P 500 (SPX500)', 'NASDAQ 100 (NAS100)', 'Dow Jones 30 (DOW30)', 'FTSE 100 (FTSE100)', 'DAX 40 (DAX40)', 'Nikkei 225 (NIKKEI225)',
+        'E-mini S&P 500 (ES)', 'Micro E-mini S&P 500 (MES)', 'E-mini NASDAQ 100 (NQ)', 'Micro E-mini NASDAQ 100 (MNQ)',
+        'E-mini Dow Jones (YM)', 'Micro E-mini Dow Jones (MYM)', 'E-mini Russell 2000 (RTY)', 'Micro E-mini Russell 2000 (M2K)',
+        'Crude Oil (CL)', 'Micro Crude Oil (MCL)', 'Natural Gas (NG)', 'Micro Natural Gas (MNG)',
+        'Gold (GC)', 'Micro Gold (MGC)', 'Silver (SI)', 'Micro Silver (SIL)', 'Copper (HG)', 'Micro Copper (MHG)',
+        '10-Year Treasury Note (ZN)', 'Micro 10-Year Treasury Note (MZN)', '30-Year Treasury Bond (ZB)', 'Micro 30-Year Treasury Bond (MZB)',
+        'Eurodollar (GE)', 'Micro Eurodollar (MGE)', 'Euro FX (6E)', 'Micro Euro FX (M6E)', 'Japanese Yen (6J)', 'Micro Japanese Yen (M6J)',
+        'British Pound (6B)', 'Micro British Pound (M6B)', 'Australian Dollar (6A)', 'Micro Australian Dollar (M6A)',
+        'Canadian Dollar (6C)', 'Micro Canadian Dollar (M6C)', 'Swiss Franc (6S)', 'Micro Swiss Franc (M6S)',
+        'New Zealand Dollar (6N)', 'Micro New Zealand Dollar (M6N)', 'Corn (ZC)', 'Soybeans (ZS)', 'Wheat (ZW)',
+        'Coffee (KC)', 'Sugar (SB)', 'Cotton (CT)', 'Cocoa (CC)', 'Orange Juice (OJ)', 'Live Cattle (LE)',
+        'Feeder Cattle (GF)', 'Lean Hogs (HE)', 'RBOB Gasoline (RB)', 'Heating Oil (HO)', 'Brent Crude Oil (BZ)',
+        '30-Day Fed Funds (FF)', 'Micro 30-Day Fed Funds (MFF)', 'Secured Overnight Financing Rate (SOFR)', 'Micro SOFR (MSOFR)',
+        'CBOE Volatility Index (VX)', 'Micro VIX (MVX)', 'Bitcoin (BTC/USD)', 'Ethereum (ETH/USD)', 'Litecoin (LTC/USD)',
+        'Ripple (XRP/USD)', 'Cardano (ADA/USD)', 'Polkadot (DOT/USD)', 'Chainlink (LINK/USD)', 'Uniswap (UNI/USD)',
+        'Volatility Index (VIX)', 'US Dollar Index (DXY)'
+    ]
+}">
+<div class="relative">
+<button @click.stop="instrumentOpen = !instrumentOpen" class="flex items-center justify-between w-full px-4 py-3 text-left bg-background-dark/50 dark:bg-background-dark text-white dark:text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 ease-in-out">
+<span class="truncate" x-text="instrumentSelected || instrumentOptions[0]"></span>
+<span :class="{ 'rotate-180': instrumentOpen }" class="material-symbols-outlined transition-transform duration-300">
+unfold_more
+</span>
+</button>
+<div class="absolute z-10 w-full mt-2 bg-background-dark/80 dark:bg-background-dark backdrop-blur-sm border border-primary/20 rounded-lg shadow-xl overflow-y-auto custom-scrollbar max-h-60" x-show="instrumentOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-end="transform opacity-100 scale-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:leave="transition ease-in duration-75" x-transition:leave-end="transform opacity-0 scale-95" x-transition:leave-start="transform opacity-100 scale-100">
+<ul class="py-1">
+<template :key="index" x-for="(option, index) in instrumentOptions">
+<li :class="{'bg-primary/30 text-white': instrumentSelected === option}" @click.stop="instrumentSelected = option; instrumentOpen = false;" class="px-4 py-2 text-sm text-gray-300 dark:text-gray-300 cursor-pointer hover:bg-primary/20 dark:hover:bg-primary/20 hover:text-white dark:hover:text-white transition-colors duration-200">
+<span x-text="option"></span>
+</li>
+</template>
+</ul>
+</div>
+</div>
+</div>
+<input type="hidden" id="instrument" name="instrument" x-model="instrumentSelected" required>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60">Side</label>
+<div class="flex h-11 w-full items-center justify-center rounded-lg bg-background-light dark:bg-background-dark p-1.5">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-3 has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-md text-sm font-medium text-black/60 dark:text-white/60">
+<span>Long</span>
+<input checked="" class="invisible w-0" name="side" type="radio" value="Buy"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-3 has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:shadow-md text-sm font-medium text-black/60 dark:text-white/60">
+<span>Short</span>
+<input class="invisible w-0" name="side" type="radio" value="Sell"/>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="entry-price">Entry Price</label>
+<input class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="entry-price" name="entry-price" placeholder="1.07250" type="number" step="0.00001"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="exit-price">Exit Price</label>
+<input class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="exit-price" name="exit-price" placeholder="1.07350" type="number" step="0.00001"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="stop-loss">Stop Loss</label>
+<input class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="stop-loss" name="stop-loss" placeholder="1.07150" type="number" step="0.00001"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="target">Take Profit</label>
+<input class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="target" name="target" placeholder="1.07550" type="number" step="0.00001"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="position-size">Position Size</label>
+<input class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="position-size" name="position-size" placeholder="1.0" type="number" step="0.01"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="risk-amount">Risk Amount ($)</label>
+<input class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary" id="risk-amount" name="risk-amount" placeholder="100" type="number" step="0.01"/>
+</div>
+    <!-- Notes -->
+    <div class="mt-2">
+        <label class="block text-sm font-medium mb-2 text-black/60 dark:text-white/60" for="notes">Notes</label>
+        <textarea class="form-textarea w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary resize-none" id="notes" name="notes" placeholder="Why did you take this trade? What was your thesis? Any additional observations..." rows="4"></textarea>
+        <p class="text-xs text-black/50 dark:text-white/50 mt-1">Optional: Add any additional thoughts or observations about this trade</p>
+    </div>
+</div>
+<div class="border-t border-gray-300 dark:border-gray-600 pt-6">
+<h3 class="text-lg font-semibold text-black dark:text-white">Psychology</h3>
+<p class="text-sm text-black/60 dark:text-white/60 mt-1">How did you feel during this trade?</p>
+<div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="emotion-buttons">
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Excellent">
+<svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M7 14c0 2 2 3 5 3s5-1 5-3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Excellent</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Good">
+<svg class="w-8 h-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M8 13c0 1.5 1.5 2.5 4 2.5s4-1 4-2.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Good</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Neutral">
+<svg class="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M8 13h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Neutral</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Poor">
+<svg class="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M8 13c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Poor</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Bad">
+<svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M7 8l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M17 8l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M8 13c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Bad</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Angry">
+<svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M7 8l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M17 8l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M8 13c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Angry</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Sad">
+<svg class="w-8 h-8 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M8 13c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Sad</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Smile">
+<svg class="w-8 h-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M8 13c0 1.5 1.5 2.5 4 2.5s4-1 4-2.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Smile</span>
+</button>
+<button type="button" class="emotion-btn flex flex-col items-center gap-2 px-3 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 transform hover:scale-105 active:scale-95" data-emotion="Happy">
+<svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+<circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+<circle cx="16" cy="9" r="1.5" fill="currentColor"/>
+<path d="M7 14c0 2 2 3 5 3s5-1 5-3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="font-medium">Happy</span>
+</button>
+</div>
+</div>
+<div class="flex justify-end pt-4 gap-3">
+                            <button type="submit" class="flex items-center justify-center rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold tracking-wide hover:opacity-90 transition-opacity" id="save-trade-btn">
+                                Save Trade
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+</div>
+
+<script>
+// Emotion buttons functionality - Single selection
+const emotionButtons = document.querySelectorAll('.emotion-btn');
+let selectedEmotion = null;
+
+emotionButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const emotion = this.dataset.emotion;
+        
+        // Remove selection from all buttons
+        emotionButtons.forEach(btn => {
+            btn.classList.remove('border-primary', 'bg-primary/10', 'text-primary', 'dark:bg-primary/20', 'dark:text-blue-300');
+            btn.classList.add('border-border-light', 'dark:border-border-dark', 'bg-background-light', 'dark:bg-background-dark');
+        });
+        
+        // If clicking the same emotion, deselect it
+        if (selectedEmotion === emotion) {
+            selectedEmotion = null;
+        } else {
+            // Select the clicked emotion
+            selectedEmotion = emotion;
+            console.log('Emotion selected:', emotion);
+            this.classList.add('border-primary', 'bg-primary/10', 'text-primary', 'dark:bg-primary/20', 'dark:text-blue-300');
+            this.classList.remove('border-border-light', 'dark:border-border-dark', 'bg-background-light', 'dark:bg-background-dark');
+        }
+    });
+});
+
+// Screenshot handling
+const screenshotInput = document.getElementById('screenshots');
+const screenshotPreview = document.getElementById('screenshot-preview');
+const screenshotDropzone = document.getElementById('screenshot-dropzone');
+let selectedScreenshots = [];
+
+// Drag and drop functionality
+screenshotDropzone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    this.classList.add('border-primary/50', 'bg-white/10', 'dark:bg-background-dark/30');
+});
+
+screenshotDropzone.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    this.classList.remove('border-primary/50', 'bg-white/10', 'dark:bg-background-dark/30');
+});
+
+screenshotDropzone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.classList.remove('border-primary/50', 'bg-white/10', 'dark:bg-background-dark/30');
+    const files = Array.from(e.dataTransfer.files);
+    handleFiles(files);
+});
+
+screenshotInput.addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    handleFiles(files);
+});
+
+function handleFiles(files) {
+    // Limit to 5 images
+    if (files.length > 5) {
+        alert('Maximum 5 screenshots allowed');
+        files.splice(5);
+    }
+    
+    selectedScreenshots = [];
+    screenshotPreview.innerHTML = '';
+    
+    files.forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const screenshotData = {
+                    name: file.name,
+                    data: e.target.result,
+                    size: file.size
+                };
+                selectedScreenshots.push(screenshotData);
+                
+                // Create preview
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'w-full bg-background-light dark:bg-background-dark border border-white/10 dark:border-gray-600 p-6 rounded-xl shadow-lg';
+                previewDiv.innerHTML = `
+                    <div class="w-full bg-center bg-no-repeat bg-cover rounded-lg shadow-inner" style='background-image: url("${e.target.result}"); min-height: 400px; max-height: 600px; background-size: contain; background-position: center;'></div>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-sm font-medium text-black/60 dark:text-white/60">Trade Screenshot ${index + 1}</span>
+                        <button type="button" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors flex items-center gap-1" onclick="removeScreenshot(${index})">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                            <span class="text-xs">Remove</span>
+                        </button>
+                    </div>
+                `;
+                screenshotPreview.appendChild(previewDiv);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+function removeScreenshot(index) {
+    selectedScreenshots.splice(index, 1);
+    screenshotInput.value = '';
+    screenshotPreview.innerHTML = '';
+    
+    // Re-render previews
+    selectedScreenshots.forEach((screenshot, idx) => {
+        const previewDiv = document.createElement('div');
+        previewDiv.className = 'w-full bg-background-light dark:bg-background-dark border border-white/10 dark:border-gray-600 p-6 rounded-xl shadow-lg';
+        previewDiv.innerHTML = `
+            <div class="w-full bg-center bg-no-repeat bg-cover rounded-lg shadow-inner" style='background-image: url("${screenshot.data}"); min-height: 400px; max-height: 600px; background-size: contain; background-position: center;'></div>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-sm font-medium text-black/60 dark:text-white/60">Trade Screenshot ${idx + 1}</span>
+                <button type="button" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors flex items-center gap-1" onclick="removeScreenshot(${idx})">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                    <span class="text-xs">Remove</span>
+                </button>
+            </div>
+        `;
+        screenshotPreview.appendChild(previewDiv);
+    });
+}
+
+// Load strategies
+function loadStrategies() {
+    const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+    
+    console.log('Loading strategies:', strategies);
+    
+    // Update the Alpine.js data for strategy dropdown
+    const strategyDropdown = document.querySelector('[x-data*="strategyOpen"]');
+    if (strategyDropdown) {
+        // Wait for Alpine.js to be ready
+        setTimeout(() => {
+            try {
+                const alpineData = Alpine.$data(strategyDropdown);
+                if (alpineData) {
+                    alpineData.strategyOptions = ['Select strategy'];
+                    strategies.forEach(strategy => {
+                        if (strategy.isActive) {
+                            alpineData.strategyOptions.push(strategy.name);
+                            console.log('Added strategy option:', strategy.name);
+                        }
+                    });
+                    console.log('Updated strategy options:', alpineData.strategyOptions);
+                } else {
+                    console.log('Alpine data not available, trying direct access');
+                    // Try direct access to the Alpine component
+                    const alpineComponent = strategyDropdown._x_dataStack?.[0];
+                    if (alpineComponent) {
+                        alpineComponent.strategyOptions = ['Select strategy'];
+                        strategies.forEach(strategy => {
+                            if (strategy.isActive) {
+                                alpineComponent.strategyOptions.push(strategy.name);
+                                console.log('Added strategy option (direct):', strategy.name);
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading strategies:', error);
+            }
+        }, 100);
+    }
+}
+
+// Load strategies on page load
+loadStrategies();
+
+// Reload strategies when page gains focus (in case new strategy was created)
+window.addEventListener('focus', loadStrategies);
+
+// Listen for storage changes to reload strategies when new ones are added
+window.addEventListener('storage', function(e) {
+    if (e.key === 'strategies') {
+        console.log('Strategies updated, reloading...');
+        loadStrategies();
+    }
+});
+
+// Also reload strategies when the page becomes visible
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        console.log('Page became visible, reloading strategies...');
+        loadStrategies();
+    }
+});
+
+// Add a periodic check for strategy updates (every 2 seconds)
+setInterval(function() {
+    const currentStrategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+    const lastKnownCount = window.lastStrategyCount || 0;
+    
+    if (currentStrategies.length !== lastKnownCount) {
+        console.log('Strategy count changed, reloading...');
+        window.lastStrategyCount = currentStrategies.length;
+        loadStrategies();
+    }
+}, 2000);
+
+// Load strategies on page load
+document.addEventListener('DOMContentLoaded', function() {
+    refreshStrategyDropdown();
+});
+
+// Initialize strategy count
+window.lastStrategyCount = JSON.parse(localStorage.getItem('strategies') || '[]').length;
+
+// Function to show strategy checklist
+function showStrategyChecklist(strategyName) {
+    console.log('showStrategyChecklist called with:', strategyName);
+    const strategies = JSON.parse(localStorage.getItem('strategies') || '[]');
+    console.log('Available strategies:', strategies);
+    const strategy = strategies.find(s => s.name === strategyName);
+    console.log('Found strategy:', strategy);
+    
+    if (!strategy || !strategy.isActive) {
+        console.log('Strategy not found or inactive, hiding checklist');
+        hideStrategyChecklist();
+        return;
+    }
+    
+    const checklist = document.getElementById('strategy-checklist');
+    const entrySection = document.getElementById('entry-criteria-section');
+    const exitSection = document.getElementById('exit-criteria-section');
+    const riskSection = document.getElementById('risk-management-section');
+    const entryList = document.getElementById('entry-criteria-list');
+    const exitList = document.getElementById('exit-criteria-list');
+    const riskList = document.getElementById('risk-management-list');
+    
+    // Clear previous content
+    entryList.innerHTML = '';
+    exitList.innerHTML = '';
+    riskList.innerHTML = '';
+    
+    // Show entry criteria
+    if (strategy.entryCriteria && strategy.entryCriteria.length > 0) {
+        entrySection.classList.remove('hidden');
+        strategy.entryCriteria.forEach(criterion => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-2 text-xs p-2 rounded-md bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10';
+            li.innerHTML = `
+                <input type="checkbox" class="w-3 h-3 rounded border-white/30 text-primary focus:ring-primary focus:ring-1 bg-transparent">
+                <span class="flex-1 text-white/90">${criterion.text || criterion}</span>
+            `;
+            entryList.appendChild(li);
+        });
+    } else {
+        entrySection.classList.add('hidden');
+    }
+    
+    // Show exit criteria
+    if (strategy.exitCriteria && strategy.exitCriteria.length > 0) {
+        exitSection.classList.remove('hidden');
+        strategy.exitCriteria.forEach(criterion => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-2 text-xs p-2 rounded-md bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10';
+            li.innerHTML = `
+                <input type="checkbox" class="w-3 h-3 rounded border-white/30 text-primary focus:ring-primary focus:ring-1 bg-transparent">
+                <span class="flex-1 text-white/90">${criterion.text || criterion}</span>
+            `;
+            exitList.appendChild(li);
+        });
+    } else {
+        exitSection.classList.add('hidden');
+    }
+    
+    // Show risk management
+    if (strategy.riskManagement && strategy.riskManagement.length > 0) {
+        riskSection.classList.remove('hidden');
+        strategy.riskManagement.forEach(rule => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-2 text-xs p-2 rounded-md bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10';
+            li.innerHTML = `
+                <input type="checkbox" class="w-3 h-3 rounded border-white/30 text-primary focus:ring-primary focus:ring-1 bg-transparent">
+                <span class="flex-1 text-white/90">${rule.text || rule}</span>
+            `;
+            riskList.appendChild(li);
+        });
+    } else {
+        riskSection.classList.add('hidden');
+    }
+    
+    // Show the checklist
+    checklist.classList.remove('hidden');
+}
+
+// Function to hide strategy checklist
+function hideStrategyChecklist() {
+    const checklist = document.getElementById('strategy-checklist');
+    checklist.classList.add('hidden');
+}
+
+
+// Function to handle strategy selection change
+function handleStrategyChange(strategyName) {
+    console.log('Strategy changed to:', strategyName);
+    if (strategyName && strategyName !== '') {
+        showStrategyChecklist(strategyName);
+    } else {
+        hideStrategyChecklist();
+    }
+}
+
+// Make functions globally available
+window.showStrategyChecklist = showStrategyChecklist;
+window.hideStrategyChecklist = hideStrategyChecklist;
+window.handleStrategyChange = handleStrategyChange;
+window.processTradeForm = processTradeForm;
+
+// Test function to add a sample trade
+window.addTestTrade = function() {
+    const testTrade = {
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+        strategyId: null,
+        strategyName: null,
+        instrument: 'EUR/USD',
+        side: 'Long',
+        entryPrice: 1.07250,
+        exitPrice: 1.07350,
+        stopLoss: 1.07150,
+        target: 1.07550,
+        positionSize: 1000,
+        riskAmount: 100,
+        pnl: 100,
+        netPnl: 100,
+        tradeResult: 'win',
+        notes: 'Test trade',
+        feeling: 75,
+        emotions: ['Confident'],
+        screenshots: [],
+        status: 'closed'
+    };
+    
+    const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+    trades.push(testTrade);
+    localStorage.setItem('trades', JSON.stringify(trades));
+    
+    console.log('Test trade added:', testTrade);
+    console.log('All trades:', JSON.parse(localStorage.getItem('trades') || '[]'));
+    
+    alert('Test trade added! Check journal.html');
+};
+
+// Test function to simulate form data and test saving
+window.testFormSave = function() {
+    console.log('Testing form save with simulated data...');
+    
+    // Simulate form data
+    const testData = {
+        strategy: 'Test Strategy',
+        instrument: 'GBP/USD',
+        netPnl: '250.50',
+        tradeResult: 'win',
+        side: 'Short',
+        entryPrice: '1.2500',
+        exitPrice: '1.2450',
+        stopLoss: '1.2550',
+        target: '1.2400',
+        positionSize: '1000',
+        riskAmount: '100',
+        notes: 'Test form submission'
+    };
+    
+    // Set form values
+    document.getElementById('net-pnl').value = testData.netPnl;
+    document.querySelector('input[name="trade-result"][value="win"]').checked = true;
+    document.querySelector('input[name="side"][value="Short"]').checked = true;
+    document.getElementById('entry-price').value = testData.entryPrice;
+    document.getElementById('exit-price').value = testData.exitPrice;
+    document.getElementById('stop-loss').value = testData.stopLoss;
+    document.getElementById('target').value = testData.target;
+    document.getElementById('position-size').value = testData.positionSize;
+    document.getElementById('risk-amount').value = testData.riskAmount;
+    document.getElementById('notes').value = testData.notes;
+    
+    // Simulate Alpine.js dropdown data
+    const strategyDropdown = document.querySelector('[x-data*="strategyOpen"]');
+    const instrumentDropdown = document.querySelector('[x-data*="instrumentOpen"]');
+    
+    if (strategyDropdown && strategyDropdown._x_dataStack && strategyDropdown._x_dataStack[0]) {
+        strategyDropdown._x_dataStack[0].strategySelected = testData.strategy;
+    }
+    
+    if (instrumentDropdown && instrumentDropdown._x_dataStack && instrumentDropdown._x_dataStack[0]) {
+        instrumentDropdown._x_dataStack[0].instrumentSelected = testData.instrument;
+    }
+    
+    console.log('Form data set, now testing processTradeForm...');
+    
+    // Test the form processing
+    processTradeForm();
+};
+
+// Debug function to check localStorage
+window.debugTrades = function() {
+    const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+    console.log('Current trades in localStorage:', trades);
+    console.log('Number of trades:', trades.length);
+    return trades;
+};
+
+// Simple test function that bypasses form elements
+window.testSimpleSave = function() {
+    console.log('Testing simple trade save...');
+    
+    const simpleTrade = {
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+        strategyId: null,
+        strategyName: null,
+        instrument: 'USD/JPY',
+        side: 'Long',
+        entryPrice: 150.50,
+        exitPrice: 151.00,
+        stopLoss: 150.00,
+        target: 151.50,
+        positionSize: 1000,
+        riskAmount: 100,
+        pnl: 50,
+        netPnl: 50,
+        tradeResult: 'win',
+        notes: 'Simple test trade',
+        feeling: 75,
+        emotions: ['Confident'],
+        screenshots: [],
+        status: 'closed'
+    };
+    
+    const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+    trades.push(simpleTrade);
+    localStorage.setItem('trades', JSON.stringify(trades));
+    
+    console.log('Simple trade saved:', simpleTrade);
+    console.log('All trades:', JSON.parse(localStorage.getItem('trades') || '[]'));
+    
+    alert('Simple trade saved! Check journal.html');
+};
+
+// Check if a strategy was pre-selected
+const selectedStrategyId = localStorage.getItem('selectedStrategy');
+if (selectedStrategyId) {
+    document.getElementById('strategy').value = selectedStrategyId;
+    localStorage.removeItem('selectedStrategy'); // Clear after use
+}
+
+// Prevent form submission when interacting with dropdowns
+let isDropdownInteraction = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Prevent form submission when clicking on strategy dropdown
+    const strategyDropdown = document.querySelector('[x-data*="strategyOpen"]');
+    if (strategyDropdown) {
+        strategyDropdown.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            isDropdownInteraction = true;
+            console.log('Strategy dropdown clicked - prevented form submission');
+            setTimeout(() => { isDropdownInteraction = false; }, 100);
+        });
+        
+        // Also prevent form submission on strategy dropdown options
+        const strategyOptions = strategyDropdown.querySelectorAll('li');
+        strategyOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                isDropdownInteraction = true;
+                console.log('Strategy option clicked - prevented form submission');
+                setTimeout(() => { isDropdownInteraction = false; }, 100);
+            });
+        });
+    }
+    
+    // Prevent form submission when clicking on instrument dropdown
+    const instrumentDropdown = document.querySelector('[x-data*="instrumentOpen"]');
+    if (instrumentDropdown) {
+        instrumentDropdown.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            isDropdownInteraction = true;
+            console.log('Instrument dropdown clicked - prevented form submission');
+            setTimeout(() => { isDropdownInteraction = false; }, 100);
+        });
+        
+        // Also prevent form submission on instrument dropdown options
+        const instrumentOptions = instrumentDropdown.querySelectorAll('li');
+        instrumentOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                isDropdownInteraction = true;
+                console.log('Instrument option clicked - prevented form submission');
+                setTimeout(() => { isDropdownInteraction = false; }, 100);
+            });
+        });
+    }
+    
+    // Add a global form submission prevention for dropdown interactions
+    document.addEventListener('submit', function(e) {
+        if (e.target.id === 'trade-form') {
+            // Check if the submission was triggered by dropdown interaction
+            const activeElement = document.activeElement;
+            if (activeElement && (
+                activeElement.closest('[x-data*="strategyOpen"]') ||
+                activeElement.closest('[x-data*="instrumentOpen"]') ||
+                activeElement.closest('li[role="option"]')
+            )) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Form submission prevented - triggered by dropdown interaction');
+                return false;
+            }
+        }
+    });
+    
+    // Additional prevention for any clicks within dropdown areas
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('[x-data*="strategyOpen"]') || e.target.closest('[x-data*="instrumentOpen"]')) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Dropdown area clicked - prevented event propagation');
+        }
+    });
+    
+    // Global form submission prevention - only allow from Save Trade button
+    document.addEventListener('submit', function(e) {
+        if (e.target.id === 'trade-form' && !allowFormSubmission) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Form submission blocked - only Save Trade button can submit');
+            return false;
+        }
+    });
+});
+
+// Old form handler removed - using processTradeForm() instead
+
+// Set dark mode as default
+document.documentElement.classList.add('dark');
+
+// Function to process trade form directly
+function processTradeForm() {
+    console.log('Processing trade form...');
+    
+    // Get form data from Alpine.js dropdowns
+    const strategyDropdown = document.querySelector('[x-data*="strategyOpen"]');
+    const instrumentDropdown = document.querySelector('[x-data*="instrumentOpen"]');
+    
+    let strategy = '';
+    let instrument = '';
+    
+    if (strategyDropdown && strategyDropdown._x_dataStack && strategyDropdown._x_dataStack[0]) {
+        strategy = strategyDropdown._x_dataStack[0].strategySelected || '';
+    }
+    
+    if (instrumentDropdown && instrumentDropdown._x_dataStack && instrumentDropdown._x_dataStack[0]) {
+        instrument = instrumentDropdown._x_dataStack[0].instrumentSelected || '';
+    }
+    
+    // Get other form values with null checks
+    const netPnlElement = document.getElementById('net-pnl');
+    const netPnl = netPnlElement ? netPnlElement.value : '';
+    
+    const tradeResultElement = document.querySelector('input[name="trade-result"]:checked');
+    const tradeResult = tradeResultElement ? tradeResultElement.value : '';
+    
+    const sideElement = document.querySelector('input[name="side"]:checked');
+    const side = sideElement ? sideElement.value : 'Long';
+    
+    const entryPriceElement = document.getElementById('entry-price');
+    const entryPrice = entryPriceElement ? entryPriceElement.value : '';
+    
+    const exitPriceElement = document.getElementById('exit-price');
+    const exitPrice = exitPriceElement ? exitPriceElement.value : '';
+    
+    const stopLossElement = document.getElementById('stop-loss');
+    const stopLoss = stopLossElement ? stopLossElement.value : '';
+    
+    const targetElement = document.getElementById('target');
+    const target = targetElement ? targetElement.value : '';
+    
+    const positionSizeElement = document.getElementById('position-size');
+    const positionSize = positionSizeElement ? positionSizeElement.value : '';
+    
+    const riskAmountElement = document.getElementById('risk-amount');
+    const riskAmount = riskAmountElement ? riskAmountElement.value : '';
+    
+    const notesElement = document.getElementById('notes');
+    const notes = notesElement ? notesElement.value : '';
+    
+    const tradeDateElement = document.getElementById('trade-date');
+    const tradeDate = tradeDateElement ? tradeDateElement.value : new Date().toISOString().split('T')[0];
+    
+    console.log('Trade date debug:', {
+        tradeDateElement: !!tradeDateElement,
+        tradeDateValue: tradeDate,
+        tradeDateType: typeof tradeDate
+    });
+    
+    console.log('Form elements found:', {
+        netPnlElement: !!netPnlElement,
+        tradeResultElement: !!tradeResultElement,
+        sideElement: !!sideElement,
+        entryPriceElement: !!entryPriceElement,
+        exitPriceElement: !!exitPriceElement,
+        stopLossElement: !!stopLossElement,
+        targetElement: !!targetElement,
+        positionSizeElement: !!positionSizeElement,
+        riskAmountElement: !!riskAmountElement,
+        notesElement: !!notesElement,
+        tradeDateElement: !!tradeDateElement
+    });
+    
+    console.log('Form values:', {
+        strategy, instrument, netPnl, tradeResult, side, entryPrice, exitPrice, stopLoss, target, positionSize, riskAmount, notes
+    });
+    
+    // Debug: Check if netPnl element exists and has value
+    console.log('Net P&L element found:', !!netPnlElement);
+    console.log('Net P&L value:', netPnl);
+    console.log('Trade result:', tradeResult);
+    
+    // Basic validation
+    if (!instrument) {
+        alert('Please select an instrument');
+        return;
+    }
+    
+    // Calculate P&L
+    let finalPnl = 0;
+    if (netPnl) {
+        finalPnl = parseFloat(netPnl);
+        // Adjust sign based on trade result
+        if (tradeResult === 'loss') {
+            finalPnl = Math.abs(finalPnl) * -1;
+        } else if (tradeResult === 'win') {
+            finalPnl = Math.abs(finalPnl);
+        }
+    }
+    
+    // Get selected emotion
+    const currentSelectedEmotion = selectedEmotion || 'Neutral';
+    console.log('Selected emotion:', currentSelectedEmotion);
+    
+    // Create timestamp from selected date (set to end of day for proper sorting)
+    let selectedDate;
+    if (tradeDate && tradeDate !== '') {
+        // Validate the date string format (YYYY-MM-DD)
+        if (/^\d{4}-\d{2}-\d{2}$/.test(tradeDate)) {
+            selectedDate = new Date(tradeDate + 'T23:59:59.999Z');
+        } else {
+            console.error('Invalid date format:', tradeDate);
+            selectedDate = new Date();
+        }
+    } else {
+        console.warn('No trade date provided, using current date');
+        selectedDate = new Date();
+    }
+    
+    // Ensure we have a valid date
+    if (isNaN(selectedDate.getTime())) {
+        console.error('Invalid date created, using current date');
+        selectedDate = new Date();
+    }
+    
+    const trade = {
+        id: Date.now().toString(),
+        timestamp: selectedDate.toISOString(),
+        tradeDate: tradeDate, // Store the original date for reference
+        strategyId: strategy || null,
+        strategyName: strategy || null,
+        instrument: instrument,
+        side: side,
+        entryPrice: entryPrice ? parseFloat(entryPrice) : null,
+        exitPrice: exitPrice ? parseFloat(exitPrice) : null,
+        stopLoss: stopLoss ? parseFloat(stopLoss) : null,
+        target: target ? parseFloat(target) : null,
+        positionSize: positionSize ? parseFloat(positionSize) : null,
+        riskAmount: riskAmount ? parseFloat(riskAmount) : null,
+        pnl: finalPnl,
+        netPnl: finalPnl,
+        tradeResult: tradeResult,
+        notes: notes,
+        feeling: 50,
+        emotions: currentSelectedEmotion ? [currentSelectedEmotion] : [],
+        screenshots: selectedScreenshots || [],
+        status: 'closed'
+    };
+    
+    // Save to localStorage
+    const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+    console.log('Current trades before adding:', trades);
+    
+    trades.push(trade);
+    localStorage.setItem('trades', JSON.stringify(trades));
+    
+    console.log('Trade saved successfully:', trade);
+    console.log('Updated trades:', JSON.parse(localStorage.getItem('trades') || '[]'));
+    
+    // Debug: Check if netPnl is being saved correctly
+    console.log('Trade netPnl value:', trade.netPnl);
+    console.log('Trade pnl value:', trade.pnl);
+    console.log('Trade tradeResult:', trade.tradeResult);
+    
+    // Trigger storage event to notify other pages
+    window.dispatchEvent(new StorageEvent('storage', {
+        key: 'trades',
+        newValue: localStorage.getItem('trades'),
+        oldValue: JSON.stringify(trades.slice(0, -1))
+    }));
+    
+    // Show success message
+    alert('Trade saved successfully!');
+    
+    // Reset form
+    document.getElementById('trade-form').reset();
+    
+    // Reset calendar dropdown to today
+    const calendarComponent = document.querySelector('[x-data*="calendarOpen"]');
+    if (calendarComponent && calendarComponent._x_dataStack && calendarComponent._x_dataStack[0]) {
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        calendarComponent._x_dataStack[0].selectedDate = todayString;
+        calendarComponent._x_dataStack[0].currentMonth = today.getMonth();
+        calendarComponent._x_dataStack[0].currentYear = today.getFullYear();
+    }
+    
+    selectedEmotion = null;
+    selectedScreenshots = [];
+    screenshotPreview.innerHTML = '';
+    emotionButtons.forEach(btn => {
+        btn.classList.remove('border-primary', 'bg-primary/10', 'text-primary', 'dark:bg-primary/20', 'dark:text-blue-300');
+        btn.classList.add('border-border-light', 'dark:border-border-dark', 'bg-background-light', 'dark:bg-background-dark');
+    });
+    
+    // Reset Alpine.js dropdowns
+    if (strategyDropdown && strategyDropdown._x_dataStack && strategyDropdown._x_dataStack[0]) {
+        strategyDropdown._x_dataStack[0].strategySelected = 'Select strategy';
+    }
+    if (instrumentDropdown && instrumentDropdown._x_dataStack && instrumentDropdown._x_dataStack[0]) {
+        instrumentDropdown._x_dataStack[0].instrumentSelected = 'Select instrument';
+    }
+    
+    // Reset strategy checklist
+    hideStrategyChecklist();
+    
+    // Redirect to journal
+    window.location.href = 'journal.html';
+}
+
+// Submit button click handler - direct form processing
+document.getElementById('save-trade-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    console.log('Save Trade button clicked - processing form directly');
+    
+    try {
+        // Process form directly instead of triggering submit event
+        processTradeForm();
+    } catch (error) {
+        console.error('Error processing form:', error);
+        alert('Error saving trade: ' + error.message);
+    }
+});
+
+// Set default date to today when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // The calendar dropdown will automatically set today's date via Alpine.js x-init
+    // No additional JavaScript needed as Alpine.js handles the initialization
+});
+
+// Dark mode is set as default above
+</script>
+
+</body></html>

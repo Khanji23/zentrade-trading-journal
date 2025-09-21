@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-background-dark text-text-primary min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-primary mb-8">Style Test</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-card-dark/50 p-6 rounded-xl border border-primary/20">
+                <h3 class="text-xl font-bold text-primary mb-2">Total P&L</h3>
+                <p class="text-3xl font-bold text-profit-green">+$1,234.56</p>
+            </div>
+            
+            <div class="bg-card-dark/50 p-6 rounded-xl border border-primary/20">
+                <h3 class="text-xl font-bold text-primary mb-2">Win Rate</h3>
+                <p class="text-3xl font-bold text-profit-green">68.5%</p>
+            </div>
+            
+            <div class="bg-card-dark/50 p-6 rounded-xl border border-primary/20">
+                <h3 class="text-xl font-bold text-primary mb-2">Profit Factor</h3>
+                <p class="text-3xl font-bold text-profit-green">2.34</p>
+            </div>
+        </div>
+        
+        <div class="bg-card-dark/50 p-6 rounded-xl border border-primary/20">
+            <h3 class="text-xl font-bold text-primary mb-4">Chart Area</h3>
+            <div class="h-64 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
+                <p class="text-text-secondary">Chart would go here</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <p class="text-text-secondary">If you can see this styled properly, Tailwind is working!</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Data - TradeMind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold mb-8">Test Data Generator</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4">Add Sample Trades</h2>
+            <button onclick="addSampleTrades()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Add Sample Trades
+            </button>
+            <button onclick="clearAllTrades()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4">
+                Clear All Trades
+            </button>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4">Current Trades</h2>
+            <div id="trades-list" class="space-y-2"></div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">Statistics</h2>
+            <div id="stats" class="grid grid-cols-3 gap-4">
+                <div class="text-center">
+                    <p class="text-sm text-gray-600">Total Trades</p>
+                    <p id="total-trades" class="text-2xl font-bold">0</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-sm text-gray-600">Win Rate</p>
+                    <p id="win-rate" class="text-2xl font-bold">0%</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-sm text-gray-600">Total P&L</p>
+                    <p id="total-pnl" class="text-2xl font-bold">$0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addSampleTrades() {
+            const sampleTrades = [
+                {
+                    id: '1',
+                    timestamp: new Date().toISOString(),
+                    instrument: 'EUR/USD',
+                    side: 'Buy',
+                    entryPrice: 1.07250,
+                    exitPrice: 1.07350,
+                    stopLoss: 1.07150,
+                    takeProfit: 1.07550,
+                    positionSize: 1.0,
+                    riskAmount: 100,
+                    notes: 'Good setup with clear support',
+                    feeling: 75,
+                    emotions: ['Confidence'],
+                    screenshots: [],
+                    status: 'closed',
+                    pnl: 100
+                },
+                {
+                    id: '2',
+                    timestamp: new Date(Date.now() - 86400000).toISOString(),
+                    instrument: 'ES',
+                    side: 'Sell',
+                    entryPrice: 4500,
+                    exitPrice: 4480,
+                    stopLoss: 4520,
+                    takeProfit: 4460,
+                    positionSize: 2,
+                    riskAmount: 200,
+                    notes: 'E-mini S&P 500 resistance level trade',
+                    feeling: 60,
+                    emotions: ['Calm'],
+                    screenshots: [],
+                    status: 'closed',
+                    pnl: 40
+                },
+                {
+                    id: '3',
+                    timestamp: new Date(Date.now() - 172800000).toISOString(),
+                    instrument: 'MES',
+                    side: 'Buy',
+                    entryPrice: 4500,
+                    exitPrice: 4480,
+                    stopLoss: 4400,
+                    takeProfit: 4600,
+                    positionSize: 5,
+                    riskAmount: 50,
+                    notes: 'Micro E-mini S&P 500 failed breakout',
+                    feeling: 30,
+                    emotions: ['Frustration'],
+                    screenshots: [],
+                    status: 'closed',
+                    pnl: -10
+                },
+                {
+                    id: '4',
+                    timestamp: new Date(Date.now() - 259200000).toISOString(),
+                    instrument: 'GC',
+                    side: 'Buy',
+                    entryPrice: 2000,
+                    exitPrice: 2020,
+                    stopLoss: 1980,
+                    takeProfit: 2040,
+                    positionSize: 1,
+                    riskAmount: 200,
+                    notes: 'Gold futures breakout trade',
+                    feeling: 85,
+                    emotions: ['Confidence', 'Excitement'],
+                    screenshots: [],
+                    status: 'closed',
+                    pnl: 200
+                },
+                {
+                    id: '5',
+                    timestamp: new Date(Date.now() - 345600000).toISOString(),
+                    instrument: 'CL',
+                    side: 'Sell',
+                    entryPrice: 75.50,
+                    exitPrice: 74.20,
+                    stopLoss: 76.00,
+                    takeProfit: 73.00,
+                    positionSize: 1,
+                    riskAmount: 500,
+                    notes: 'Crude oil futures short',
+                    feeling: 70,
+                    emotions: ['Confidence'],
+                    screenshots: [],
+                    status: 'closed',
+                    pnl: 130
+                },
+                {
+                    id: '6',
+                    timestamp: new Date().toISOString(),
+                    instrument: 'NQ',
+                    side: 'Buy',
+                    entryPrice: 15000,
+                    stopLoss: 14800,
+                    takeProfit: 15200,
+                    positionSize: 1,
+                    riskAmount: 200,
+                    notes: 'E-mini NASDAQ 100 current open trade',
+                    feeling: 80,
+                    emotions: ['Confidence', 'Excitement'],
+                    screenshots: [],
+                    status: 'open'
+                }
+            ];
+            
+            const existingTrades = JSON.parse(localStorage.getItem('trades') || '[]');
+            const newTrades = [...existingTrades, ...sampleTrades];
+            localStorage.setItem('trades', JSON.stringify(newTrades));
+            
+            loadTrades();
+            alert('Sample trades added!');
+        }
+        
+        function clearAllTrades() {
+            localStorage.removeItem('trades');
+            loadTrades();
+            alert('All trades cleared!');
+        }
+        
+        function loadTrades() {
+            const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+            const closedTrades = trades.filter(t => t.status === 'closed' && t.pnl !== undefined);
+            
+            // Update trades list
+            const tradesList = document.getElementById('trades-list');
+            tradesList.innerHTML = trades.map(trade => `
+                <div class="flex justify-between items-center p-2 border rounded">
+                    <div>
+                        <span class="font-semibold">${trade.instrument}</span>
+                        <span class="text-sm text-gray-600 ml-2">${trade.side}</span>
+                        <span class="text-sm text-gray-600 ml-2">${trade.status}</span>
+                        ${trade.pnl !== undefined ? `<span class="ml-2 ${trade.pnl >= 0 ? 'text-green-600' : 'text-red-600'}">$${trade.pnl}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update statistics
+            const totalTrades = trades.length;
+            const winningTrades = closedTrades.filter(t => t.pnl > 0);
+            const winRate = closedTrades.length > 0 ? Math.round((winningTrades.length / closedTrades.length) * 100) : 0;
+            const totalPnl = closedTrades.reduce((sum, t) => sum + (t.pnl || 0), 0);
+            
+            document.getElementById('total-trades').textContent = totalTrades;
+            document.getElementById('win-rate').textContent = winRate + '%';
+            document.getElementById('total-pnl').textContent = '$' + totalPnl.toFixed(2);
+        }
+        
+        // Load on page load
+        loadTrades();
+    </script>
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Features - ZenTrade Trading Journal</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0D1B2A",
+                        "card-dark": "#1B1B1B",
+                        "text-primary": "#E0E0E0",
+                        "text-secondary": "#6C757D",
+                        "profit-green": "#00C853",
+                        "loss-red": "#FF1744",
+                        "warning-amber": "#FFD600",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px",
+                    },
+                    boxShadow: {
+                        'glow-primary-md': '0 0 15px 0 rgba(0, 245, 212, 0.3)',
+                        'glow-primary-lg': '0 0 25px 0 rgba(0, 245, 212, 0.4)',
+                        'glow-secondary-md': '0 0 15px 0 rgba(123, 44, 191, 0.3)',
+                        'glow-secondary-lg': '0 0 25px 0 rgba(123, 44, 191, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glow {
+            box-shadow: 0 0 5px theme("colors.primary"),
+                0 0 10px theme("colors.primary"), 0 0 15px theme("colors.primary"),
+                0 0 20px theme("colors.primary");
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00F5D4 0%, #00D4FF 50%, #7B2CBF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
+    <div class="flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header -->
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+            <div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:0.8" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Animated inner ring -->
+                        <circle cx="50" cy="50" r="40" 
+                                stroke="url(#pulseGradient)" 
+                                stroke-width="3" 
+                                fill="none" 
+                                opacity="0.7">
+                            <animateTransform attributeName="transform" 
+                                            type="rotate" 
+                                            values="360 50 50;0 50 50" 
+                                            dur="6s" 
+                                            repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Central hexagon -->
+                        <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                 stroke="url(#logoGradient)" 
+                                 stroke-width="4" 
+                                 fill="none" 
+                                 filter="url(#glow)">
+                            <animate attributeName="opacity" 
+                                     values="0.7;1;0.7" 
+                                     dur="2s" 
+                                     repeatCount="indefinite"/>
+                        </polygon>
+                        
+                        <!-- Animated data points -->
+                        <circle cx="25" cy="45" r="4" fill="#00F5D4" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="30" r="4" fill="#00D4FF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+                        </circle>
+                        <circle cx="75" cy="45" r="4" fill="#7B2CBF" opacity="0.9">
+                            <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </circle>
+                        
+                        <!-- Animated connection lines -->
+                        <path d="M25,45 L50,30 L75,45" 
+                              stroke="url(#logoGradient)" 
+                              stroke-width="2.5" 
+                              fill="none" 
+                              opacity="0.7">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+                <span class="text-2xl font-bold gradient-text">ZenTrade</span>
+            </div>
+            <nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="landing.html">Home</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="pricing.html">Pricing</a>
+                <a class="text-sm font-medium text-primary font-semibold" href="features.html">Features</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="about.html">About Us</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="contact.html">Contact Us</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-black shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-glow-primary-lg">
+                    Get Started
+                </a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        Powerful
+                        <span class="gradient-text">Features</span>
+                    </h1>
+                    <p class="text-xl lg:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed">
+                        Everything you need to track, analyze, and improve your trading performance. 
+                        Professional tools at an affordable price.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Features Section -->
+        <section class="py-20 lg:py-32 bg-card-dark/30">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        Core
+                        <span class="gradient-text">Features</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                        Essential tools every trader needs to succeed in the markets.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 hover:shadow-glow-primary-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Performance Analytics</h3>
+                        <p class="text-text-secondary mb-6">
+                            Track your P&L, win rate, and key metrics with beautiful charts and real-time insights that help you understand your trading patterns.
+                        </p>
+                        <ul class="space-y-2 text-sm text-text-secondary">
+                            <li>• Real-time P&L tracking</li>
+                            <li>• Win rate analysis</li>
+                            <li>• Risk-reward ratios</li>
+                            <li>• Equity curve visualization</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 hover:shadow-glow-primary-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Trade Journal</h3>
+                        <p class="text-text-secondary mb-6">
+                            Log every trade with detailed notes, emotions, and outcomes. Build a comprehensive history that reveals your strengths and weaknesses.
+                        </p>
+                        <ul class="space-y-2 text-sm text-text-secondary">
+                            <li>• Detailed trade logging</li>
+                            <li>• Emotion tracking</li>
+                            <li>• Trade notes & screenshots</li>
+                            <li>• Search & filter capabilities</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 hover:shadow-glow-primary-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Strategy Builder</h3>
+                        <p class="text-text-secondary mb-6">
+                            Create, test, and refine your trading strategies with our intuitive builder. Define entry and exit criteria that work for your style.
+                        </p>
+                        <ul class="space-y-2 text-sm text-text-secondary">
+                            <li>• Custom strategy creation</li>
+                            <li>• Entry & exit criteria</li>
+                            <li>• Performance tracking</li>
+                            <li>• Strategy comparison</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 hover:shadow-glow-primary-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Real-time Tracking</h3>
+                        <p class="text-text-secondary mb-6">
+                            Monitor your open positions and track performance in real-time. Never miss an opportunity or risk management moment.
+                        </p>
+                        <ul class="space-y-2 text-sm text-text-secondary">
+                            <li>• Live position monitoring</li>
+                            <li>• Real-time P&L updates</li>
+                            <li>• Risk alerts</li>
+                            <li>• Market data integration</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 hover:shadow-glow-primary-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Risk Management</h3>
+                        <p class="text-text-secondary mb-6">
+                            Set stop losses, take profits, and manage position sizes with built-in risk management tools that protect your capital.
+                        </p>
+                        <ul class="space-y-2 text-sm text-text-secondary">
+                            <li>• Position sizing calculator</li>
+                            <li>• Risk-reward analysis</li>
+                            <li>• Stop loss tracking</li>
+                            <li>• Portfolio risk metrics</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20 hover:shadow-glow-primary-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Instant Insights</h3>
+                        <p class="text-text-secondary mb-6">
+                            Get instant feedback on your trading performance with AI-powered insights and recommendations for improvement.
+                        </p>
+                        <ul class="space-y-2 text-sm text-text-secondary">
+                            <li>• AI-powered analysis</li>
+                            <li>• Performance recommendations</li>
+                            <li>• Pattern recognition</li>
+                            <li>• Improvement suggestions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Features Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        Advanced
+                        <span class="gradient-text">Features</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                        Professional-grade tools that give you the edge in competitive markets.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-6">Comprehensive Analytics</h3>
+                        <p class="text-lg text-text-secondary mb-8">
+                            Dive deep into your trading data with advanced analytics that reveal patterns, trends, and opportunities for improvement.
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-semibold mb-2">Equity Curve Analysis</h4>
+                                    <p class="text-text-secondary">Visualize your account growth over time with detailed equity curve charts and drawdown analysis.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-semibold mb-2">Strategy Performance</h4>
+                                    <p class="text-text-secondary">Compare different strategies side-by-side to identify your most profitable approaches.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-semibold mb-2">Time-based Analysis</h4>
+                                    <p class="text-text-secondary">Analyze your performance by time of day, day of week, and market conditions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                        <h4 class="text-2xl font-bold mb-6 text-center">Export & Integration</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                                <span class="font-medium">CSV Export</span>
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                                <span class="font-medium">Excel Integration</span>
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                                <span class="font-medium">API Access</span>
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                                <span class="font-medium">Cloud Sync</span>
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile Features Section -->
+        <section class="py-20 lg:py-32 bg-card-dark/30">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                            Mobile
+                            <span class="gradient-text">Optimized</span>
+                        </h2>
+                        <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                            Trade and track on the go with our fully responsive mobile interface.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <h3 class="text-2xl font-bold mb-6">Trade Anywhere</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Mobile-First Design</h4>
+                                        <p class="text-sm text-text-secondary">Optimized for smartphones and tablets</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Fast Performance</h4>
+                                        <p class="text-sm text-text-secondary">Lightning-fast loading and smooth interactions</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Secure Access</h4>
+                                        <p class="text-sm text-text-secondary">Bank-level security for your trading data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-3xl font-bold mb-6">Always Connected</h3>
+                            <p class="text-lg text-text-secondary mb-8">
+                                Access your trading journal from anywhere in the world. Whether you're at home, in the office, or traveling, 
+                                your data is always synchronized and ready.
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold gradient-text mb-2">99.9%</div>
+                                    <div class="text-text-secondary">Uptime</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold gradient-text mb-2">24/7</div>
+                                    <div class="text-text-secondary">Access</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold gradient-text mb-2">256-bit</div>
+                                    <div class="text-text-secondary">Encryption</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold gradient-text mb-2">Global</div>
+                                    <div class="text-text-secondary">CDN</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        Ready to Experience These
+                        <span class="gradient-text">Features?</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
+                        Start your free trial today and discover why thousands of traders choose ZenTrade.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="index.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-bold text-black shadow-glow-primary-lg transition-all duration-300 ease-in-out hover:scale-105">
+                            <svg class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 7L20 12L13 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Start Free Trial
+                        </a>
+                        <a href="pricing.html" class="inline-flex items-center justify-center rounded-full border-2 border-primary/30 px-8 py-4 text-lg font-bold text-text-primary hover:border-primary hover:bg-primary/10 transition-all duration-300">
+                            View Pricing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-primary/20 py-12">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="size-12 relative">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                            <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                             stroke="url(#footerLogoGradient)" 
+                                             stroke-width="4" 
+                                             fill="none"/>
+                                </svg>
+                            </div>
+                            <span class="text-2xl font-bold gradient-text">ZenTrade</span>
+                        </div>
+                        <p class="text-text-secondary mb-6 max-w-md">
+                            The most affordable professional trading journal that helps you track performance, analyze patterns, and build winning strategies.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="index.html" class="text-text-secondary hover:text-primary transition-colors">Dashboard</a></li>
+                            <li><a href="journal.html" class="text-text-secondary hover:text-primary transition-colors">Trade Journal</a></li>
+                            <li><a href="strategies.html" class="text-text-secondary hover:text-primary transition-colors">Strategies</a></li>
+                            <li><a href="pricing.html" class="text-text-secondary hover:text-primary transition-colors">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Company</h3>
+                        <ul class="space-y-2">
+                            <li><a href="about.html" class="text-text-secondary hover:text-primary transition-colors">About Us</a></li>
+                            <li><a href="features.html" class="text-text-secondary hover:text-primary transition-colors">Features</a></li>
+                            <li><a href="contact.html" class="text-text-secondary hover:text-primary transition-colors">Contact Us</a></li>
+                            <li><a href="#" class="text-text-secondary hover:text-primary transition-colors">Help Center</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-primary/20 mt-8 pt-8 text-center">
+                    <p class="text-text-secondary">© 2024 ZenTrade. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Set dark mode as default
+        document.documentElement.classList.add('dark');
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
