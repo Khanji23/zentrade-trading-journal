@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" class="dark"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ZenTrade Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ZenTrade - Professional Trading Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -45,20 +45,94 @@
             },
         };
     </script>
-<style>
+    <style>
         .glow {
             box-shadow: 0 0 5px theme("colors.primary"),
                 0 0 10px theme("colors.primary"), 0 0 15px theme("colors.primary"),
                 0 0 20px theme("colors.primary");
         }
+        /* Font loading optimization */
+        @font-face {
+            font-family: 'Space Grotesk';
+            font-style: normal;
+            font-weight: 300 700;
+            font-display: swap;
+            src: url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQQoAOGQrFh3qX3V0F9uA2cvPqdcS5Dl8.woff2') format('woff2');
+        }
+        
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 300 700;
+            font-display: swap;
+            src: url('https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2') format('woff2');
+        }
+        
+        /* Emoji and image loading fixes */
+        .emoji {
+            font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Android Emoji', 'EmojiSymbols', 'EmojiOne Mozilla', 'Twemoji Mozilla', 'Segoe UI Symbol', sans-serif;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: normal;
+            line-height: 1;
+            text-transform: none;
+        }
+        
+        /* Ensure images load properly */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Fix for external images */
+        .external-image {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #00F5D4 0%, #00D4FF 50%, #7B2CBF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .rotate-y-12 {
+            transform: rotateY(12deg);
+        }
+        .-rotate-y-12 {
+            transform: rotateY(-12deg);
+        }
+        .hover\:rotate-y-0:hover {
+            transform: rotateY(0deg);
+        }
+        .hover\:scale-105:hover {
+            transform: scale(1.05);
+        }
+        .floating-animation {
+            animation: floating 6s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-text-primary">
-<div class="flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
-<div class="flex h-full grow flex-col">
-<header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
-<div class="flex items-center gap-4">
-                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='index.html'">
+    <div class="flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header -->
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 px-6 sm:px-10 py-4">
+            <div class="flex items-center gap-4">
+                <div class="size-16 relative cursor-pointer transition-transform duration-200 hover:scale-105" onclick="window.location.href='dashboard.html'">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                         <defs>
                             <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -129,800 +203,840 @@
                         </path>
                     </svg>
                 </div>
-</div>
-<nav class="hidden lg:flex items-center gap-8">
-                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="index.html">Dashboard</a>
-                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="journal.html">Journal</a>
-                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="strategies.html">Strategies</a>
-</nav>
-<div class="flex items-center gap-4">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9gJiexlC3E0uAS8yUYqqcwsp0ox36780qpD0w-0R31-tNQIis6Aafy1V3fiZZIajoxPD62S_zggE96zChiMUUuK0G8huvbVmVxZWJVP52373GqQOuxGiXkc3GYT2tfgatUx-16PRxzpQWQwDreUlsY8dJ1Z39b0fZujGLKY7lS34YKspdRAVTz8ntWTXLmkIuwUUyK3iAzhB1tKtO3IHW_rPMgQINcIdGJVSRHfcY7yic2qiN6g_nmoDMqH2ErGBdO6BNbwwGzAA");'></div>
-</div>
-</header>
-    <main class="flex-1 p-4 sm:p-6 lg:p-8">
-    <div class="mb-8">
-        <div class="flex items-center gap-4 mb-2">
-            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
+                <span class="text-2xl font-bold gradient-text">ZenTrade</span>
             </div>
-            <h1 class="text-3xl font-bold">Dashboard</h1>
-        </div>
-        <p class="text-base text-text-secondary">Welcome back! Here's your trading performance overview.</p>
-    </div>
-    
-    <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-        <!-- Main Chart Section -->
-        <div class="xl:col-span-3">
-            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold" id="equity-curve-title">Daily Net Cumulative P&L: $0.00</h2>
-                    <div class="flex items-center gap-4">
-                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('7d')">7D</button>
-                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('30d')">30D</button>
-                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('90d')">90D</button>
-                        <button class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors" onclick="updateChartPeriod('all')">All</button>
-                    </div>
-                </div>
-                <div class="h-80">
-                    <canvas id="pnlChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Calendar Section -->
-            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md">
-                <div class="flex items-center justify-between mb-4">
-                    <button class="p-2 rounded-full hover:bg-primary/20 transition-colors" onclick="previousMonth()">
-                        <svg fill="currentColor" height="18px" viewBox="0 0 256 256" width="18px" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
-                        </svg>
-                    </button>
-                    <h2 class="font-bold text-xl" id="current-month">October 2024</h2>
-                    <button class="p-2 rounded-full hover:bg-primary/20 transition-colors" onclick="nextMonth()">
-                        <svg fill="currentColor" height="18px" viewBox="0 0 256 256" width="18px" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                        </svg>
+            <nav class="hidden lg:flex items-center gap-8">
+                <a class="text-sm font-medium text-primary font-semibold" href="index.html">Home</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="pricing.html">Pricing</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="features.html">Features</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="about.html">About Us</a>
+                <a class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors" href="contact.html">Contact Us</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <!-- Login Button (shown when not authenticated) -->
+                <a href="login.html" class="text-sm font-medium text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors">
+                    Login
+                </a>
+                
+                <!-- User Menu (shown when authenticated) -->
+                <div id="userMenu" class="hidden flex items-center gap-4">
+                    <span id="userInfo" class="text-sm font-medium text-black/80 dark:text-white/80"></span>
+                    <button onclick="logout()" class="text-sm font-medium text-red-500 hover:text-red-600 transition-colors">
+                        Logout
                     </button>
                 </div>
                 
-                <!-- PnL Summary -->
-                <div class="mb-4 space-y-3">
-                    <!-- Weekly PnL Summary -->
-                    <div class="p-4 bg-white/5 rounded-lg border border-white/10">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-semibold text-white">This Week's P&L</h3>
-                            <span id="weekly-pnl-amount" class="text-base font-bold text-primary">$0.00</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span id="weekly-trades-count">0 trades</span>
-                            <span id="weekly-win-rate">0% win rate</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Monthly PnL Summary -->
-                    <div class="p-4 bg-white/5 rounded-lg border border-white/10">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-semibold text-white">This Month's P&L</h3>
-                            <span id="monthly-pnl-amount" class="text-base font-bold text-primary">$0.00</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span id="monthly-trades-count">0 trades</span>
-                            <span id="monthly-win-rate">0% win rate</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-7 gap-2">
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">SUN</p>
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">MON</p>
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">TUE</p>
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">WED</p>
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">THU</p>
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">FRI</p>
-                    <p class="font-bold text-text-secondary text-center py-2 text-sm">SAT</p>
-                    <div id="calendar-days" class="col-span-7 grid grid-cols-7 gap-2">
-                        <!-- Calendar days will be generated by JavaScript -->
-                    </div>
-                </div>
+                <a href="register.html" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-black shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-glow-primary-lg">
+                    Get Started
+                </a>
             </div>
-        </div>
-        
-        <!-- Key Metrics Sidebar -->
-        <div class="xl:col-span-1 space-y-6">
-            <!-- Key Metrics - Matching 3D Mockup -->
-            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md">
-                <h2 class="text-lg font-bold mb-6">Key Metrics</h2>
-                <div class="grid grid-cols-1 gap-4">
-                    <!-- Total P&L - Enhanced -->
-                    <div class="bg-gradient-to-br from-primary/30 to-primary/20 p-6 rounded-xl border-2 border-primary/30 shadow-glow-primary-md">
-                        <div class="text-3xl font-bold text-primary mb-2" id="total-pnl-display">$0.00</div>
-                        <div class="text-sm font-semibold text-primary/80">Total P&L</div>
-                        <div class="mt-2 text-xs text-text-secondary">Your overall performance</div>
-                    </div>
-                    
-                    <!-- Win Rate -->
-                    <div class="bg-gradient-to-br from-secondary/20 to-secondary/10 p-4 rounded-xl">
-                        <div class="text-xl font-bold text-secondary" id="win-rate-display">0%</div>
-                        <div class="text-xs text-text-secondary">Win Rate</div>
-                    </div>
-                    
-                    <!-- Profit Factor -->
-                    <div class="bg-gradient-to-br from-primary/20 to-primary/10 p-4 rounded-xl">
-                        <div class="text-xl font-bold text-primary" id="profit-factor-display">0.0</div>
-                        <div class="text-xs text-text-secondary">Profit Factor</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Recent Trades - Real Data -->
-            <div class="bg-card-dark/50 p-6 rounded-xl shadow-glow-primary-md">
-                <h2 class="text-lg font-bold mb-4">Recent Trades</h2>
-                <div class="space-y-2" id="recent-trades">
-                    <!-- Recent trades will be populated by JavaScript -->
-                </div>
-                <div class="mt-4">
-                    <a href="journal.html" class="flex w-full items-center justify-center rounded-lg h-10 px-4 bg-primary/20 text-text-primary text-sm font-bold transition-colors hover:bg-secondary/30"> View More </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-</div>
-</div>
+        </header>
 
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden bg-gradient-to-br from-background-dark via-background-dark to-card-dark/50">
+            <div class="container mx-auto px-6 sm:px-10 py-20 lg:py-32">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Left Content -->
+                    <div class="space-y-8">
+                        <div class="space-y-4">
+                            <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+                                <span class="text-sm font-semibold text-primary emoji">✨ New: Advanced Analytics</span>
+                            </div>
+                            <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                                The Future of
+                                <span class="gradient-text">Trading</span>
+                                <br>Journaling
+                            </h1>
+                            <p class="text-xl lg:text-2xl text-text-secondary leading-relaxed">
+                                Experience the most advanced trading journal with 3D visualizations, 
+                                AI-powered insights, and real-time performance tracking.
+                            </p>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="register.html" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-bold text-black shadow-glow-primary-lg transition-all duration-300 ease-in-out hover:scale-105">
+                                <svg class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 7L20 12L13 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                Try Free Demo
+                            </a>
+                            <a href="features.html" class="inline-flex items-center justify-center rounded-full border-2 border-primary/30 px-8 py-4 text-lg font-bold text-text-primary hover:border-primary hover:bg-primary/10 transition-all duration-300">
+                                Explore Features
+                            </a>
+                        </div>
+                        
+                        <!-- Stats -->
+                        <div class="grid grid-cols-3 gap-8 pt-8">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold gradient-text">10K+</div>
+                                <div class="text-sm text-text-secondary">Active Traders</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold gradient-text">1M+</div>
+                                <div class="text-sm text-text-secondary">Trades Logged</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold gradient-text">95%</div>
+                                <div class="text-sm text-text-secondary">Success Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Content - 3D Screenshots -->
+                    <div class="relative">
+                        <!-- Dashboard Screenshot with 3D Effect -->
+                        <div class="relative transform perspective-1000">
+                            <div class="bg-card-dark/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-primary/20 p-6 transform rotate-y-12 hover:rotate-y-0 transition-all duration-700 hover:scale-105">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="text-sm text-text-secondary ml-4">ZenTrade Dashboard</div>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="h-4 bg-primary/20 rounded"></div>
+                                    <div class="h-4 bg-primary/10 rounded w-3/4"></div>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div class="h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg"></div>
+                                        <div class="h-16 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-lg"></div>
+                                        <div class="h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg"></div>
+                                    </div>
+                                    <div class="h-32 bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 rounded-lg"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Floating Elements -->
+                            <div class="absolute -top-4 -right-4 w-8 h-8 bg-primary rounded-full animate-bounce"></div>
+                            <div class="absolute -bottom-4 -left-4 w-6 h-6 bg-secondary rounded-full animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Journal Screenshot with 3D Effect -->
+                        <div class="absolute top-8 -right-8 transform perspective-1000">
+                            <div class="bg-card-dark/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-secondary/20 p-6 transform -rotate-y-12 hover:rotate-y-0 transition-all duration-700 hover:scale-105">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="text-sm text-text-secondary ml-4">Trade Journal</div>
+                                </div>
+                                <div class="space-y-3">
+                                    <!-- Journal Header -->
+                                    <div class="flex items-center justify-between text-xs text-text-secondary mb-3">
+                                        <span>Date</span>
+                                        <span>Pair</span>
+                                        <span>P&L</span>
+                                    </div>
+                                    
+                                    <!-- Trade Entries -->
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between p-2 bg-white/5 rounded text-xs">
+                                            <span class="text-text-secondary">12/15</span>
+                                            <span class="text-white">USD/JPY</span>
+                                            <span class="text-green-400">+$156</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-2 bg-white/5 rounded text-xs">
+                                            <span class="text-text-secondary">12/14</span>
+                                            <span class="text-white">EUR/GBP</span>
+                                            <span class="text-red-400">-$89</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-2 bg-white/5 rounded text-xs">
+                                            <span class="text-text-secondary">12/14</span>
+                                            <span class="text-white">BTC/USD</span>
+                                            <span class="text-green-400">+$234</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-2 bg-white/5 rounded text-xs">
+                                            <span class="text-text-secondary">12/13</span>
+                                            <span class="text-white">GBP/CHF</span>
+                                            <span class="text-green-400">+$67</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Summary -->
+                                    <div class="pt-2 border-t border-white/10">
+                                        <div class="flex justify-between text-xs">
+                                            <span class="text-text-secondary">Total Trades: 47</span>
+                                            <span class="text-primary font-semibold">Win Rate: 68%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Background Elements -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+                <div class="absolute top-40 right-20 w-48 h-48 bg-secondary/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+                <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-primary/10 rounded-full blur-2xl animate-pulse" style="animation-delay: 4s;"></div>
+            </div>
+        </section>
+
+        <!-- Trading Journal Showcase -->
+        <section class="py-20 lg:py-32 bg-gradient-to-r from-card-dark/30 to-background-dark/50">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        Experience the
+                        <span class="gradient-text">Difference</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                        See why thousands of traders choose ZenTrade for their trading journal needs.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <!-- Left - Dashboard Preview -->
+                    <div class="space-y-8">
+                        <div class="glass-effect p-8 rounded-2xl">
+                            <h3 class="text-2xl font-bold mb-4">Real-Time Dashboard</h3>
+                            <p class="text-text-secondary mb-6">
+                                Monitor your trading performance with live charts, P&L tracking, and key metrics. 
+                                Everything you need in one beautiful interface.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span class="text-sm">Live P&L tracking</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span class="text-sm">Interactive charts</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span class="text-sm">Performance analytics</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-effect p-8 rounded-2xl">
+                            <h3 class="text-2xl font-bold mb-4">Advanced Journaling</h3>
+                            <p class="text-text-secondary mb-6">
+                                Log every trade with emotion tracking, screenshots, and detailed notes. 
+                                Build a comprehensive trading history.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                                    <span class="text-sm">Emotion tracking</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                                    <span class="text-sm">Trade screenshots</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                                    <span class="text-sm">Detailed notes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right - 3D Mockup -->
+                    <div class="relative">
+                        <div class="floating-animation">
+                            <div class="bg-card-dark/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-primary/30 p-8 transform rotate-y-6">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="text-sm text-text-secondary ml-4">ZenTrade Pro</div>
+                                </div>
+                                
+                                <!-- Mock Dashboard Content -->
+                                <div class="space-y-6">
+                                    <!-- Header Stats -->
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="bg-gradient-to-br from-primary/20 to-primary/10 p-4 rounded-xl">
+                                            <div class="text-2xl font-bold text-primary">+$3,247</div>
+                                            <div class="text-xs text-text-secondary">Today's P&L</div>
+                                        </div>
+                                        <div class="bg-gradient-to-br from-secondary/20 to-secondary/10 p-4 rounded-xl">
+                                            <div class="text-2xl font-bold text-secondary">82.3%</div>
+                                            <div class="text-xs text-text-secondary">Win Rate</div>
+                                        </div>
+                                        <div class="bg-gradient-to-br from-primary/20 to-primary/10 p-4 rounded-xl">
+                                            <div class="text-2xl font-bold text-primary">1.8</div>
+                                            <div class="text-xs text-text-secondary">Profit Factor</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Chart Area - Simple SVG Line -->
+                                    <div class="h-40 bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 rounded-xl p-4 relative overflow-hidden">
+                                        <div class="text-text-secondary text-xs mb-3 font-medium">Equity Curve: +$12,450</div>
+                                        <!-- Simple SVG Equity Curve -->
+                                        <div class="h-28 bg-card-dark/30 rounded-lg p-3 relative">
+                                            <svg class="w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="none">
+                                                <!-- Background grid -->
+                                                <defs>
+                                                    <pattern id="mockupGrid" width="30" height="20" patternUnits="userSpaceOnUse">
+                                                        <path d="M 30 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+                                                    </pattern>
+                                                </defs>
+                                                <rect width="100%" height="100%" fill="url(#mockupGrid)" />
+                                                
+                                                <!-- Equity curve line -->
+                                                <path d="M 10,80 
+                                                         Q 30,70 50,60
+                                                         Q 70,50 90,45
+                                                         Q 110,40 130,35
+                                                         Q 150,30 170,25
+                                                         Q 190,20 210,18
+                                                         Q 230,16 250,15
+                                                         Q 270,14 290,12" 
+                                                      fill="none" 
+                                                      stroke="#00F5D4" 
+                                                      stroke-width="2.5" 
+                                                      stroke-linecap="round" 
+                                                      stroke-linejoin="round"/>
+                                                
+                                                <!-- Data points -->
+                                                <circle cx="30" cy="70" r="2" fill="#00F5D4"/>
+                                                <circle cx="70" cy="50" r="2" fill="#00F5D4"/>
+                                                <circle cx="110" cy="40" r="2" fill="#00F5D4"/>
+                                                <circle cx="150" cy="30" r="2" fill="#00F5D4"/>
+                                                <circle cx="190" cy="20" r="2" fill="#00F5D4"/>
+                                                <circle cx="230" cy="16" r="2" fill="#00F5D4"/>
+                                                <circle cx="270" cy="14" r="2" fill="#00F5D4"/>
+                                                <circle cx="290" cy="12" r="2" fill="#00F5D4"/>
+                                                
+                                                <!-- Current value indicator -->
+                                                <circle cx="290" cy="12" r="4" fill="#00F5D4" stroke="#0D1B2A" stroke-width="2"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Recent Trades -->
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                                <span class="text-sm">EUR/USD Long</span>
+                                            </div>
+                                            <span class="text-sm text-green-400">+$287</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                                <span class="text-sm">GBP/JPY Short</span>
+                                            </div>
+                                            <span class="text-sm text-red-400">-$134</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                                <span class="text-sm">AUD/USD Long</span>
+                                            </div>
+                                            <span class="text-sm text-green-400">+$89</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Elements -->
+                        <div class="absolute -top-6 -right-6 w-12 h-12 bg-primary/20 rounded-full animate-bounce"></div>
+                        <div class="absolute -bottom-6 -left-6 w-8 h-8 bg-secondary/20 rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        What Traders Are
+                        <span class="gradient-text">Saying</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                        Join thousands of successful traders who have transformed their performance with ZenTrade.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="glass-effect p-8 rounded-2xl hover:shadow-glow-primary-md transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold">
+                                JS
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">John Smith</div>
+                                <div class="text-sm text-text-secondary">Day Trader</div>
+                            </div>
+                        </div>
+                        <p class="text-text-secondary mb-4">
+                            "ZenTrade completely transformed my trading. The 3D visualizations help me spot patterns I never noticed before. My win rate increased by 40% in just 3 months!"
+                        </p>
+                        <div class="flex text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="glass-effect p-8 rounded-2xl hover:shadow-glow-primary-md transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center text-white font-bold">
+                                MJ
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">Maria Johnson</div>
+                                <div class="text-sm text-text-secondary">Swing Trader</div>
+                            </div>
+                        </div>
+                        <p class="text-text-secondary mb-4">
+                            "The emotion tracking feature is a game-changer. I finally understand my psychological patterns and can trade more objectively. Best investment I've made!"
+                        </p>
+                        <div class="flex text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="glass-effect p-8 rounded-2xl hover:shadow-glow-primary-md transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold">
+                                DR
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">David Rodriguez</div>
+                                <div class="text-sm text-text-secondary">Scalper</div>
+                            </div>
+                        </div>
+                        <p class="text-text-secondary mb-4">
+                            "Real-time tracking and risk management tools saved me thousands. The interface is so intuitive, I can focus on trading instead of managing spreadsheets."
+                        </p>
+                        <div class="flex text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 lg:py-32 bg-card-dark/30">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                        Trusted by
+                        <span class="gradient-text">Traders Worldwide</span>
+                    </h2>
+                    <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                        Join thousands of traders who have transformed their performance with ZenTrade
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="text-5xl lg:text-6xl font-bold gradient-text mb-4">10K+</div>
+                        <div class="text-xl text-text-secondary">Active Traders</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl lg:text-6xl font-bold gradient-text mb-4">1M+</div>
+                        <div class="text-xl text-text-secondary">Trades Logged</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl lg:text-6xl font-bold gradient-text mb-4">95%</div>
+                        <div class="text-xl text-text-secondary">User Satisfaction</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl lg:text-6xl font-bold gradient-text mb-4">24/7</div>
+                        <div class="text-xl text-text-secondary">Always Available</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="py-20 lg:py-32 bg-gradient-to-br from-primary/10 via-background-dark to-secondary/10">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-5xl mx-auto">
+                    <div class="glass-effect p-12 rounded-3xl text-center relative overflow-hidden">
+                        <!-- Background Elements -->
+                        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div class="absolute top-10 left-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl animate-pulse"></div>
+                            <div class="absolute bottom-10 right-10 w-40 h-40 bg-secondary/5 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <div class="inline-flex items-center px-6 py-3 rounded-full bg-primary/20 border border-primary/30 mb-8">
+                                <span class="text-sm font-semibold text-primary">🚀 Limited Time: 30% Off First Year</span>
+                            </div>
+                            
+                            <h2 class="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+                                Ready to Join the
+                                <span class="gradient-text">Elite?</span>
+                            </h2>
+                            
+                            <p class="text-xl lg:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed">
+                                Join 10,000+ successful traders who have transformed their performance with ZenTrade. 
+                                Start your free trial today and see the difference.
+                            </p>
+                            
+                            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                                <a href="register.html" class="inline-flex items-center justify-center rounded-full bg-primary px-10 py-5 text-xl font-bold text-black shadow-glow-primary-lg transition-all duration-300 ease-in-out hover:scale-105">
+                                    <svg class="mr-4" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 7L20 12L13 17V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    Start Free Trial
+                                </a>
+                                <a href="pricing.html" class="inline-flex items-center justify-center rounded-full border-2 border-primary/30 px-10 py-5 text-xl font-bold text-text-primary hover:border-primary hover:bg-primary/10 transition-all duration-300">
+                                    View Pricing Plans
+                                </a>
+                            </div>
+                            
+                            <!-- Trust Indicators -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                                <div class="space-y-2">
+                                    <div class="text-3xl font-bold gradient-text">14 Days</div>
+                                    <div class="text-sm text-text-secondary">Free Trial</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-3xl font-bold gradient-text">No Credit Card</div>
+                                    <div class="text-sm text-text-secondary">Required</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-3xl font-bold gradient-text">Cancel Anytime</div>
+                                    <div class="text-sm text-text-secondary">No Questions Asked</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 lg:py-32 bg-card-dark/30">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                            About
+                            <span class="gradient-text">ZenTrade</span>
+                        </h2>
+                        <p class="text-xl text-text-secondary max-w-3xl mx-auto">
+                            We're passionate about helping traders achieve consistent profitability through better journaling and analysis.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h3 class="text-3xl font-bold mb-6">Our Mission</h3>
+                            <p class="text-lg text-text-secondary mb-6">
+                                At ZenTrade, we believe that every trader deserves access to professional-grade tools without the premium price tag. 
+                                Our mission is to democratize trading success by providing an affordable, feature-rich journaling platform.
+                            </p>
+                            <p class="text-lg text-text-secondary mb-8">
+                                We understand the challenges traders face - from managing emotions to tracking performance. 
+                                That's why we built ZenTrade with simplicity, power, and affordability in mind.
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Affordable Excellence</h4>
+                                        <p class="text-text-secondary">Professional tools at a fraction of the cost</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Continuous Innovation</h4>
+                                        <p class="text-text-secondary">Regular updates and new features</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Community First</h4>
+                                        <p class="text-text-secondary">Built by traders, for traders</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <h3 class="text-2xl font-bold mb-6 text-center">Why Choose Us?</h3>
+                            <div class="space-y-6">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">10K+</div>
+                                    <div class="text-text-secondary">Happy Traders</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">1M+</div>
+                                    <div class="text-text-secondary">Trades Analyzed</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">95%</div>
+                                    <div class="text-text-secondary">User Satisfaction</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text mb-2">24/7</div>
+                                    <div class="text-text-secondary">Support Available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section id="contact" class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                            Get in
+                            <span class="gradient-text">Touch</span>
+                        </h2>
+                        <p class="text-xl text-text-secondary max-w-2xl mx-auto">
+                            Have questions? Need support? We're here to help you succeed in your trading journey.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Email</h4>
+                                        <p class="text-text-secondary">support@zentrade.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Live Chat</h4>
+                                        <p class="text-text-secondary">Available 24/7 in your dashboard</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
+                                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Response Time</h4>
+                                        <p class="text-text-secondary">Usually within 2 hours</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.065 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-card-dark/50 p-8 rounded-xl shadow-glow-primary-md border border-primary/20">
+                            <h3 class="text-2xl font-bold mb-6">Send us a Message</h3>
+                            <form class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-2">Name</label>
+                                    <input type="text" class="w-full rounded-lg border border-white/10 bg-white/5 py-3 px-4 text-text-primary placeholder:text-text-primary/40 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="Your name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-2">Email</label>
+                                    <input type="email" class="w-full rounded-lg border border-white/10 bg-white/5 py-3 px-4 text-text-primary placeholder:text-text-primary/40 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="your@email.com">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-2">Subject</label>
+                                    <input type="text" class="w-full rounded-lg border border-white/10 bg-white/5 py-3 px-4 text-text-primary placeholder:text-text-primary/40 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="How can we help?">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-2">Message</label>
+                                    <textarea rows="4" class="w-full rounded-lg border border-white/10 bg-white/5 py-3 px-4 text-text-primary placeholder:text-text-primary/40 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="Tell us more about your question..."></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-primary text-black py-4 rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-primary/20 py-12">
+            <div class="container mx-auto px-6 sm:px-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="size-12 relative">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00F5D4;stop-opacity:1" />
+                                            <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon points="50,25 70,40 70,60 50,75 30,60 30,40" 
+                                             stroke="url(#footerLogoGradient)" 
+                                             stroke-width="4" 
+                                             fill="none"/>
+                                </svg>
+                            </div>
+                            <span class="text-2xl font-bold gradient-text">ZenTrade</span>
+                        </div>
+                        <p class="text-text-secondary mb-6 max-w-md">
+                            The professional trading journal that helps you track performance, analyze patterns, and build winning strategies.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="dashboard.html" class="text-text-secondary hover:text-primary transition-colors">Dashboard</a></li>
+                            <li><a href="journal.html" class="text-text-secondary hover:text-primary transition-colors">Trade Journal</a></li>
+                            <li><a href="strategies.html" class="text-text-secondary hover:text-primary transition-colors">Strategies</a></li>
+                            <li><a href="pricing.html" class="text-text-secondary hover:text-primary transition-colors">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Support</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-text-secondary hover:text-primary transition-colors">Help Center</a></li>
+                            <li><a href="#" class="text-text-secondary hover:text-primary transition-colors">Documentation</a></li>
+                            <li><a href="#" class="text-text-secondary hover:text-primary transition-colors">Contact Us</a></li>
+                            <li><a href="#" class="text-text-secondary hover:text-primary transition-colors">Status</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-primary/20 mt-8 pt-8 text-center">
+                    <p class="text-text-secondary">© 2024 ZenTrade. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Set dark mode as default
+        document.documentElement.classList.add('dark');
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+    </script>
+    
+    <!-- Authentication System -->
+    <script src="js/auth.js"></script>
+    <script>
+        // Initialize authentication on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already authenticated
+            if (window.authManager.isAuthenticated()) {
+                // Update navigation to show user menu
+                const loginBtn = document.getElementById('loginBtn');
+                const userMenu = document.getElementById('userMenu');
+                
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (userMenu) {
+                    userMenu.style.display = 'flex';
+                    const userInfo = document.getElementById('userInfo');
+                    if (userInfo) {
+                        userInfo.textContent = `${window.authManager.user.firstName} ${window.authManager.user.lastName}`;
+                    }
+                }
+            }
+        });
+
+        // Logout function
+        async function logout() {
+            try {
+                await window.authManager.logout();
+                // Reload the page to update the UI
+                window.location.reload();
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Still reload to clear local state
+                window.location.reload();
+            }
+        }
+    </script>
 </body>
-
-<script>
-let currentDate = new Date();
-let trades = [];
-
-// Load trades and update dashboard
-function loadDashboardData() {
-    trades = JSON.parse(localStorage.getItem('trades') || '[]');
-    console.log('Loaded trades:', trades);
-    
-    const closedTrades = trades.filter(t => t.status === 'closed' && t.pnl !== undefined);
-    const openTrades = trades.filter(t => t.status === 'open');
-    
-    console.log('Closed trades:', closedTrades);
-    console.log('Open trades:', openTrades);
-    
-    // Calculate statistics
-    const totalTrades = trades.length;
-    const winningTrades = trades.filter(t => t.tradeResult === 'win');
-    const winRate = totalTrades > 0 ? Math.round((winningTrades.length / totalTrades) * 100) : 0;
-    const totalPnl = trades.reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
-    const avgRR = calculateAverageRR(closedTrades);
-    
-    // Calculate profit factor
-    const grossProfit = trades.filter(t => (t.netPnl || t.pnl || 0) > 0).reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
-    const grossLoss = Math.abs(trades.filter(t => (t.netPnl || t.pnl || 0) < 0).reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0));
-    const profitFactor = grossLoss > 0 ? grossProfit / grossLoss : 0;
-    
-    console.log('Statistics:', { totalTrades, winRate, totalPnl, avgRR, profitFactor });
-    console.log('Individual trade P&L values:', trades.map(t => ({ id: t.id, netPnl: t.netPnl, pnl: t.pnl, tradeResult: t.tradeResult })));
-    
-    // Update new display elements
-    const totalPnlDisplay = document.getElementById('total-pnl-display');
-    if (totalPnlDisplay) {
-        const pnlSign = totalPnl >= 0 ? '+' : '';
-        totalPnlDisplay.textContent = `${pnlSign}$${Math.abs(totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        totalPnlDisplay.className = `text-3xl font-bold mb-2 ${totalPnl >= 0 ? 'text-primary' : 'text-loss-red'}`;
-    }
-    
-    // Update win rate display
-    const winRateDisplay = document.getElementById('win-rate-display');
-    if (winRateDisplay) {
-        winRateDisplay.textContent = `${winRate}%`;
-    }
-    
-    // Update profit factor display
-    const profitFactorDisplay = document.getElementById('profit-factor-display');
-    if (profitFactorDisplay) {
-        profitFactorDisplay.textContent = profitFactor.toFixed(2);
-    }
-    
-    // Update equity curve title
-    const equityCurveTitle = document.getElementById('equity-curve-title');
-    if (equityCurveTitle) {
-        const pnlSign = totalPnl >= 0 ? '+' : '';
-        equityCurveTitle.textContent = `Daily Net Cumulative P&L: ${pnlSign}$${Math.abs(totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    }
-    
-    // Update legacy elements for backward compatibility
-    const winRateCircle = document.getElementById('win-rate-circle');
-    const winRateText = document.getElementById('win-rate-text');
-    if (winRateCircle && winRateText) {
-        const offset = 201 - (winRate * 2.01); // 201 is the circumference for r=32
-        winRateCircle.style.strokeDashoffset = offset;
-        winRateText.textContent = `${winRate}%`;
-    }
-    
-    // Update average R:R
-    const avgRrText = document.getElementById('avg-rr-text');
-    if (avgRrText) {
-        avgRrText.textContent = avgRR.toFixed(1);
-    }
-    
-    // Update total P&L
-    const totalPnlText = document.getElementById('total-pnl-text');
-    if (totalPnlText) {
-        const pnlColor = totalPnl >= 0 ? 'text-profit-green' : 'text-loss-red';
-        const pnlSign = totalPnl >= 0 ? '+' : '';
-        totalPnlText.textContent = `${pnlSign}$${Math.abs(totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        totalPnlText.className = `text-3xl font-bold ${pnlColor}`;
-    }
-    
-    // Update total trades
-    const totalTradesText = document.getElementById('total-trades-text');
-    if (totalTradesText) {
-        totalTradesText.textContent = totalTrades;
-    }
-    
-    // Update P&L chart
-    updatePnLChart();
-    
-    // Update calendar
-    generateCalendar();
-    
-    // Update recent trades
-    updateRecentTrades();
-}
-
-function calculateAverageRR(trades) {
-    if (trades.length === 0) return 0;
-    
-    let totalRR = 0;
-    let validTrades = 0;
-    
-    trades.forEach(trade => {
-        if (trade.stopLoss && trade.takeProfit && trade.entryPrice) {
-            const risk = Math.abs(trade.entryPrice - trade.stopLoss);
-            const reward = Math.abs(trade.takeProfit - trade.entryPrice);
-            if (risk > 0) {
-                totalRR += reward / risk;
-                validTrades++;
-            }
-        }
-    });
-    
-    return validTrades > 0 ? totalRR / validTrades : 0;
-}
-
-// P&L Chart functionality
-let pnlChart = null;
-let currentChartPeriod = '30d';
-
-function updateChartPeriod(period) {
-    currentChartPeriod = period;
-    updatePnLChart();
-    
-    // Update button states
-    document.querySelectorAll('[onclick^="updateChartPeriod"]').forEach(btn => {
-        btn.className = 'px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors';
-    });
-    event.target.className = 'px-3 py-1 text-sm bg-primary text-white rounded-lg transition-colors';
-}
-
-function updatePnLChart() {
-    const ctx = document.getElementById('pnlChart');
-    if (!ctx) return;
-    
-    // Destroy existing chart
-    if (pnlChart) {
-        pnlChart.destroy();
-    }
-    
-    // Calculate date range based on period
-    const endDate = new Date();
-    const startDate = new Date();
-    
-    switch (currentChartPeriod) {
-        case '7d':
-            startDate.setDate(endDate.getDate() - 7);
-            break;
-        case '30d':
-            startDate.setDate(endDate.getDate() - 30);
-            break;
-        case '90d':
-            startDate.setDate(endDate.getDate() - 90);
-            break;
-        case 'all':
-            startDate.setTime(0); // Start from epoch
-            break;
-    }
-    
-    // Get daily P&L data
-    const dailyData = getDailyPnLData(startDate, endDate);
-    
-    // Create chart
-    pnlChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: dailyData.labels,
-            datasets: [{
-                label: 'Cumulative P&L',
-                data: dailyData.cumulativePnl,
-                borderColor: '#00F5D4',
-                backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) return null;
-                    
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, 'rgba(0, 245, 212, 0.1)');
-                    gradient.addColorStop(1, 'rgba(0, 245, 212, 0.3)');
-                    return gradient;
-                },
-                borderWidth: 3,
-                tension: 0.4,
-                pointRadius: 0,
-                pointHoverRadius: 6,
-                pointBackgroundColor: '#00F5D4',
-                fill: true,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    enabled: true,
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: '#1B1B1B',
-                    titleColor: '#E0E0E0',
-                    bodyColor: '#E0E0E0',
-                    borderColor: 'rgba(0, 245, 212, 0.5)',
-                    borderWidth: 1,
-                    padding: 12,
-                    callbacks: {
-                        label: function(context) {
-                            const value = context.parsed.y;
-                            const sign = value >= 0 ? '+' : '';
-                            return `P&L: ${sign}$${value.toFixed(2)}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)',
-                        borderDash: [5, 5]
-                    },
-                    ticks: {
-                        color: 'rgba(224, 224, 224, 0.7)',
-                        font: {
-                            family: "'Space Grotesk', sans-serif"
-                        },
-                        callback: function(value) {
-                            const sign = value >= 0 ? '+' : '';
-                            return `${sign}$${value.toFixed(0)}`;
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: 'rgba(224, 224, 224, 0.7)',
-                        font: {
-                            family: "'Space Grotesk', sans-serif"
-                        }
-                    }
-                }
-            },
-            elements: {
-                line: {
-                    shadowColor: 'rgba(0, 245, 212, 0.5)',
-                    shadowBlur: 10,
-                    shadowOffsetY: 5
-                }
-            }
-        }
-    });
-}
-
-function getDailyPnLData(startDate, endDate) {
-    const dailyPnl = {};
-    const labels = [];
-    const cumulativePnl = [];
-    
-    // Initialize all days in range with 0 P&L
-    const currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-        const dateStr = currentDate.toISOString().split('T')[0];
-        dailyPnl[dateStr] = 0;
-        labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
-    
-    // Add actual trade P&L
-    trades.forEach(trade => {
-        const tradeDate = new Date(trade.timestamp);
-        const dateStr = tradeDate.toISOString().split('T')[0];
-        if (dailyPnl.hasOwnProperty(dateStr)) {
-            dailyPnl[dateStr] += (trade.netPnl || trade.pnl || 0);
-        }
-    });
-    
-    // Calculate cumulative P&L
-    let cumulative = 0;
-    Object.keys(dailyPnl).forEach(dateStr => {
-        cumulative += dailyPnl[dateStr];
-        cumulativePnl.push(cumulative);
-    });
-    
-    return { labels, cumulativePnl };
-}
-
-function generateCalendar() {
-    const calendarDays = document.getElementById('calendar-days');
-    const currentMonth = document.getElementById('current-month');
-    
-    // Update month display
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
-    currentMonth.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-    
-    // Update PnL summary (weekly and monthly)
-    updatePnLSummary();
-    
-    // Clear calendar
-    calendarDays.innerHTML = '';
-    
-    // Get first day of month and number of days
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-    
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < startingDayOfWeek; i++) {
-        const emptyDay = document.createElement('div');
-        emptyDay.className = 'h-24 w-full';
-        calendarDays.appendChild(emptyDay);
-    }
-    
-    // Add days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayElement = document.createElement('button');
-        dayElement.className = 'h-24 w-full flex flex-col items-center justify-start rounded-lg hover:bg-primary/10 transition-colors p-2 text-left';
-        
-        const dayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-        const dayTrades = getTradesForDate(dayDate);
-        const dayPnl = dayTrades.reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
-        
-        // Style based on P&L with enhanced color scheme
-        if (dayPnl > 20) {
-            // Winning days - green gradient with primary accent
-            dayElement.className += ' bg-gradient-to-br from-profit-green/20 to-primary/10 hover:from-profit-green/30 hover:to-primary/20 border border-profit-green/30';
-            if (dayPnl > 200) {
-                dayElement.className += ' shadow-glow-primary-md ring-2 ring-primary/50';
-            }
-        } else if (dayPnl < -20) {
-            // Losing days - red gradient with loss-red accent
-            dayElement.className += ' bg-gradient-to-br from-loss-red/20 to-red-500/10 hover:from-loss-red/30 hover:to-red-500/20 border border-loss-red/30';
-        } else if (dayPnl >= -20 && dayPnl <= 20 && dayTrades.length > 0) {
-            // Breakeven days - simple neutral with subtle accent
-            dayElement.className += ' bg-gradient-to-br from-warning-amber/10 to-warning-amber/5 hover:from-warning-amber/15 hover:to-warning-amber/10 border border-warning-amber/20';
-        } else if (dayTrades.length === 0) {
-            // No trades - neutral with subtle styling
-            dayElement.className += ' bg-white/5 hover:bg-white/10 text-text-secondary/60 border border-white/10';
-        }
-        
-        // Determine the label and styling
-        let label = '';
-        let labelClass = '';
-        
-        if (dayTrades.length > 0) {
-            if (dayPnl > 20) {
-                label = 'Win';
-                labelClass = 'text-profit-green';
-            } else if (dayPnl < -20) {
-                label = 'Loss';
-                labelClass = 'text-loss-red';
-            } else if (dayPnl >= -20 && dayPnl <= 20) {
-                label = 'BE';
-                labelClass = 'text-warning-amber';
-            }
-        }
-        
-        dayElement.innerHTML = `
-            <div class="flex justify-between items-start w-full">
-                <span class="font-medium">${day}</span>
-                ${label ? `<span class="text-xs font-medium ${labelClass}">${label}</span>` : ''}
-            </div>
-            <div class="mt-auto">
-                ${dayPnl !== 0 ? `<span class="text-sm font-semibold ${dayPnl > 20 ? 'text-profit-green' : dayPnl < -20 ? 'text-loss-red' : 'text-warning-amber'}">${dayPnl > 0 ? '+' : '-'}$${Math.abs(dayPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>` : ''}
-            </div>
-        `;
-        
-        calendarDays.appendChild(dayElement);
-    }
-}
-
-function updatePnLSummary() {
-    // Weekly PnL elements
-    const weeklyPnlAmount = document.getElementById('weekly-pnl-amount');
-    const weeklyTradesCount = document.getElementById('weekly-trades-count');
-    const weeklyWinRate = document.getElementById('weekly-win-rate');
-    
-    // Monthly PnL elements
-    const monthlyPnlAmount = document.getElementById('monthly-pnl-amount');
-    const monthlyTradesCount = document.getElementById('monthly-trades-count');
-    const monthlyWinRate = document.getElementById('monthly-win-rate');
-    
-    const now = new Date();
-    
-    // Calculate weekly PnL (Monday to Sunday)
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Monday
-    startOfWeek.setHours(0, 0, 0, 0);
-    
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
-    endOfWeek.setHours(23, 59, 59, 999);
-    
-    const weeklyTrades = trades.filter(trade => {
-        const tradeDate = new Date(trade.timestamp);
-        return tradeDate >= startOfWeek && tradeDate <= endOfWeek;
-    });
-    
-    const weeklyPnl = weeklyTrades.reduce((sum, trade) => sum + (trade.netPnl || trade.pnl || 0), 0);
-    const weeklyWinningTrades = weeklyTrades.filter(trade => (trade.netPnl || trade.pnl || 0) > 0);
-    const weeklyWinRateValue = weeklyTrades.length > 0 ? (weeklyWinningTrades.length / weeklyTrades.length) * 100 : 0;
-    
-    // Calculate monthly PnL (first day to last day of current month)
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    startOfMonth.setHours(0, 0, 0, 0);
-    
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-    endOfMonth.setHours(23, 59, 59, 999);
-    
-    const monthlyTrades = trades.filter(trade => {
-        const tradeDate = new Date(trade.timestamp);
-        return tradeDate >= startOfMonth && tradeDate <= endOfMonth;
-    });
-    
-    const monthlyPnl = monthlyTrades.reduce((sum, trade) => sum + (trade.netPnl || trade.pnl || 0), 0);
-    const monthlyWinningTrades = monthlyTrades.filter(trade => (trade.netPnl || trade.pnl || 0) > 0);
-    const monthlyWinRateValue = monthlyTrades.length > 0 ? (monthlyWinningTrades.length / monthlyTrades.length) * 100 : 0;
-    
-    // Update weekly UI
-    weeklyPnlAmount.textContent = `${weeklyPnl >= 0 ? '+' : ''}$${Math.abs(weeklyPnl).toFixed(2)}`;
-    weeklyPnlAmount.className = `text-lg font-bold ${weeklyPnl >= 0 ? 'text-profit-green' : 'text-loss-red'}`;
-    weeklyTradesCount.textContent = `${weeklyTrades.length} trade${weeklyTrades.length !== 1 ? 's' : ''}`;
-    weeklyWinRate.textContent = `${weeklyWinRateValue.toFixed(0)}% win rate`;
-    
-    // Update monthly UI
-    monthlyPnlAmount.textContent = `${monthlyPnl >= 0 ? '+' : ''}$${Math.abs(monthlyPnl).toFixed(2)}`;
-    monthlyPnlAmount.className = `text-lg font-bold ${monthlyPnl >= 0 ? 'text-profit-green' : 'text-loss-red'}`;
-    monthlyTradesCount.textContent = `${monthlyTrades.length} trade${monthlyTrades.length !== 1 ? 's' : ''}`;
-    monthlyWinRate.textContent = `${monthlyWinRateValue.toFixed(0)}% win rate`;
-}
-
-function getTradesForDate(date) {
-    const dateString = date.toDateString();
-    return trades.filter(trade => {
-        const tradeDate = new Date(trade.timestamp).toDateString();
-        return tradeDate === dateString;
-    });
-}
-
-function updateRecentTrades() {
-    const recentTradesContainer = document.getElementById('recent-trades');
-    
-    // Get last 4 trades
-    const recentTrades = trades
-        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-        .slice(0, 4);
-    
-    if (recentTrades.length === 0) {
-        recentTradesContainer.innerHTML = `
-            <div class="text-center py-8">
-                <p class="text-text-secondary mb-2">No trades yet</p>
-                <a href="new-trade.html" class="text-primary hover:text-primary/80 text-sm font-medium">Start trading →</a>
-            </div>
-        `;
-        return;
-    }
-    
-    recentTradesContainer.innerHTML = recentTrades.map(trade => {
-        const isLong = trade.side === 'Buy';
-        const isProfit = (trade.netPnl || trade.pnl || 0) >= 0;
-        const pnlValue = trade.netPnl || trade.pnl || 0;
-        
-        return `
-            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                <div class="flex items-center gap-3">
-                    <div class="w-2 h-2 ${isProfit ? 'bg-green-500' : 'bg-red-500'} rounded-full"></div>
-                    <span class="text-sm">${trade.instrument} ${isLong ? 'Long' : 'Short'}</span>
-                </div>
-                <span class="text-sm ${isProfit ? 'text-green-400' : 'text-red-400'}">${isProfit ? '+' : ''}$${Math.abs(pnlValue).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-            </div>
-        `;
-    }).join('');
-}
-
-function getTimeAgo(timestamp) {
-    const now = new Date();
-    const tradeTime = new Date(timestamp);
-    const diffInHours = Math.floor((now - tradeTime) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    
-    const diffInWeeks = Math.floor(diffInDays / 7);
-    return `${diffInWeeks}w ago`;
-}
-
-function previousMonth() {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    generateCalendar();
-}
-
-function nextMonth() {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    generateCalendar();
-}
-
-// Set dark mode as default
-document.documentElement.classList.add('dark');
-
-// Listen for storage changes to refresh data when trades are updated
-window.addEventListener('storage', function(e) {
-    if (e.key === 'trades') {
-        console.log('Trades updated, refreshing dashboard...');
-        loadDashboardData();
-    }
-});
-
-// Also listen for focus events to catch changes when returning to this page
-window.addEventListener('focus', function() {
-    console.log('Dashboard focused, reloading data...');
-    loadDashboardData();
-});
-
-
-// Initialize dashboard
-loadDashboardData();
-
-// Refresh dashboard when returning from other pages
-window.addEventListener('focus', function() {
-    loadDashboardData();
-});
-
-// Also refresh when the page becomes visible
-document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-        loadDashboardData();
-    }
-});
-</script>
-
-<!-- Authentication System -->
-<script src="js/auth.js"></script>
-<script>
-// Check authentication on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    // Show loading indicator
-    const loadingDiv = document.createElement('div');
-    loadingDiv.id = 'loading-indicator';
-    loadingDiv.innerHTML = '<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"><div class="bg-white/10 backdrop-blur-lg rounded-lg p-8 text-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div><p class="text-white">Loading dashboard...</p></div></div>';
-    document.body.appendChild(loadingDiv);
-    
-    try {
-        // Wait for auth manager to initialize
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // For now, skip authentication check to see the styled dashboard
-        // if (!window.authManager.isAuthenticated()) {
-        //     // Redirect to login if not authenticated
-        //     window.location.href = 'http://localhost:8000/auth-modal.html';
-        //     return;
-        // }
-        
-        // Load dashboard data from localStorage for now
-        loadDashboardData();
-    } finally {
-        // Remove loading indicator
-        const loading = document.getElementById('loading-indicator');
-        if (loading) loading.remove();
-    }
-});
-
-// Load dashboard data from API
-async function loadDashboardDataFromAPI() {
-    try {
-        const response = await window.authManager.getDashboardOverview();
-        updateDashboardWithAPIData(response);
-    } catch (error) {
-        console.error('Failed to load dashboard data:', error);
-        // Fallback to localStorage data
-        loadDashboardData();
-    }
-}
-
-// Update dashboard with API data
-function updateDashboardWithAPIData(data) {
-    // Update metrics
-    const totalPnlDisplay = document.getElementById('total-pnl-display');
-    if (totalPnlDisplay) {
-        const pnlSign = data.metrics.totalPnl >= 0 ? '+' : '';
-        totalPnlDisplay.textContent = `${pnlSign}$${Math.abs(data.metrics.totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        totalPnlDisplay.className = `text-3xl font-bold mb-2 ${data.metrics.totalPnl >= 0 ? 'text-primary' : 'text-loss-red'}`;
-    }
-
-    // Update win rate
-    const winRateDisplay = document.getElementById('win-rate-display');
-    if (winRateDisplay) {
-        winRateDisplay.textContent = `${data.metrics.winRate.toFixed(1)}%`;
-    }
-
-    // Update profit factor
-    const profitFactorDisplay = document.getElementById('profit-factor-display');
-    if (profitFactorDisplay) {
-        profitFactorDisplay.textContent = data.metrics.profitFactor.toFixed(2);
-    }
-
-    // Update recent trades
-    updateRecentTradesFromAPI(data.recentTrades);
-
-    // Update equity curve title
-    const equityCurveTitle = document.getElementById('equity-curve-title');
-    if (equityCurveTitle) {
-        const pnlSign = data.metrics.totalPnl >= 0 ? '+' : '';
-        equityCurveTitle.textContent = `Daily Net Cumulative P&L: ${pnlSign}$${Math.abs(data.metrics.totalPnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    }
-
-    // Update calendar with daily P&L data
-    updateCalendarWithAPIData(data.dailyPnl);
-}
-
-// Update recent trades from API data
-function updateRecentTradesFromAPI(trades) {
-    const recentTradesContainer = document.getElementById('recent-trades-container');
-    if (!recentTradesContainer) return;
-
-    if (trades.length === 0) {
-        recentTradesContainer.innerHTML = '<p class="text-text-secondary text-center py-4">No recent trades</p>';
-        return;
-    }
-
-    recentTradesContainer.innerHTML = trades.map(trade => {
-        const isProfit = trade.pnl > 0;
-        const isLong = trade.side === 'long';
-        const pnlSign = trade.pnl >= 0 ? '+' : '';
-        
-        return `
-            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                <div class="flex items-center gap-3">
-                    <div class="w-2 h-2 ${isProfit ? 'bg-green-500' : 'bg-red-500'} rounded-full"></div>
-                    <span class="text-sm">${trade.instrument} ${isLong ? 'Long' : 'Short'}</span>
-                </div>
-                <span class="text-sm ${isProfit ? 'text-green-400' : 'text-red-400'}">${pnlSign}$${Math.abs(trade.pnl).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-            </div>
-        `;
-    }).join('');
-}
-
-// Update calendar with API daily P&L data
-function updateCalendarWithAPIData(dailyPnl) {
-    // This would integrate with your existing calendar generation
-    // For now, we'll use the existing localStorage-based calendar
-    loadDashboardData();
-}
-</script>
-
 </html>

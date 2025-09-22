@@ -4,13 +4,14 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-const authRoutes = require('./routes/supabase/auth');
-const tradeRoutes = require('./routes/supabase/trades');
-const strategyRoutes = require('./routes/supabase/strategies');
-const dashboardRoutes = require('./routes/supabase/dashboard');
+const supabase = require('./supabase');
+const authRoutes = require('./routes/auth');
+const tradeRoutes = require('./routes/trades');
+const strategyRoutes = require('./routes/strategies');
+const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 // Security middleware with relaxed CSP for development
 app.use(helmet({
@@ -18,7 +19,7 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://unpkg.com/@supabase/supabase-js@2"],
             imgSrc: ["'self'", "data:", "https:"],
             connectSrc: ["'self'", "https://*.supabase.co"],
             fontSrc: ["'self'", "https:", "data:"],
@@ -27,6 +28,7 @@ app.use(helmet({
         },
     },
 }));
+
 app.use(cors({
     origin: ['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:3000'],
     credentials: true,
@@ -45,9 +47,14 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Supabase connection
-const supabase = require('./supabase');
-console.log('✅ Connected to Supabase');
+// Supabase connection check
+supabase.auth.getSession().then(({ data, error }) => {
+    if (error) {
+        console.error('❌ Supabase connection error:', error.message);
+    } else {
+        console.log('✅ Connected to Supabase');
+    }
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -64,9 +71,17 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Serve the main application
+// Serve the main application - Landing page as default
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/landing.html');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.sendFile(__dirname + '/index.html');
+});
+
+// Dashboard route
+app.get('/dashboard', (req, res) => {
+    res.sendFile(__dirname + '/dashboard.html');
 });
 
 // Serve static files (after routes to avoid conflicts)

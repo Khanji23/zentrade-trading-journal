@@ -1,0 +1,11 @@
+# Netlify redirects file
+# Redirect root to landing page
+/ /landing.html 200
+
+# Redirect dashboard to index
+/dashboard /index.html 200
+
+# Handle auth routes
+/login /login.html 200
+/register /register.html 200
+/forgot-password /forgot-password.html 200

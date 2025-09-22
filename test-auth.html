@@ -1,108 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZenTrade - Test Authentication</title>
+    <title>Auth Test - ZenTrade</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white p-8">
-    <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold mb-8">ZenTrade Authentication Test</h1>
+    <div class="max-w-md mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Authentication Test</h1>
         
-        <div class="space-y-4">
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Test Registration</h2>
-                <button onclick="testRegister()" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
-                    Test Register
-                </button>
-            </div>
-            
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Test Login</h2>
-                <button onclick="testLogin()" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
-                    Test Login
-                </button>
-            </div>
-            
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Test Dashboard API</h2>
-                <button onclick="testDashboard()" class="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded">
-                    Test Dashboard
-                </button>
-            </div>
-            
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Test Logout</h2>
-                <button onclick="testLogout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">
-                    Test Logout
-                </button>
-            </div>
+        <div id="status" class="mb-4 p-4 bg-gray-800 rounded">
+            <p>Status: <span id="statusText">Loading...</span></p>
         </div>
-        
-        <div id="result" class="mt-8 p-4 bg-gray-800 rounded">
-            <h3 class="font-semibold mb-2">Results:</h3>
-            <pre id="output" class="text-sm"></pre>
+
+        <form id="signupForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="email" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Password</label>
+                <input type="password" id="password" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">First Name</label>
+                <input type="text" id="firstName" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Last Name</label>
+                <input type="text" id="lastName" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded" required>
+            </div>
+            <button type="submit" class="w-full bg-primary text-black py-2 px-4 rounded font-medium">
+                Sign Up
+            </button>
+        </form>
+
+        <div id="result" class="mt-4 p-4 bg-gray-800 rounded hidden">
+            <h3 class="font-medium mb-2">Result:</h3>
+            <pre id="resultText" class="text-sm"></pre>
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
     <script>
-        function log(message) {
-            const output = document.getElementById('output');
-            output.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
-        }
-
-        async function testRegister() {
+        document.getElementById('statusText').textContent = 'Initializing...';
+        
+        // Test API directly
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            
             try {
-                log('Testing registration...');
-                const result = await window.authManager.register({
-                    firstName: 'Test',
-                    lastName: 'User',
-                    email: 'test' + Date.now() + '@example.com',
-                    password: 'password123'
+                document.getElementById('statusText').textContent = 'Sending request...';
+                
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        firstName,
+                        lastName
+                    })
                 });
-                log('Registration successful: ' + JSON.stringify(result, null, 2));
+                
+                const data = await response.json();
+                
+                document.getElementById('resultText').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('result').classList.remove('hidden');
+                
+                if (response.ok) {
+                    document.getElementById('statusText').textContent = 'Success!';
+                    document.getElementById('status').className = 'mb-4 p-4 bg-green-800 rounded';
+                } else {
+                    document.getElementById('statusText').textContent = 'Error: ' + data.error;
+                    document.getElementById('status').className = 'mb-4 p-4 bg-red-800 rounded';
+                }
             } catch (error) {
-                log('Registration failed: ' + error.message);
+                document.getElementById('statusText').textContent = 'Error: ' + error.message;
+                document.getElementById('status').className = 'mb-4 p-4 bg-red-800 rounded';
+                document.getElementById('resultText').textContent = error.message;
+                document.getElementById('result').classList.remove('hidden');
             }
-        }
-
-        async function testLogin() {
-            try {
-                log('Testing login...');
-                const result = await window.authManager.login('test@example.com', 'password123');
-                log('Login successful: ' + JSON.stringify(result, null, 2));
-            } catch (error) {
-                log('Login failed: ' + error.message);
-            }
-        }
-
-        async function testDashboard() {
-            try {
-                log('Testing dashboard API...');
-                const result = await window.authManager.getDashboardOverview();
-                log('Dashboard API successful: ' + JSON.stringify(result, null, 2));
-            } catch (error) {
-                log('Dashboard API failed: ' + error.message);
-            }
-        }
-
-        async function testLogout() {
-            try {
-                log('Testing logout...');
-                await window.authManager.logout();
-                log('Logout successful');
-            } catch (error) {
-                log('Logout failed: ' + error.message);
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            log('Page loaded. Auth manager initialized.');
-            log('Is authenticated: ' + window.authManager.isAuthenticated());
         });
+        
+        // Test server connection
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('statusText').textContent = 'Server connected: ' + data.status;
+                document.getElementById('status').className = 'mb-4 p-4 bg-green-800 rounded';
+            })
+            .catch(error => {
+                document.getElementById('statusText').textContent = 'Server error: ' + error.message;
+                document.getElementById('status').className = 'mb-4 p-4 bg-red-800 rounded';
+            });
     </script>
 </body>
 </html>
