@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Test - ZenTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <h1 class="text-2xl font-bold text-white mb-6 text-center">Input Test</h1>
+        
+        <div class="bg-gray-800 rounded-xl p-6">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-white mb-2">Test Input 1</label>
+                    <input 
+                        type="text" 
+                        id="test1"
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Type here..."
+                    />
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-white mb-2">Test Input 2</label>
+                    <input 
+                        type="text" 
+                        id="test2"
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Type here too..."
+                    />
+                </div>
+                
+                <button 
+                    onclick="testInputs()"
+                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                    Test Inputs
+                </button>
+                
+                <div id="result" class="text-white text-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testInputs() {
+            const input1 = document.getElementById('test1').value;
+            const input2 = document.getElementById('test2').value;
+            document.getElementById('result').textContent = `Input 1: "${input1}", Input 2: "${input2}"`;
+        }
+        
+        // Test if inputs are working on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, testing inputs...');
+            
+            const input1 = document.getElementById('test1');
+            const input2 = document.getElementById('test2');
+            
+            input1.addEventListener('input', function() {
+                console.log('Input 1 changed:', this.value);
+            });
+            
+            input2.addEventListener('input', function() {
+                console.log('Input 2 changed:', this.value);
+            });
+            
+            // Test if we can programmatically set values
+            setTimeout(() => {
+                input1.value = 'Test value 1';
+                input2.value = 'Test value 2';
+                console.log('Set test values programmatically');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
