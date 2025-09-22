@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ZenTrade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00F5D4",
+                        secondary: "#7B2CBF",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0a0a0a",
+                        "surface-dark": "#1a1a1a",
+                        "surface-light": "#ffffff",
+                        "text-primary": "#ffffff",
+                        "text-secondary": "#a0a0a0",
+                        "text-dark": "#1a1a1a",
+                        "border-dark": "#333333",
+                        "border-light": "#e5e5e5",
+                        "success": "#10b981",
+                        "error": "#ef4444",
+                        "warning": "#f59e0b"
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk", "Inter", "system-ui", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(45deg, #00F5D4, #7B2CBF, #00F5D4);
+            border-radius: inherit;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+        }
+    </style>
+</head>
+<body class="bg-background-dark min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <div class="size-16 relative">
+                    <svg class="w-16 h-16 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M20 32L28 40L44 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-3xl font-bold text-text-primary mb-2">Join ZenTrade</h1>
+            <p class="text-text-secondary">Start your trading journey with professional tools</p>
+        </div>
+
+        <!-- Register Form -->
+        <div class="glass-effect rounded-2xl p-8 glow-border">
+            <form id="registerForm" class="space-y-6">
+                <!-- First Name & Last Name -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-text-primary mb-2">First Name</label>
+                        <input 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName"
+                            required
+                            class="w-full px-4 py-3 bg-surface-dark border border-border-dark rounded-xl text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                            placeholder="John"
+                        />
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-text-primary mb-2">Last Name</label>
+                        <input 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName"
+                            required
+                            class="w-full px-4 py-3 bg-surface-dark border border-border-dark rounded-xl text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                            placeholder="Doe"
+                        />
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-text-primary mb-2">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        required
+                        class="w-full px-4 py-3 bg-surface-dark border border-border-dark rounded-xl text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                        placeholder="john@example.com"
+                    />
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-text-primary mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        required
+                        class="w-full px-4 py-3 bg-surface-dark border border-border-dark rounded-xl text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                        placeholder="••••••••"
+                    />
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-text-primary mb-2">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword"
+                        required
+                        class="w-full px-4 py-3 bg-surface-dark border border-border-dark rounded-xl text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                        placeholder="••••••••"
+                    />
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="flex items-start space-x-3">
+                    <input 
+                        type="checkbox" 
+                        id="terms" 
+                        name="terms"
+                        required
+                        class="mt-1 w-4 h-4 text-primary bg-surface-dark border-border-dark rounded focus:ring-primary focus:ring-2"
+                    />
+                    <label for="terms" class="text-sm text-text-secondary">
+                        I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden bg-error/10 border border-error/20 rounded-xl p-4">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-error mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span id="errorText" class="text-error text-sm"></span>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="hidden bg-success/10 border border-success/20 rounded-xl p-4">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-success mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span id="successText" class="text-success text-sm"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-primary text-black font-bold py-4 px-6 rounded-xl hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Login Link -->
+            <div class="mt-6 text-center">
+                <p class="text-text-secondary">
+                    Already have an account? 
+                    <a href="login.html" class="text-primary hover:underline font-medium">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const errorText = document.getElementById('errorText');
+            const successText = document.getElementById('successText');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Hide previous messages
+                errorMessage.classList.add('hidden');
+                successMessage.classList.add('hidden');
+
+                // Get form data
+                const formData = new FormData(form);
+                const firstName = formData.get('firstName');
+                const lastName = formData.get('lastName');
+                const email = formData.get('email');
+                const password = formData.get('password');
+                const confirmPassword = formData.get('confirmPassword');
+                const terms = formData.get('terms');
+
+                // Validation
+                if (!terms) {
+                    errorText.textContent = 'Please accept the terms and conditions';
+                    errorMessage.classList.remove('hidden');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    errorText.textContent = 'Passwords do not match';
+                    errorMessage.classList.remove('hidden');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    errorText.textContent = 'Password must be at least 6 characters long';
+                    errorMessage.classList.remove('hidden');
+                    return;
+                }
+
+                try {
+                    // Show loading state
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Creating Account...';
+                    submitBtn.disabled = true;
+
+                    // Simulate API call (replace with actual Supabase call)
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+
+                    // Show success message
+                    successText.textContent = 'Account created successfully! Redirecting to login...';
+                    successMessage.classList.remove('hidden');
+
+                    // Redirect to login after delay
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    errorText.textContent = 'Registration failed. Please try again.';
+                    errorMessage.classList.remove('hidden');
+                } finally {
+                    // Reset button
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Register - ZenTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-background-dark min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full p-8">
+        <h1 class="text-2xl font-bold text-white mb-6">Test Registration Form</h1>
+        
+        <form id="testForm" class="space-y-4">
+            <div>
+                <label for="testInput" class="block text-sm font-medium text-white mb-2">Test Input</label>
+                <input 
+                    type="text" 
+                    id="testInput" 
+                    name="testInput"
+                    placeholder="Type here to test..."
+                    class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+            </div>
+            
+            <button 
+                type="submit" 
+                class="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition-colors"
+            >
+                Test Submit
+            </button>
+        </form>
+        
+        <div id="result" class="mt-4 text-white"></div>
+    </div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('testInput').value;
+            document.getElementById('result').textContent = 'You typed: ' + input;
+        });
+    </script>
+</body>
+</html>
