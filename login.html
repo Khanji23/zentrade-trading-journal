@@ -282,9 +282,23 @@
         </div>
     </div>
 
-    <!-- Auth script removed to prevent conflicts -->
+    <!-- Supabase Client -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js" type="module"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Supabase
+        let supabase;
+        
+        async function initSupabase() {
+            const { createClient } = await import('https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js');
+            supabase = createClient(
+                'https://zbjzikbyueozzyhihnmy.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpianppa2J5dWVvenp5aGlobm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0ODA2MTcsImV4cCI6MjA3NDA1NjYxN30.nlqrga4Lv23kc_FZoTr60JXXf6Q_GveWhRrYcYsxGto'
+            );
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize Supabase first
+            await initSupabase();
             const form = document.getElementById('loginForm');
             const errorMessage = document.getElementById('errorMessage');
             const successMessage = document.getElementById('successMessage');
@@ -311,8 +325,15 @@
                     submitBtn.textContent = 'Signing In...';
                     submitBtn.disabled = true;
 
-                    // Sign in user
-                    const result = await window.authManager.signIn(email, password);
+                    // Sign in user with Supabase
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+                    if (error) {
+                        throw new Error(error.message);
+                    }
 
                     showSuccess('Login successful! Redirecting...');
                     
