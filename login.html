@@ -299,6 +299,8 @@
         document.addEventListener('DOMContentLoaded', async function() {
             // Initialize Supabase first
             await initSupabase();
+            console.log('Supabase initialized:', supabase);
+            
             const form = document.getElementById('loginForm');
             const errorMessage = document.getElementById('errorMessage');
             const successMessage = document.getElementById('successMessage');
@@ -319,6 +321,11 @@
                 const remember = formData.get('remember');
 
                 try {
+                    // Check if Supabase is initialized
+                    if (!supabase) {
+                        throw new Error('Supabase not initialized. Please refresh the page and try again.');
+                    }
+
                     // Show loading state
                     const submitBtn = form.querySelector('button[type="submit"]');
                     const originalText = submitBtn.textContent;
