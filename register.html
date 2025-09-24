@@ -348,6 +348,7 @@
 
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                console.log('🔍 Registration form submitted!');
                 
                 // Hide previous messages
                 errorMessage.classList.add('hidden');
@@ -362,28 +363,38 @@
                 const confirmPassword = formData.get('confirmPassword');
                 const terms = formData.get('terms');
 
+                console.log('📝 Form data:', { firstName, lastName, email, passwordLength: password.length, confirmPasswordLength: confirmPassword.length, terms });
+
                 // Validation
                 if (password !== confirmPassword) {
+                    console.log('❌ Password mismatch');
                     showError('Passwords do not match');
                     return;
                 }
 
                 if (password.length < 6) {
+                    console.log('❌ Password too short');
                     showError('Password must be at least 6 characters long');
                     return;
                 }
 
                 if (!terms) {
+                    console.log('❌ Terms not accepted');
                     showError('Please accept the terms and conditions');
                     return;
                 }
+
+                console.log('✅ Validation passed, proceeding with registration...');
 
                 try {
                     // Get Supabase instance
                     const supabaseClient = window.getSupabase();
                     if (!supabaseClient) {
+                        console.log('❌ Supabase not initialized');
                         throw new Error('Supabase not initialized. Please refresh the page and try again.');
                     }
+
+                    console.log('✅ Supabase client ready:', supabaseClient);
 
                     // Show loading state
                     const submitBtn = form.querySelector('button[type="submit"]');
@@ -391,6 +402,7 @@
                     submitBtn.textContent = 'Creating Account...';
                     submitBtn.disabled = true;
 
+                    console.log('🚀 Attempting Supabase registration...');
                     // Register user with Supabase
                     const { data, error } = await supabaseClient.auth.signUp({
                         email: email,
@@ -402,6 +414,8 @@
                             }
                         }
                     });
+
+                    console.log('📊 Supabase response:', { data, error });
 
                     if (error) {
                         throw new Error(error.message);

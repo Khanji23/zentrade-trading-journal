@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Register - ZenTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <h1 class="text-2xl font-bold text-white mb-6 text-center">Debug Registration</h1>
+        
+        <div class="bg-gray-800 rounded-xl p-6">
+            <form id="debugForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-white mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="email"
+                        name="email"
+                        required
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="test@example.com"
+                    />
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-white mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="password"
+                        name="password"
+                        required
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="password123"
+                    />
+                </div>
+                
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                    Test Registration
+                </button>
+                
+                <div id="debugOutput" class="text-white text-sm mt-4"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase Client -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js" type="module"></script>
+    <script type="module">
+        // Initialize Supabase
+        let supabase;
+        
+        async function initSupabase() {
+            try {
+                const { createClient } = await import('https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js');
+                supabase = createClient(
+                    'https://zbjzikbyueozzyhihnmy.supabase.co',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpianppa2J5dWVvenp5aGlobm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0ODA2MTcsImV4cCI6MjA3NDA1NjYxN30.nlqrga4Lv23kc_FZoTr60JXXf6Q_GveWhRrYcYsxGto'
+                );
+                console.log('✅ Supabase initialized successfully:', supabase);
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to initialize Supabase:', error);
+                return false;
+            }
+        }
+
+        // Initialize Supabase immediately
+        const initPromise = initSupabase();
+        
+        // Make supabase available globally
+        window.supabaseReady = initPromise;
+        window.getSupabase = () => supabase;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🔍 DOM loaded, setting up form...');
+            
+            // Wait for Supabase to be ready
+            const isReady = await window.supabaseReady;
+            if (!isReady) {
+                console.error('❌ Supabase failed to initialize');
+                document.getElementById('debugOutput').innerHTML = '❌ Supabase failed to initialize';
+                return;
+            }
+            console.log('✅ Supabase ready for use:', supabase);
+            
+            const form = document.getElementById('debugForm');
+            const output = document.getElementById('debugOutput');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('🔍 Form submitted!');
+                output.innerHTML = '🔍 Form submitted, processing...';
+                
+                try {
+                    const formData = new FormData(form);
+                    const email = formData.get('email');
+                    const password = formData.get('password');
+                    
+                    console.log('📧 Email:', email);
+                    console.log('🔑 Password length:', password.length);
+                    
+                    // Get Supabase instance
+                    const supabaseClient = window.getSupabase();
+                    if (!supabaseClient) {
+                        throw new Error('Supabase not initialized');
+                    }
+                    
+                    console.log('🚀 Attempting registration...');
+                    output.innerHTML = '🚀 Attempting registration...';
+                    
+                    // Register user with Supabase
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email: email,
+                        password: password
+                    });
+                    
+                    console.log('📊 Registration result:', { data, error });
+                    
+                    if (error) {
+                        throw new Error(error.message);
+                    }
+                    
+                    output.innerHTML = `✅ Registration successful! Check your email for verification. User ID: ${data.user?.id}`;
+                    console.log('✅ Registration successful:', data);
+                    
+                } catch (error) {
+                    console.error('❌ Registration error:', error);
+                    output.innerHTML = `❌ Error: ${error.message}`;
+                }
+            });
+            
+            console.log('✅ Form event listener attached');
+        });
+    </script>
+</body>
+</html>
