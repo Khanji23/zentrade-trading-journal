@@ -282,42 +282,9 @@
         </div>
     </div>
 
-    <!-- Supabase Client -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js" type="module"></script>
-    <script type="module">
-        // Initialize Supabase
-        let supabase;
-        
-        async function initSupabase() {
-            try {
-                const { createClient } = await import('https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js');
-                supabase = createClient(
-                    'https://zbjzikbyueozzyhihnmy.supabase.co',
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpianppa2J5dWVvenp5aGlobm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0ODA2MTcsImV4cCI6MjA3NDA1NjYxN30.nlqrga4Lv23kc_FZoTr60JXXf6Q_GveWhRrYcYsxGto'
-                );
-                console.log('Supabase initialized successfully:', supabase);
-                return true;
-            } catch (error) {
-                console.error('Failed to initialize Supabase:', error);
-                return false;
-            }
-        }
-
-        // Initialize Supabase immediately
-        const initPromise = initSupabase();
-        
-        // Make supabase available globally
-        window.supabaseReady = initPromise;
-        window.getSupabase = () => supabase;
-
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Wait for Supabase to be ready
-            const isReady = await window.supabaseReady;
-            if (!isReady) {
-                console.error('Supabase failed to initialize');
-                return;
-            }
-            console.log('Supabase ready for use:', supabase);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔍 Login page loaded');
             
             const form = document.getElementById('loginForm');
             const errorMessage = document.getElementById('errorMessage');
@@ -339,27 +306,35 @@
                 const remember = formData.get('remember');
 
                 try {
-                    // Get Supabase instance
-                    const supabaseClient = window.getSupabase();
-                    if (!supabaseClient) {
-                        throw new Error('Supabase not initialized. Please refresh the page and try again.');
-                    }
-
                     // Show loading state
                     const submitBtn = form.querySelector('button[type="submit"]');
                     const originalText = submitBtn.textContent;
                     submitBtn.textContent = 'Signing In...';
                     submitBtn.disabled = true;
 
-                    // Sign in user with Supabase
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({
-                        email: email,
-                        password: password
+                    console.log('🚀 Attempting login via server API...');
+
+                    // Sign in user via server API
+                    const response = await fetch('/api/auth/signin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
                     });
 
-                    if (error) {
-                        throw new Error(error.message);
+                    console.log('📊 Server response status:', response.status);
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Login failed');
                     }
+
+                    const data = await response.json();
+                    console.log('📊 Server response data:', data);
 
                     showSuccess('Login successful! Redirecting...');
                     
