@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - ZenTrade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <h1 class="text-2xl font-bold text-white mb-6 text-center">API Test</h1>
+        
+        <div class="bg-gray-800 rounded-xl p-6">
+            <button id="testBtn" class="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition-colors mb-4">
+                Test Registration API
+            </button>
+            
+            <div id="result" class="text-white text-sm"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async function() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing API...';
+            
+            try {
+                console.log('🚀 Testing registration API...');
+                
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'testuser2@gmail.com',
+                        password: 'test123',
+                        firstName: 'Test',
+                        lastName: 'User'
+                    })
+                });
+                
+                console.log('📊 Response status:', response.status);
+                console.log('📊 Response headers:', response.headers);
+                
+                const contentType = response.headers.get('content-type');
+                console.log('📊 Content-Type:', contentType);
+                
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('📊 Response data:', data);
+                    resultDiv.innerHTML = `<pre class="text-green-400">✅ Success: ${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    const text = await response.text();
+                    console.log('📊 Response text:', text);
+                    resultDiv.innerHTML = `<pre class="text-red-400">❌ Not JSON: ${text.substring(0, 200)}...</pre>`;
+                }
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
+                resultDiv.innerHTML = `<pre class="text-red-400">❌ Error: ${error.message}</pre>`;
+            }
+        });
+    </script>
+</body>
+</html>
