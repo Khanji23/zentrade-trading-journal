@@ -277,23 +277,92 @@
 let currentDate = new Date();
 let trades = [];
 
+// Check user authentication
+async function checkUserAuthentication() {
+    try {
+        // Check if user has a valid session
+        const response = await fetch('/api/auth/me', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (response.ok) {
+            const userData = await response.json();
+            console.log('User authenticated:', userData);
+            return true;
+        } else {
+            console.log('User not authenticated');
+            return false;
+        }
+    } catch (error) {
+        console.error('Authentication check failed:', error);
+        return false;
+    }
+}
+
+// Show fresh start message for new users
+function showFreshStartMessage() {
+    // Add a welcome message for new users
+    const welcomeMessage = document.createElement('div');
+    welcomeMessage.id = 'welcome-message';
+    welcomeMessage.className = 'bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/30 rounded-xl p-6 mb-6';
+    welcomeMessage.innerHTML = `
+        <div class="text-center">
+            <h3 class="text-xl font-semibold text-primary mb-2">Welcome to ZenTrade! 🎉</h3>
+            <p class="text-text-secondary mb-4">Your trading journal is ready. Start by adding your first trade to begin tracking your performance.</p>
+            <a href="new-trade.html" class="inline-flex items-center px-4 py-2 bg-primary text-black rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                Add Your First Trade
+            </a>
+        </div>
+    `;
+    
+    // Insert after the header
+    const header = document.querySelector('header');
+    if (header) {
+        header.insertAdjacentElement('afterend', welcomeMessage);
+    }
+}
+
 // Load trades and update dashboard
-function loadDashboardData() {
-    trades = JSON.parse(localStorage.getItem('trades') || '[]');
-    console.log('Loaded trades:', trades);
-    
-    const closedTrades = trades.filter(t => t.status === 'closed' && t.pnl !== undefined);
-    const openTrades = trades.filter(t => t.status === 'open');
-    
-    console.log('Closed trades:', closedTrades);
-    console.log('Open trades:', openTrades);
-    
-    // Calculate statistics
-    const totalTrades = trades.length;
-    const winningTrades = trades.filter(t => t.tradeResult === 'win');
-    const winRate = totalTrades > 0 ? Math.round((winningTrades.length / totalTrades) * 100) : 0;
-    const totalPnl = trades.reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
-    const avgRR = calculateAverageRR(closedTrades);
+async function loadDashboardData() {
+    try {
+        // Try to load data from Supabase first
+        const response = await fetch('/api/trades', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            trades = data || [];
+            console.log('Loaded trades from Supabase:', trades);
+        } else {
+            // Fallback to localStorage for existing users
+            trades = JSON.parse(localStorage.getItem('trades') || '[]');
+            console.log('Loaded trades from localStorage:', trades);
+        }
+        
+        // If no trades exist, show fresh start message
+        if (trades.length === 0) {
+            showFreshStartMessage();
+        }
+        
+        const closedTrades = trades.filter(t => t.status === 'closed' && t.pnl !== undefined);
+        const openTrades = trades.filter(t => t.status === 'open');
+        
+        console.log('Closed trades:', closedTrades);
+        console.log('Open trades:', openTrades);
+        
+        // Calculate statistics
+        const totalTrades = trades.length;
+        const winningTrades = trades.filter(t => t.tradeResult === 'win');
+        const winRate = totalTrades > 0 ? Math.round((winningTrades.length / totalTrades) * 100) : 0;
+        const totalPnl = trades.reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
+        const avgRR = calculateAverageRR(closedTrades);
     
     // Calculate profit factor
     const grossProfit = trades.filter(t => (t.netPnl || t.pnl || 0) > 0).reduce((sum, t) => sum + (t.netPnl || t.pnl || 0), 0);
@@ -823,18 +892,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.appendChild(loadingDiv);
     
     try {
-        // Wait for auth manager to initialize
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Check if user is authenticated
+        const isAuthenticated = await checkUserAuthentication();
+        if (!isAuthenticated) {
+            // Redirect to login if not authenticated
+            window.location.href = 'login.html';
+            return;
+        }
         
-        // For now, skip authentication check to see the styled dashboard
-        // if (!window.authManager.isAuthenticated()) {
-        //     // Redirect to login if not authenticated
-        //     window.location.href = 'http://localhost:8000/auth-modal.html';
-        //     return;
-        // }
-        
-        // Load dashboard data from localStorage for now
-        loadDashboardData();
+        // Load dashboard data
+        await loadDashboardData();
     } finally {
         // Remove loading indicator
         const loading = document.getElementById('loading-indicator');

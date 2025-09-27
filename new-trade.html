@@ -1367,30 +1367,47 @@ function processTradeForm() {
         status: 'closed'
     };
     
-    // Save to localStorage
-    const trades = JSON.parse(localStorage.getItem('trades') || '[]');
-    console.log('Current trades before adding:', trades);
-    
-    trades.push(trade);
-    localStorage.setItem('trades', JSON.stringify(trades));
-    
-    console.log('Trade saved successfully:', trade);
-    console.log('Updated trades:', JSON.parse(localStorage.getItem('trades') || '[]'));
-    
-    // Debug: Check if netPnl is being saved correctly
-    console.log('Trade netPnl value:', trade.netPnl);
-    console.log('Trade pnl value:', trade.pnl);
-    console.log('Trade tradeResult:', trade.tradeResult);
-    
-    // Trigger storage event to notify other pages
-    window.dispatchEvent(new StorageEvent('storage', {
-        key: 'trades',
-        newValue: localStorage.getItem('trades'),
-        oldValue: JSON.stringify(trades.slice(0, -1))
-    }));
-    
-    // Show success message
-    alert('Trade saved successfully!');
+    // Save to Supabase
+    try {
+        console.log('Saving trade to Supabase:', trade);
+        
+        const response = await fetch('/api/trades', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(trade)
+        });
+        
+        if (response.ok) {
+            const savedTrade = await response.json();
+            console.log('Trade saved successfully to Supabase:', savedTrade);
+            
+            // Also save to localStorage as backup
+            const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+            trades.push(trade);
+            localStorage.setItem('trades', JSON.stringify(trades));
+            
+            // Show success message
+            alert('Trade saved successfully!');
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        } else {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to save trade');
+        }
+    } catch (error) {
+        console.error('Error saving trade to Supabase:', error);
+        
+        // Fallback to localStorage
+        const trades = JSON.parse(localStorage.getItem('trades') || '[]');
+        trades.push(trade);
+        localStorage.setItem('trades', JSON.stringify(trades));
+        
+        console.log('Trade saved to localStorage as fallback:', trade);
+        alert('Trade saved locally (offline mode)');
+    }
     
     // Reset form
     document.getElementById('trade-form').reset();

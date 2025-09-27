@@ -89,4 +89,29 @@ router.get('/user', async (req, res) => {
     }
 });
 
+// Get current user with token (for dashboard authentication)
+router.get('/me', async (req, res) => {
+    try {
+        // For now, we'll use a simple approach - check if there's a session
+        // In a production app, you'd validate the JWT token
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error || !user) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        res.json({ 
+            user: {
+                id: user.id,
+                email: user.email,
+                first_name: user.user_metadata?.first_name,
+                last_name: user.user_metadata?.last_name
+            }
+        });
+    } catch (error) {
+        console.error('Get user error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports = router;
