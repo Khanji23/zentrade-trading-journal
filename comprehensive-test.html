@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprehensive API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <h1>Comprehensive API Test</h1>
+    
+    <div class="test">
+        <h3>Test 1: Health Check</h3>
+        <button onclick="testHealth()">Test Health</button>
+        <div id="health-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Registration API</h3>
+        <button onclick="testRegistration()">Test Registration</button>
+        <div id="reg-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: Login API</h3>
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result"></div>
+    </div>
+
+    <script>
+        async function testHealth() {
+            const resultDiv = document.getElementById('health-result');
+            resultDiv.innerHTML = 'Testing health endpoint...';
+            
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                resultDiv.innerHTML = '<div class="success"><pre>SUCCESS: ' + JSON.stringify(data, null, 2) + '</pre></div>';
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error"><pre>ERROR: ' + error.message + '</pre></div>';
+            }
+        }
+        
+        async function testRegistration() {
+            const resultDiv = document.getElementById('reg-result');
+            resultDiv.innerHTML = 'Testing registration...';
+            
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'testuser6@gmail.com',
+                        password: 'test123',
+                        firstName: 'Test',
+                        lastName: 'User'
+                    })
+                });
+                
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = '<div class="success"><pre>SUCCESS: ' + JSON.stringify(data, null, 2) + '</pre></div>';
+                } else {
+                    const text = await response.text();
+                    resultDiv.innerHTML = '<div class="error"><pre>NOT JSON: ' + text.substring(0, 500) + '...</pre></div>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error"><pre>ERROR: ' + error.message + '</pre></div>';
+            }
+        }
+        
+        async function testLogin() {
+            const resultDiv = document.getElementById('login-result');
+            resultDiv.innerHTML = 'Testing login...';
+            
+            try {
+                const response = await fetch('/api/auth/signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'testuser6@gmail.com',
+                        password: 'test123'
+                    })
+                });
+                
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = '<div class="success"><pre>SUCCESS: ' + JSON.stringify(data, null, 2) + '</pre></div>';
+                } else {
+                    const text = await response.text();
+                    resultDiv.innerHTML = '<div class="error"><pre>NOT JSON: ' + text.substring(0, 500) + '...</pre></div>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error"><pre>ERROR: ' + error.message + '</pre></div>';
+            }
+        }
+    </script>
+</body>
+</html>
